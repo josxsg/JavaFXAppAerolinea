@@ -9,5 +9,5 @@ package javafxappaerolinea.observable;
  * @author Dell
  */
 public interface Notification {
-    void operacionExitosa();
+    void operationSucceeded();
 }
