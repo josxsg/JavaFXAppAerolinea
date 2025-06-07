@@ -17,10 +17,10 @@ import javafx.scene.control.TableView;
  *
  * @author migue
  */
-public class FXMLAssistantController implements Initializable {
+public class FXMLAirlineController implements Initializable {
 
     @FXML
-    private TableView<?> tvAssistants;
+    private TableView<?> tvAirlines;
     @FXML
     private TableColumn<?, ?> tcId;
     @FXML
@@ -28,19 +28,9 @@ public class FXMLAssistantController implements Initializable {
     @FXML
     private TableColumn<?, ?> tcAddress;
     @FXML
-    private TableColumn<?, ?> tcBirthDate;
+    private TableColumn<?, ?> tcContact;
     @FXML
-    private TableColumn<?, ?> tcGender;
-    @FXML
-    private TableColumn<?, ?> tcSalary;
-    @FXML
-    private TableColumn<?, ?> tcUsername;
-    @FXML
-    private TableColumn<?, ?> tcEmail;
-    @FXML
-    private TableColumn<?, ?> tcAssistanceHours;
-    @FXML
-    private TableColumn<?, ?> tcNumberOfLanguages;
+    private TableColumn<?, ?> tcPhone;
 
     /**
      * Initializes the controller class.
@@ -51,19 +41,23 @@ public class FXMLAssistantController implements Initializable {
     }    
 
     @FXML
-    private void btnAddAssistant(ActionEvent event) {
+    private void btnAddAirline(ActionEvent event) {
     }
 
     @FXML
-    private void btnEditAssistant(ActionEvent event) {
+    private void btnEditAirline(ActionEvent event) {
     }
 
     @FXML
-    private void btnDeleteAssistant(ActionEvent event) {
+    private void btnDeleteAirline(ActionEvent event) {
     }
 
     @FXML
     private void btnExport(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnViewAirplanes(ActionEvent event) {
     }
 
     @FXML

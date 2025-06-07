@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1024.0" style="-fx-background-color: #F5F6FA;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLAssistantController">
+<AnchorPane prefHeight="500.0" prefWidth="1024.0" style="-fx-background-color: #F5F6FA;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLAirlineController">
    <children>
       <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
-            <Label text="Gestión de Asistentes de Vuelo">
+            <Label text="Gestión de Aerolíneas">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -22,26 +22,22 @@
             
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
-                  <Button onAction="#btnAddAssistant" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" text="Dar de Alta" />
-                  <Button onAction="#btnEditAssistant" style="-fx-background-color: #FFC107; -fx-text-fill: white; -fx-font-weight: bold;" text="Modificar" />
-                  <Button onAction="#btnDeleteAssistant" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar" />
+                  <Button onAction="#btnAddAirline" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" text="Dar de Alta" />
+                  <Button onAction="#btnEditAirline" style="-fx-background-color: #FFC107; -fx-text-fill: white; -fx-font-weight: bold;" text="Modificar" />
+                  <Button onAction="#btnDeleteAirline" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar" />
                   <Button onAction="#btnExport" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;" text="Exportar" />
+                  <Button onAction="#btnViewAirplanes" style="-fx-background-color: #607D8B; -fx-text-fill: white; -fx-font-weight: bold;" text="Ver Aviones" />
                   <Button onAction="#btnViewFlights" style="-fx-background-color: #607D8B; -fx-text-fill: white; -fx-font-weight: bold;" text="Ver Vuelos" />
                </children>
             </HBox>
             
-            <TableView fx:id="tvAssistants" prefHeight="350.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tvAirlines" prefHeight="350.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn fx:id="tcId" text="ID" />
+                <TableColumn fx:id="tcId" text="No. Identificación" />
                 <TableColumn fx:id="tcName" text="Nombre" />
                 <TableColumn fx:id="tcAddress" text="Dirección" />
-                <TableColumn fx:id="tcBirthDate" text="Fecha Nac." />
-                <TableColumn fx:id="tcGender" text="Género" />
-                <TableColumn fx:id="tcSalary" text="Salario" />
-                <TableColumn fx:id="tcUsername" text="Usuario" />
-                <TableColumn fx:id="tcEmail" text="Email" />
-                <TableColumn fx:id="tcAssistanceHours" text="Horas Asistencia" />
-                <TableColumn fx:id="tcNumberOfLanguages" text="No. Idiomas" />
+                <TableColumn fx:id="tcContact" text="Persona de Contacto" />
+                <TableColumn fx:id="tcPhone" text="Teléfono" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
