@@ -1,0 +1,15 @@
+[
+  {
+    "department": "sjsj",
+    "workHours": 8,
+    "id": "ADM-94100",
+    "name": "angel",
+    "address": "jsj",
+    "birthDate": "2005-06-05",
+    "gender": "Masculino",
+    "salary": 8502.0,
+    "username": "AngelPH",
+    "password": "$2a$10$S3ZhpFPBCngoVb9q2xTtberq4ttTerFu77IPH5.bZptUOZd2QkLN.",
+    "type": "Administrative"
+  }
+]

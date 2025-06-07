@@ -24,7 +24,7 @@ public class Assistant extends Employee {
         this.flights = new ArrayList<>();
     }
     
-    public Assistant(int id, String name, String address, Date birthDate, 
+    public Assistant(String id, String name, String address, Date birthDate, 
                      String gender, double salary, String username, String password,
                      String email, int assistanceHours, int numberOfLanguages) {
         super(id, name, address, birthDate, gender, salary, username, password);

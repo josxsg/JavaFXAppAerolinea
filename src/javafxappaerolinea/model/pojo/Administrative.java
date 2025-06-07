@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.pojo;
 
 import java.util.Date;
@@ -17,14 +13,16 @@ public class Administrative extends Employee {
     // Constructor
     public Administrative() {
         super();
+        setType("Administrative");
     }
     
-    public Administrative(int id, String name, String address, Date birthDate, 
-                          String gender, double salary, String username, String password,
-                          String department, int workHours) {
+    public Administrative(String id, String name, String address, Date birthDate, 
+    String gender, double salary, String username, String password,
+    String department, int workHours) {
         super(id, name, address, birthDate, gender, salary, username, password);
         this.department = department;
         this.workHours = workHours;
+        setType("Administrative");
     }
     
     // Getters and Setters

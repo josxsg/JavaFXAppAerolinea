@@ -25,6 +25,36 @@ public class IdGeneratorUtil {
         String destCode = destino.substring(0, Math.min(3, destino.length())).toUpperCase();
         return "V" + aerolineaId + "-" + originCode + "-" + destCode + "-" + System.currentTimeMillis() % 10000;
     }
+    
+    /**
+    * Genera un ID único para un empleado administrativo
+    * @return ID único para administrativo en formato ADM-XXXXX
+    */
+   public static String generateAdministrativeId() {
+       String prefix = "ADM-";
+       int randomNum = (int) (Math.random() * 90000) + 10000;
+       return prefix + randomNum;
+   }
+
+   /**
+    * Genera un ID único para un piloto
+    * @return ID único para piloto en formato PIL-XXXXX
+    */
+   public static String generatePilotId() {
+       String prefix = "PIL-";
+       int randomNum = (int) (Math.random() * 90000) + 10000;
+       return prefix + randomNum;
+   }
+
+   /**
+    * Genera un ID único para un asistente de vuelo
+    * @return ID único para asistente en formato AST-XXXXX
+    */
+   public static String generateAssistantId() {
+       String prefix = "AST-";
+       int randomNum = (int) (Math.random() * 90000) + 10000;
+       return prefix + randomNum;
+   }
 
     /**
      * Genera un ID único para un boleto

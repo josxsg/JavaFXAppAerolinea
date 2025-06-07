@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.dao;
 
 import javafxappaerolinea.exception.DuplicateResourceException;
@@ -32,10 +28,10 @@ public class EmployeeDAO {
         return persistence.loadAll();
     }
 
-    public Employee findById(int id) throws IOException, ResourceNotFoundException {
+    public Employee findById(String id) throws IOException, ResourceNotFoundException {
         List<Employee> employees = persistence.loadAll();
         return employees.stream()
-                .filter(e -> e.getId() == id)
+                .filter(e -> e.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Empleado con ID " + id + " no encontrado"));
     }
@@ -51,7 +47,7 @@ public class EmployeeDAO {
     public List<Administrative> findAllAdministratives() throws IOException {
         List<Employee> employees = persistence.loadAll();
         return employees.stream()
-                .filter(e -> e instanceof Administrative)
+                .filter(e -> "Administrative".equals(e.getType()))
                 .map(e -> (Administrative) e)
                 .collect(Collectors.toList());
     }
@@ -59,7 +55,7 @@ public class EmployeeDAO {
     public List<Assistant> findAllAssistants() throws IOException {
         List<Employee> employees = persistence.loadAll();
         return employees.stream()
-                .filter(e -> e instanceof Assistant)
+                .filter(e -> "Assistant".equals(e.getType()))
                 .map(e -> (Assistant) e)
                 .collect(Collectors.toList());
     }
@@ -67,14 +63,14 @@ public class EmployeeDAO {
     public List<Pilot> findAllPilots() throws IOException {
         List<Employee> employees = persistence.loadAll();
         return employees.stream()
-                .filter(e -> e instanceof Pilot)
+                .filter(e -> "Pilot".equals(e.getType()))
                 .map(e -> (Pilot) e)
                 .collect(Collectors.toList());
     }
 
     public void save(Employee employee) throws IOException, DuplicateResourceException {
         List<Employee> employees = persistence.loadAll();
-        if (employees.stream().anyMatch(e -> e.getId() == employee.getId())) {
+        if (employees.stream().anyMatch(e -> e.getId().equals(employee.getId()))) {
             throw new DuplicateResourceException("Ya existe un empleado con ID " + employee.getId());
         }
         if (employees.stream().anyMatch(e -> e.getUsername().equals(employee.getUsername()))) {
@@ -85,17 +81,17 @@ public class EmployeeDAO {
 
     public void update(Employee employee) throws IOException, ResourceNotFoundException {
         List<Employee> employees = persistence.loadAll();
-        if (employees.stream().noneMatch(e -> e.getId() == employee.getId())) {
+        if (employees.stream().noneMatch(e -> e.getId().equals(employee.getId()))) {
             throw new ResourceNotFoundException("Empleado con ID " + employee.getId() + " no encontrado");
         }
-        persistence.update(employee, e -> e.getId() == employee.getId());
+        persistence.update(employee, e -> e.getId().equals(employee.getId()));
     }
 
-    public void delete(int id) throws IOException, ResourceNotFoundException {
+    public void delete(String id) throws IOException, ResourceNotFoundException {
         List<Employee> employees = persistence.loadAll();
-        if (employees.stream().noneMatch(e -> e.getId() == id)) {
+        if (employees.stream().noneMatch(e -> e.getId().equals(id))) {
             throw new ResourceNotFoundException("Empleado con ID " + id + " no encontrado");
         }
-        persistence.delete(e -> e.getId() == id);
+        persistence.delete(e -> e.getId().equals(id));
     }
 }

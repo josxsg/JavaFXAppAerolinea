@@ -10,8 +10,8 @@ import java.util.Date;
  *
  * @author Dell
  */
-public abstract class Employee {
-    private int id;
+public class Employee {
+    private String id;
     private String name;
     private String address;
     private Date birthDate;
@@ -19,12 +19,12 @@ public abstract class Employee {
     private double salary;
     private String username;
     private String password;
-    
+    private String type;
     // Constructor
     public Employee() {
     }
     
-    public Employee(int id, String name, String address, Date birthDate, 
+    public Employee(String id, String name, String address, Date birthDate, 
                    String gender, double salary, String username, String password) {
         this.id = id;
         this.name = name;
@@ -37,11 +37,11 @@ public abstract class Employee {
     }
     
     // Getters and Setters
-    public int getId() {
+    public String getId() {
         return id;
     }
     
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
     
@@ -99,5 +99,13 @@ public abstract class Employee {
     
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public void setType(String type) {
+        this.type = type;
     }
 }

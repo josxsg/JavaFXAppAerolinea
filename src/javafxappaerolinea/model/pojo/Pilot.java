@@ -25,7 +25,7 @@ public class Pilot extends Employee {
         this.flights = new ArrayList<>();
     }
     
-    public Pilot(int id, String name, String address, Date birthDate, 
+    public Pilot(String id, String name, String address, Date birthDate, 
                  String gender, double salary, String username, String password,
                  int yearsExperience, String email, double flightHours, String licenseType) {
         super(id, name, address, birthDate, gender, salary, username, password);
