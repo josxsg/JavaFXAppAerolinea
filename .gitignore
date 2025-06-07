@@ -1,0 +1,20 @@
+# Ignorar archivos binarios y de construcción
+/build/
+/dist/
+/nbproject/private/
+/out/
+
+# Configuración del IDE
+.idea/
+.vscode/
+*.iml
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Clases compiladas
+*.class
+
+
+nbproject/private/ 
