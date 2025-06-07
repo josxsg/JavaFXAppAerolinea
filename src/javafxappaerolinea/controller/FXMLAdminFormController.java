@@ -19,7 +19,7 @@ import javafx.scene.control.TextField;
  *
  * @author migue
  */
-public class FXMLAddAdministratorController implements Initializable {
+public class FXMLAdminFormController implements Initializable {
 
     @FXML
     private TextField tfName;
