@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #F5F6FA;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLPrincipalController">
+   <children>
+      <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <MenuBar style="-fx-background-color: #ECEFF1; -fx-font-weight: bold;">
+              <menus>
+                <Menu mnemonicParsing="false" text="Administración">
+                  <items>
+                        <Menu mnemonicParsing="false" text="Empleados">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#openAdminStaffWindow" text="Administrativos" />
+                            <MenuItem mnemonicParsing="false" onAction="#openPilotsWindow" text="Pilotos" />
+                              <MenuItem mnemonicParsing="false" onAction="#openFlightAttendantsWindow" text="Asistentes de vuelo" />
+                          </items>
+                        </Menu>
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Aerolínea">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#openAirlinesWindow" text="Aerolíneas" />
+                    <MenuItem mnemonicParsing="false" onAction="#openAirplanesWindow" text="Aviones" />
+                    <MenuItem mnemonicParsing="false" onAction="#openFlightsWindow" text="Vuelos" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Clientes">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#openRegisterClientWindow" text="Registro de cliente" />
+                    <MenuItem mnemonicParsing="false" onAction="#openBuyTicketWindow" text="Comprar boleto de cliente" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Cerrar sesión">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#logOut" text="Confirmar" />
+                    </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+            
+            <AnchorPane prefHeight="70.0" prefWidth="1024.0" style="-fx-background-color: #FFFFFF;">
+               <children>
+                  <ImageView fitHeight="52.0" fitWidth="58.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recurso/homeIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="lblWindowTitle" alignment="CENTER" prefHeight="27.0" prefWidth="400.0" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #5A4FCF;" text="Página Principal" AnchorPane.leftAnchor="312.0" AnchorPane.topAnchor="22.0" />
+                  <Label layoutX="79.0" layoutY="27.0" text="Bienvenido (a):">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblUsername" layoutX="185.0" layoutY="29.0" prefHeight="17.0" prefWidth="306.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      
+      <AnchorPane fx:id="apCentral" prefHeight="500.0" prefWidth="1024.0" style="-fx-background-color: #F5F6FA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" />
+   </children>
+</AnchorPane>
