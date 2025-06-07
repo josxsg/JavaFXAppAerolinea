@@ -16,22 +16,21 @@ public class Assistant extends Employee {
     private String email;
     private int assistanceHours;
     private int numberOfLanguages;
-    private List<Flight> flights;
+    private Airline airline;
     
     // Constructor
     public Assistant() {
         super();
-        this.flights = new ArrayList<>();
     }
     
     public Assistant(String id, String name, String address, Date birthDate, 
                      String gender, double salary, String username, String password,
-                     String email, int assistanceHours, int numberOfLanguages) {
+                     String email, int assistanceHours, int numberOfLanguages, Airline airline) {
         super(id, name, address, birthDate, gender, salary, username, password);
         this.email = email;
         this.assistanceHours = assistanceHours;
         this.numberOfLanguages = numberOfLanguages;
-        this.flights = new ArrayList<>();
+        this.airline = airline;
     }
     
     // Getters and Setters
@@ -58,16 +57,13 @@ public class Assistant extends Employee {
     public void setNumberOfLanguages(int numberOfLanguages) {
         this.numberOfLanguages = numberOfLanguages;
     }
-    
-    public List<Flight> getFlights() {
-        return flights;
+
+    public Airline getAirline() {
+        return airline;
+    }
+
+    public void setAirline(Airline airline) {
+        this.airline = airline;
     }
     
-    public void setFlights(List<Flight> flights) {
-        this.flights = flights;
-    }
-    
-    public void addFlight(Flight flight) {
-        this.flights.add(flight);
-    }
 }

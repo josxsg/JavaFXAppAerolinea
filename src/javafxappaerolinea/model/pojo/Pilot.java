@@ -17,23 +17,22 @@ public class Pilot extends Employee {
     private String email;
     private double flightHours;
     private String licenseType;
-    private List<Flight> flights;
+    private Airline airline;
     
     // Constructor
     public Pilot() {
         super();
-        this.flights = new ArrayList<>();
     }
     
     public Pilot(String id, String name, String address, Date birthDate, 
                  String gender, double salary, String username, String password,
-                 int yearsExperience, String email, double flightHours, String licenseType) {
+                 int yearsExperience, String email, double flightHours, String licenseType, Airline airline) {
         super(id, name, address, birthDate, gender, salary, username, password);
         this.yearsExperience = yearsExperience;
         this.email = email;
         this.flightHours = flightHours;
         this.licenseType = licenseType;
-        this.flights = new ArrayList<>();
+        this.airline = airline;
     }
     
     // Getters and Setters
@@ -68,16 +67,13 @@ public class Pilot extends Employee {
     public void setLicenseType(String licenseType) {
         this.licenseType = licenseType;
     }
-    
-    public List<Flight> getFlights() {
-        return flights;
+
+    public Airline getAirline() {
+        return airline;
+    }
+
+    public void setAirline(Airline airline) {
+        this.airline = airline;
     }
     
-    public void setFlights(List<Flight> flights) {
-        this.flights = flights;
-    }
-    
-    public void addFlight(Flight flight) {
-        this.flights.add(flight);
-    }
 }

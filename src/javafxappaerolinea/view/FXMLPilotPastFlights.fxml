@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -34,8 +35,8 @@
                 <TableColumn fx:id="tcDepartureHour" prefWidth="100.0" text="Hora Salida" />
                 <TableColumn fx:id="tcArrivalDate" prefWidth="120.0" text="Fecha Llegada" />
                 <TableColumn fx:id="tcArrivalHour" prefWidth="100.0" text="Hora Llegada" />
-                <TableColumn fx:id="tcTravelTime" prefWidth="100.0" text="Tiempo Vuelo" />
-                <TableColumn fx:id="tcAirline" prefWidth="120.0" text="Aerolínea" />
+                <TableColumn fx:id="tcTravelTime" prefWidth="119.0" text="Tiempo Vuelo" />
+                <TableColumn fx:id="tcAirline" prefWidth="114.0" text="Aerolínea" />
               </columns>
             </TableView>
             
