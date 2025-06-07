@@ -1,7 +1,5 @@
 [
   {
-    "department": "sjsj",
-    "workHours": 8,
     "id": "ADM-94100",
     "name": "angel",
     "address": "jsj",
@@ -11,5 +9,35 @@
     "username": "AngelPH",
     "password": "$2a$10$S3ZhpFPBCngoVb9q2xTtberq4ttTerFu77IPH5.bZptUOZd2QkLN.",
     "type": "Administrative"
-  }
+  },
+  {
+    "department": "j",
+    "workHours": 5,
+    "id": "ADM-47320",
+    "name": "ej",
+    "address": "j",
+    "birthDate": "1996-06-15",
+    "gender": "Femenino",
+    "salary": 8578.0,
+    "username": "jsjssjsjsjsA",
+    "password": "$2a$10$kJnH.cU8zbui3w1IFW819uzIM10uUUTOR0tgr3YrOYqVH/ernXR7.",
+    "type": "Administrative"
+  },
+
+  {
+  "id": "PIL-12034",
+  "name": "Carlos Méndez",
+  "address": "Av. del Aire 456",
+  "birthDate": "1983-09-22",
+  "gender": "Masculino",
+  "salary": 15200.0,
+  "username": "cmendez",
+  "password": "$2a$10$XkLx0vG7jhAqsFev8J9EguYH9FplZsYgMeGUP2VIfdf6iU3kdjzZK",  
+  "yearsExperience": 12,
+  "email": "carlos.mendez@example.com",
+  "flightHours": 5400,
+  "licenseType": "Comercial",
+  "type": "Pilot"
+}
+
 ]
