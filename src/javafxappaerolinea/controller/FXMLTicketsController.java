@@ -29,19 +29,9 @@ public class FXMLTicketsController implements Initializable {
     @FXML
     private TableView<?> tableFlights;
     @FXML
-    private TableColumn<?, ?> columnFlightId;
-    @FXML
-    private TableColumn<?, ?> columnOrigin;
-    @FXML
-    private TableColumn<?, ?> columnDestination;
-    @FXML
     private TableColumn<?, ?> columnDepartureDate;
     @FXML
     private TableColumn<?, ?> columnArrivalDate;
-    @FXML
-    private TableColumn<?, ?> columnPrice;
-    @FXML
-    private TableColumn<?, ?> columnAvailableSeats;
     @FXML
     private TextField txtOriginFilter;
     @FXML
@@ -52,6 +42,26 @@ public class FXMLTicketsController implements Initializable {
     private Button btnApplyFilter;
     @FXML
     private Button btnClearFilter;
+    @FXML
+    private TableColumn<?, ?> columnId;
+    @FXML
+    private TableColumn<?, ?> columnAirline;
+    @FXML
+    private TableColumn<?, ?> columnOriginCity;
+    @FXML
+    private TableColumn<?, ?> columnDestinationCity;
+    @FXML
+    private TableColumn<?, ?> columnDepartureHour;
+    @FXML
+    private TableColumn<?, ?> columnArrivalHour;
+    @FXML
+    private TableColumn<?, ?> columnTicketCost;
+    @FXML
+    private TableColumn<?, ?> columnGate;
+    @FXML
+    private TableColumn<?, ?> columnPassengerCount;
+    @FXML
+    private TableColumn<?, ?> columnTravelTime;
 
     /**
      * Initializes the controller class.

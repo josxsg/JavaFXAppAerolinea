@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
 /**
@@ -20,21 +21,17 @@ import javafx.scene.control.TextField;
 public class FXMLAddCustomerController implements Initializable {
 
     @FXML
-    private TextField txtId;
-    @FXML
     private TextField txtName;
     @FXML
-    private TextField txtLastName;
-    @FXML
     private TextField txtEmail;
-    @FXML
-    private TextField txtPhone;
-    @FXML
-    private TextField txtAddress;
     @FXML
     private Button btnSave;
     @FXML
     private Button btnCancel;
+    @FXML
+    private DatePicker dpBirthDate;
+    @FXML
+    private TextField txtNationality;
 
     /**
      * Initializes the controller class.

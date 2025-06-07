@@ -27,17 +27,13 @@ public class FXMLCustomersController implements Initializable {
     @FXML
     private TableView<?> tableCustomers;
     @FXML
-    private TableColumn<?, ?> columnId;
-    @FXML
     private TableColumn<?, ?> columnName;
-    @FXML
-    private TableColumn<?, ?> columnLastName;
     @FXML
     private TableColumn<?, ?> columnEmail;
     @FXML
-    private TableColumn<?, ?> columnPhone;
+    private TableColumn<?, ?> columnBirthDate;
     @FXML
-    private TableColumn<?, ?> columnAddress;
+    private TableColumn<?, ?> columnNationality;
 
     /**
      * Initializes the controller class.

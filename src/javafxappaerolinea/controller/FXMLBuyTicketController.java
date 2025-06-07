@@ -11,7 +11,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
@@ -36,6 +38,10 @@ public class FXMLBuyTicketController implements Initializable {
     private Label labelPrice;
     @FXML
     private ComboBox<?> comboBoxCustomer;
+    @FXML
+    private DatePicker datePickerPurchaseDate;
+    @FXML
+    private TextField textFieldSeatNumber;
 
     /**
      * Initializes the controller class.
