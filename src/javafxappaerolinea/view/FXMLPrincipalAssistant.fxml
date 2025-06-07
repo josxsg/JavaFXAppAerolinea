@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #F5F6FA;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLPrincipalAssistantController">
+   <children>
+      <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <Label text="Panel de Asistente">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbWelcome" text="Bienvenido, [Nombre del Asistente]">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Pane HBox.hgrow="ALWAYS" />
+                  <Button onAction="#btnLogout" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;" text="Cerrar Sesión" />
+               </children>
+            </HBox>
+            
+            <TabPane prefHeight="500.0" prefWidth="984.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+              <tabs>
+                <Tab text="Información Personal">
+                  <content>
+                    <fx:include source="FXMLAssistantInfo.fxml" />
+                  </content>
+                </Tab>
+                <Tab text="Vuelos Programados">
+                  <content>
+                    <fx:include source="FXMLAssistantUpcomingFlights.fxml" />
+                  </content>
+                </Tab>
+                <Tab text="Historial de Vuelos">
+                  <content>
+                    <fx:include source="FXMLAssistantPastFlights.fxml" />
+                  </content>
+                </Tab>
+                <Tab text="Información de Aerolínea">
+                  <content>
+                    <fx:include source="FXMLAirlineInfo.fxml" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

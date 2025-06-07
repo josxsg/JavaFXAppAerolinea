@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane prefHeight="500.0" prefWidth="984.0" style="-fx-background-color: #F5F6FA;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLAssistantPastFlightsController">
+   <children>
+      <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <Label text="Historial de Vuelos">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Label text="Filtrar por:" />
+                  <ComboBox fx:id="cbFilterType" promptText="Seleccionar" />
+                  <TextField fx:id="tfFilterValue" promptText="Valor" />
+                  <Button onAction="#btnFilter" style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="Filtrar" />
+                  <Button onAction="#btnClearFilter" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;" text="Limpiar" />
+               </children>
+            </HBox>
+            
+            <TableView fx:id="tvPastFlights" prefHeight="350.0" VBox.vgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="tcId" prefWidth="70.0" text="ID" />
+                <TableColumn fx:id="tcOrigin" prefWidth="100.0" text="Origen" />
+                <TableColumn fx:id="tcDestination" prefWidth="100.0" text="Destino" />
+                <TableColumn fx:id="tcDepartureDate" prefWidth="120.0" text="Fecha Salida" />
+                <TableColumn fx:id="tcDepartureHour" prefWidth="100.0" text="Hora Salida" />
+                <TableColumn fx:id="tcArrivalDate" prefWidth="120.0" text="Fecha Llegada" />
+                <TableColumn fx:id="tcArrivalHour" prefWidth="100.0" text="Hora Llegada" />
+                <TableColumn fx:id="tcPassengerCount" prefWidth="100.0" text="Pasajeros" />
+                <TableColumn fx:id="tcAirline" prefWidth="120.0" text="Aerolínea" />
+              </columns>
+            </TableView>
+            
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+               <children>
+                  <Label text="Total Horas de Asistencia:" />
+                  <Label fx:id="lbTotalAssistanceHours" text="0" />
+                  <Pane HBox.hgrow="ALWAYS" />
+                  <Button onAction="#btnViewDetails" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;" text="Ver Detalles" />
+                  <Button onAction="#btnExport" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" text="Exportar" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
