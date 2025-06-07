@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLTicketsController">
+   <children>
+      <VBox layoutX="0.0" layoutY="0.0" prefHeight="500.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="1024.0" style="-fx-background-color: #f0f0f0;" text="Gestión de Boletos de Vuelo">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            
+            <!-- Sección de filtros -->
+            <VBox spacing="10.0" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-width: 1px;">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <Label text="Filtros de búsqueda" style="-fx-font-weight: bold;">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox spacing="15.0" alignment="CENTER_LEFT">
+                     <children>
+                        <HBox spacing="5.0" alignment="CENTER_LEFT">
+                           <children>
+                              <Label text="Origen:" prefWidth="60.0" />
+                              <TextField fx:id="txtOriginFilter" prefWidth="150.0" promptText="Buscar origen" />
+                           </children>
+                        </HBox>
+                        <HBox spacing="5.0" alignment="CENTER_LEFT">
+                           <children>
+                              <Label text="Destino:" prefWidth="60.0" />
+                              <TextField fx:id="txtDestinationFilter" prefWidth="150.0" promptText="Buscar destino" />
+                           </children>
+                        </HBox>
+                        <HBox spacing="5.0" alignment="CENTER_LEFT">
+                           <children>
+                              <Label text="Fecha:" prefWidth="60.0" />
+                              <DatePicker fx:id="dpDepartureDateFilter" prefWidth="150.0" promptText="Seleccionar" />
+                           </children>
+                        </HBox>
+                        <Button fx:id="btnApplyFilter" mnemonicParsing="false" onAction="#handleApplyFilter" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #17a2b8; -fx-text-fill: white;" text="Aplicar" />
+                        <Button fx:id="btnClearFilter" mnemonicParsing="false" onAction="#handleClearFilter" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #6c757d; -fx-text-fill: white;" text="Limpiar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="10.0">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <Button fx:id="btnBuyTicket" mnemonicParsing="false" onAction="#handleBuyTicket" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: #28a745; -fx-text-fill: white;" text="Comprar Boleto" />
+                  <Button fx:id="btnExport" mnemonicParsing="false" onAction="#handleExport" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: #007bff; -fx-text-fill: white;" text="Exportar" />
+               </children>
+            </HBox>
+            <TableView fx:id="tableFlights" prefHeight="350.0" prefWidth="1024.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="columnFlightId" prefWidth="100.0" text="ID Vuelo" />
+                  <TableColumn fx:id="columnOrigin" prefWidth="150.0" text="Origen" />
+                  <TableColumn fx:id="columnDestination" prefWidth="150.0" text="Destino" />
+                  <TableColumn fx:id="columnDepartureDate" prefWidth="170.0" text="Fecha Salida" />
+                  <TableColumn fx:id="columnArrivalDate" prefWidth="170.0" text="Fecha Llegada" />
+                  <TableColumn fx:id="columnPrice" prefWidth="120.0" text="Precio" />
+                  <TableColumn fx:id="columnAvailableSeats" prefWidth="160.0" text="Asientos Disponibles" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

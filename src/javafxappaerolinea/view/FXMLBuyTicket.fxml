@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="TOP_CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLBuyTicketController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+   <children>
+   
+       <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Información del vuelo" />
+   
+       <GridPane hgap="10" vgap="10">
+      <children>
+              <Label text="ID del Vuelo:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+              <Label fx:id="labelFlightID" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      
+              <Label text="Origen:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+              <Label fx:id="labelOrigin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      
+              <Label text="Destino:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+              <Label fx:id="labelDestination" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      
+              <Label text="Fecha de salida:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+              <Label fx:id="labelDepartureDate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      
+              <Label text="Precio:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+              <Label fx:id="labelPrice" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      </children>
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+       </GridPane>
+   
+       <HBox alignment="CENTER" spacing="10">
+      <children>
+              <Label text="Cliente:" />
+              <ComboBox fx:id="comboBoxCustomer" prefWidth="200" />
+      </children>
+       </HBox>
+   
+       <HBox alignment="CENTER" spacing="20">
+      <children>
+              <Button fx:id="btnConfirm" style="-fx-background-color: #28a745;" text="Confirmar compra" textFill="WHITE" />
+              <Button fx:id="btnCancel" style="-fx-background-color: #dc3545;" text="Cancelar" textFill="WHITE" />
+      </children>
+       </HBox>
+   </children>
+</VBox>
