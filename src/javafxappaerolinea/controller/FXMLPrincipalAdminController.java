@@ -17,7 +17,7 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author migue
  */
-public class FXMLPrincipalController implements Initializable {
+public class FXMLPrincipalAdminController implements Initializable {
 
     @FXML
     private Label lblWindowTitle;

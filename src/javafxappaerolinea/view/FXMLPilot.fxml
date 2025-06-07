@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="1024.0" style="-fx-background-color: #F5F6FA;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLPilotController">
+   <children>
+      <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <Label text="Gestión de Pilotos">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Button onAction="#btnAddPilot" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" text="Dar de Alta" />
+                  <Button onAction="#btnEditPilot" style="-fx-background-color: #FFC107; -fx-text-fill: white; -fx-font-weight: bold;" text="Modificar" />
+                  <Button onAction="#btnDeletePilot" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar" />
+                  <Button onAction="#btnExport" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;" text="Exportar" />
+                  <Button onAction="#btnViewFlights" style="-fx-background-color: #607D8B; -fx-text-fill: white; -fx-font-weight: bold;" text="Ver Vuelos" />
+               </children>
+            </HBox>
+            
+            <TableView fx:id="tvPilots" prefHeight="350.0" VBox.vgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="tcId" text="ID" />
+                <TableColumn fx:id="tcName" text="Nombre" />
+                <TableColumn fx:id="tcAddress" prefWidth="132.0" text="Dirección" />
+                <TableColumn fx:id="tcBirthDate" text="Fecha Nac." />
+                <TableColumn fx:id="tcGender" prefWidth="69.0" text="Género" />
+                <TableColumn fx:id="tcSalary" prefWidth="72.0" text="Salario" />
+                <TableColumn fx:id="tcUsername" prefWidth="77.0" text="Usuario" />
+                <TableColumn fx:id="tcYearsExperience" prefWidth="93.0" text="Años Exp." />
+                <TableColumn fx:id="tcFlightHours" prefWidth="94.0" text="Horas Vuelo" />
+                <TableColumn fx:id="tcLicenseType" prefWidth="93.0" text="Tipo Licencia" />
+                <TableColumn fx:id="tcEmail" prefWidth="113.0" text="Email" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
