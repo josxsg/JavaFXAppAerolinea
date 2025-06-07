@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package javafxappaerolinea.interfaz;
+package javafxappaerolinea.observable;
 
 /**
  *
  * @author Dell
  */
-public interface Notificacion {
+public interface Notification {
     void operacionExitosa();
 }
