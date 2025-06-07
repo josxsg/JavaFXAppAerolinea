@@ -4,13 +4,24 @@
  */
 package javafxappaerolinea.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafxappaerolinea.JavaFXAppAerolinea;
+import javafxappaerolinea.model.dao.AirlineDAO;
+import javafxappaerolinea.model.pojo.Airline;
+import javafxappaerolinea.utility.DialogUtil;
+import javafxappaerolinea.utility.IdGeneratorUtil;
 
 /**
  * FXML Controller class
@@ -27,25 +38,127 @@ public class FXMLAirlineFormController implements Initializable {
     private TextField tfContactPerson;
     @FXML
     private TextField tfPhoneNumber;
- 
+    @FXML
+    private Label lbNameError;
+    @FXML
+    private Label lbAddressError;
+    @FXML
+    private Label lbContactPersonError;
+    @FXML
+    private Label lbPhoneNumberError;
+
+    private AirlineDAO airlineDAO;
+    private Airline airline;
+    private boolean isEditMode;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        airlineDAO = new AirlineDAO();
+    }
+
+    public void initData(Airline airline) {
+        if (airline != null) {
+            this.airline = airline;
+            isEditMode = true;
+            tfName.setText(airline.getName());
+            tfAddress.setText(airline.getAddress());
+            tfContactPerson.setText(airline.getContactPerson());
+            tfPhoneNumber.setText(airline.getPhoneNumber());
+        } else {
+            this.airline = new Airline();
+            isEditMode = false;
+        }
+    }
 
     @FXML
     private void btnSave(ActionEvent event) {
+        if (!validateFields()) {
+            return; // Detiene la ejecución si la validación falla
+        }
+
+        airline.setName(tfName.getText().trim());
+        airline.setAddress(tfAddress.getText().trim());
+        airline.setContactPerson(tfContactPerson.getText().trim());
+        airline.setPhoneNumber(tfPhoneNumber.getText().trim());
+
+        try {
+            if (isEditMode) {
+                airlineDAO.update(airline);
+                DialogUtil.showInfoAlert("Éxito", "Aerolínea actualizada exitosamente.");
+            } else {
+                int newAirlineId = IdGeneratorUtil.generateAirlineId();
+                airline.setIdentificationNumber(newAirlineId);
+                airlineDAO.save(airline);
+                DialogUtil.showInfoAlert("Éxito", "Aerolínea guardada exitosamente.");
+            }
+            closeStage();
+        } catch (IOException | javafxappaerolinea.exception.DuplicateResourceException | javafxappaerolinea.exception.ResourceNotFoundException e) {
+            DialogUtil.showErrorAlert("Error", "Error al guardar la aerolínea: " + e.getMessage());
+        }
+    }
+
+    private boolean validateFields() {
+        clearErrorLabels();
+        boolean isValid = true;
+
+        if (tfName.getText().trim().isEmpty()) {
+            lbNameError.setText("Nombre requerido");
+            isValid = false;
+        }
+        if (tfAddress.getText().trim().isEmpty()) {
+            lbAddressError.setText("Dirección requerida");
+            isValid = false;
+        }
+        if (tfContactPerson.getText().trim().isEmpty()) {
+            lbContactPersonError.setText("Contacto requerido");
+            isValid = false;
+        }
+        if (tfPhoneNumber.getText().trim().isEmpty()) {
+            lbPhoneNumberError.setText("Teléfono requerido");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private void clearErrorLabels() {
+        lbNameError.setText("");
+        lbAddressError.setText("");
+        lbContactPersonError.setText("");
+        lbPhoneNumberError.setText("");
     }
 
     @FXML
     private void btnCancel(ActionEvent event) {
+        closeStage();
     }
 
     @FXML
     private void btnAddAirplane(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(JavaFXAppAerolinea.class.getResource("view/FXMLAddAirplane.fxml"));
+            Parent root = loader.load();
+
+            FXMLAddAirplaneController controller = loader.getController();
+            // Aquí se pasaría la información necesaria al controlador de la nueva ventana
+            // controller.initData(this.airline); 
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Agregar Aviones a Aerolínea");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            DialogUtil.showErrorAlert("Error", "Error al abrir el formulario para agregar aviones: " + e.getMessage());
+        }
     }
-    
+
+    private void closeStage() {
+        Stage stage = (Stage) tfName.getScene().getWindow();
+        stage.close();
+    }
 }

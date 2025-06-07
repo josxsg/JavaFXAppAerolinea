@@ -1,0 +1,122 @@
+[
+  {
+    "capacity": 189,
+    "age": 8,
+    "status": true,
+    "registration": "XA-VAV",
+    "model": "Boeing 737-800",
+    "weight": 41413.0,
+    "airline": {
+      "name": "Volaris",
+      "country": "Mexico"
+    }
+  },
+  {
+    "capacity": 186,
+    "age": 5,
+    "status": true,
+    "registration": "XA-AMO",
+    "model": "Airbus A320neo",
+    "weight": 42600.0,
+    "airline": {
+      "name": "Aeroméxico",
+      "country": "Mexico"
+    }
+  },
+  {
+    "capacity": 220,
+    "age": 12,
+    "status": false,
+    "registration": "N789AN",
+    "model": "Boeing 787-9 Dreamliner",
+    "weight": 128850.0,
+    "airline": {
+      "name": "American Airlines",
+      "country": "USA"
+    }
+  },
+  {
+    "capacity": 150,
+    "age": 3,
+    "status": true,
+    "registration": "EC-NCS",
+    "model": "Airbus A320-200",
+    "weight": 42400.0,
+    "airline": {
+      "name": "Iberia",
+      "country": "Spain"
+    }
+  },
+  {
+    "capacity": 365,
+    "age": 15,
+    "status": true,
+    "registration": "F-HPJA",
+    "model": "Airbus A380-800",
+    "weight": 277000.0,
+    "airline": {
+      "name": "Air France",
+      "country": "France"
+    }
+  },
+  {
+    "capacity": 242,
+    "age": 7,
+    "status": true,
+    "registration": "D-AIXD",
+    "model": "Airbus A350-900",
+    "weight": 129000.0,
+    "airline": {
+      "name": "Lufthansa",
+      "country": "Germany"
+    }
+  },
+  {
+    "capacity": 178,
+    "age": 10,
+    "status": true,
+    "registration": "XA-VIV",
+    "model": "Airbus A320-200",
+    "weight": 42400.0,
+    "airline": {
+      "name": "Viva Aerobus",
+      "country": "Mexico"
+    }
+  },
+  {
+    "capacity": 416,
+    "age": 20,
+    "status": false,
+    "registration": "G-CIVB",
+    "model": "Boeing 747-400",
+    "weight": 183500.0,
+    "airline": {
+      "name": "British Airways",
+      "country": "UK"
+    }
+  },
+  {
+    "capacity": 180,
+    "age": 2,
+    "status": true,
+    "registration": "C-FTEJ",
+    "model": "Boeing 737 MAX 8",
+    "weight": 45070.0,
+    "airline": {
+      "name": "Air Canada",
+      "country": "Canada"
+    }
+  },
+  {
+    "capacity": 298,
+    "age": 6,
+    "status": true,
+    "registration": "JA873A",
+    "model": "Boeing 787-9 Dreamliner",
+    "weight": 128850.0,
+    "airline": {
+      "name": "All Nippon Airways",
+      "country": "Japan"
+    }
+  }
+]

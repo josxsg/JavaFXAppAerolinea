@@ -4,6 +4,8 @@
  */
 package javafxappaerolinea.utility;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -23,7 +25,7 @@ public class IdGeneratorUtil {
         String destCode = destino.substring(0, Math.min(3, destino.length())).toUpperCase();
         return "V" + aerolineaId + "-" + originCode + "-" + destCode + "-" + System.currentTimeMillis() % 10000;
     }
-    
+
     /**
      * Genera un ID único para un boleto
      * @param vueloId ID del vuelo
@@ -33,12 +35,31 @@ public class IdGeneratorUtil {
     public static String generateBoletoId(String vueloId, String asiento) {
         return "B" + vueloId + "-" + asiento;
     }
-    
+
     /**
      * Genera un ID único aleatorio
      * @return ID único aleatorio
      */
     public static String generateRandomId() {
         return UUID.randomUUID().toString().substring(0, 8);
+    }
+    
+    /**
+     * Genera un ID numérico único para una aerolínea.
+     * @return Nuevo ID de aerolínea.
+     */
+    public static int generateAirlineId() {
+        javafxappaerolinea.model.dao.AirlineDAO airlineDAO = new javafxappaerolinea.model.dao.AirlineDAO();
+        try {
+            List<javafxappaerolinea.model.pojo.Airline> airlines = airlineDAO.findAll();
+            return airlines.stream()
+                           .mapToInt(javafxappaerolinea.model.pojo.Airline::getIdentificationNumber)
+                           .max()
+                           .orElse(0) + 1;
+        } catch (IOException e) {
+            // Como fallback en caso de error, genera un ID basado en el tiempo.
+            // Esto es menos robusto pero evita que la app se detenga.
+            return (int) (System.currentTimeMillis() % 100000);
+        }
     }
 }
