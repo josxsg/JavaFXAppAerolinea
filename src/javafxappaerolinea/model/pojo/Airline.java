@@ -18,12 +18,10 @@ public class Airline {
     private String contactPerson;
     private String phoneNumber;
     private List<Airplane> airplanes;
-    private List<Flight> flights;
     
     // Constructor
     public Airline() {
         this.airplanes = new ArrayList<>();
-        this.flights = new ArrayList<>();
     }
     
     public Airline(int identificationNumber, String address, String name, 
@@ -34,7 +32,6 @@ public class Airline {
         this.contactPerson = contactPerson;
         this.phoneNumber = phoneNumber;
         this.airplanes = new ArrayList<>();
-        this.flights = new ArrayList<>();
     }
     
     // Getters and Setters
@@ -89,16 +86,5 @@ public class Airline {
     public void addAirplane(Airplane airplane) {
         this.airplanes.add(airplane);
     }
-    
-    public List<Flight> getFlights() {
-        return flights;
-    }
-    
-    public void setFlights(List<Flight> flights) {
-        this.flights = flights;
-    }
-    
-    public void addFlight(Flight flight) {
-        this.flights.add(flight);
-    }
+   
 }

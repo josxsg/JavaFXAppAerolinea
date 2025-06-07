@@ -14,9 +14,7 @@ import java.util.List;
  */
 public class Assistant extends Employee {
     private String email;
-    private Date birthDate;
     private int assistanceHours;
-    private String name;
     private int numberOfLanguages;
     private List<Flight> flights;
     
@@ -31,9 +29,7 @@ public class Assistant extends Employee {
                      String email, int assistanceHours, int numberOfLanguages) {
         super(id, name, address, birthDate, gender, salary, username, password);
         this.email = email;
-        this.birthDate = birthDate;
         this.assistanceHours = assistanceHours;
-        this.name = name;
         this.numberOfLanguages = numberOfLanguages;
         this.flights = new ArrayList<>();
     }
@@ -47,32 +43,12 @@ public class Assistant extends Employee {
         this.email = email;
     }
     
-    @Override
-    public Date getBirthDate() {
-        return birthDate;
-    }
-    
-    @Override
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-    
     public int getAssistanceHours() {
         return assistanceHours;
     }
     
     public void setAssistanceHours(int assistanceHours) {
         this.assistanceHours = assistanceHours;
-    }
-    
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
     
     public int getNumberOfLanguages() {

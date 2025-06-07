@@ -15,9 +15,7 @@ import java.util.List;
 public class Pilot extends Employee {
     private int yearsExperience;
     private String email;
-    private Date birthDate;
     private double flightHours;
-    private String name;
     private String licenseType;
     private List<Flight> flights;
     
@@ -33,9 +31,7 @@ public class Pilot extends Employee {
         super(id, name, address, birthDate, gender, salary, username, password);
         this.yearsExperience = yearsExperience;
         this.email = email;
-        this.birthDate = birthDate;
         this.flightHours = flightHours;
-        this.name = name;
         this.licenseType = licenseType;
         this.flights = new ArrayList<>();
     }
@@ -57,32 +53,12 @@ public class Pilot extends Employee {
         this.email = email;
     }
     
-    @Override
-    public Date getBirthDate() {
-        return birthDate;
-    }
-    
-    @Override
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-    
     public double getFlightHours() {
         return flightHours;
     }
     
     public void setFlightHours(double flightHours) {
         this.flightHours = flightHours;
-    }
-    
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
     
     public String getLicenseType() {

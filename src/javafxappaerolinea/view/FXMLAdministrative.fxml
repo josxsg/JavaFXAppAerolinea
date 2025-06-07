@@ -18,11 +18,6 @@
    <children>
       <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
-            <Label text="Gestión de Administrativos">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
             
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
