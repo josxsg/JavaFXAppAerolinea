@@ -1,69 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLBuyTicketController">
-    <padding>
-        <Insets bottom="20" left="20" right="20" top="20" />
-    </padding>
-    <children>
-
-        <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Información del vuelo" />
-
-        <GridPane hgap="10" vgap="10">
-            <children>
-                <Label text="ID del Vuelo:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <Label fx:id="labelFlightID" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                <Label text="Origen:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <Label fx:id="labelOrigin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                <Label text="Destino:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <Label fx:id="labelDestination" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-                <Label text="Fecha de salida:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <Label fx:id="labelDepartureDate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-                <Label text="Precio:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                <Label fx:id="labelPrice" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
-                <Label text="Fecha de compra:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                <DatePicker fx:id="datePickerPurchaseDate" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-
-                <Label text="Número de asiento:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                <TextField fx:id="textFieldSeatNumber" promptText="Ej. 12A" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            </children>
-            <columnConstraints>
-                <ColumnConstraints />
-                <ColumnConstraints />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints />
-            </rowConstraints>
-        </GridPane>
-
-        <HBox alignment="CENTER" spacing="10">
-            <children>
-                <Label text="Cliente:" />
-                <ComboBox fx:id="comboBoxCustomer" prefWidth="200" />
-            </children>
-        </HBox>
-
-        <HBox alignment="CENTER" spacing="20">
-            <children>
-                <Button fx:id="btnConfirm" style="-fx-background-color: #28a745;" text="Confirmar compra" textFill="WHITE" />
-                <Button fx:id="btnCancel" style="-fx-background-color: #dc3545;" text="Cancelar" textFill="WHITE" />
-            </children>
-        </HBox>
-    </children>
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLBuyTicketController">
+   <children>
+      <Label text="Comprar Boleto" textFill="#2c3e50">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      
+      <VBox spacing="10.0">
+         <children>
+            <Label text="Información del Vuelo" textFill="#34495e">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <GridPane hgap="10.0" vgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="ID del Vuelo:" />
+                  <Label fx:id="labelFlightID" text="Label" GridPane.columnIndex="1" />
+                  <Label text="Origen:" GridPane.rowIndex="1" />
+                  <Label fx:id="labelOrigin" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Destino:" GridPane.rowIndex="2" />
+                  <Label fx:id="labelDestination" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Fecha de Salida:" GridPane.rowIndex="3" />
+                  <Label fx:id="labelDepartureDate" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Precio:" GridPane.rowIndex="4" />
+                  <Label fx:id="labelPrice" text="Label" textFill="#27ae60" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+      
+      <Separator prefWidth="200.0" />
+      
+      <VBox spacing="15.0">
+         <children>
+            <Label text="Información de Compra" textFill="#34495e">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <GridPane hgap="10.0" vgap="15.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Cliente:" />
+                  <ComboBox fx:id="comboBoxCustomer" prefWidth="300.0" promptText="Seleccione un cliente" GridPane.columnIndex="1" />
+                  <Label text="Fecha de Compra:" GridPane.rowIndex="1" />
+                  <DatePicker fx:id="datePickerPurchaseDate" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Número de Asiento:" GridPane.rowIndex="2" />
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <TextField fx:id="textFieldSeatNumber" editable="false" prefWidth="200.0" promptText="Seleccione un asiento" />
+                        <Button fx:id="btnSelectSeat" mnemonicParsing="false" onAction="#handleSelectSeat" text="Escoger Asiento" />
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+      
+      <HBox alignment="CENTER" spacing="20.0">
+         <children>
+            <Button fx:id="btnConfirm" mnemonicParsing="false" onAction="#handleConfirm" prefWidth="120.0" styleClass="btn-primary" text="Confirmar">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleCancel" prefWidth="120.0" styleClass="btn-secondary" text="Cancelar">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
 </VBox>
