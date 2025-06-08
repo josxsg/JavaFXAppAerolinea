@@ -39,7 +39,7 @@ public class FXMLSeatSelectorController implements Initializable {
     private ToggleGroup seatToggleGroup;
     private TicketDAO ticketDAO;
     private int availableSeatsCount = 0;
-    private static final int DEFAULT_CAPACITY = 44; // Capacidad por defecto
+    private static final int DEFAULT_CAPACITY = 44;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -61,8 +61,11 @@ public class FXMLSeatSelectorController implements Initializable {
     
     private void updateFlightInfo() {
         if (flight != null) {
-            labelFlightInfo.setText(String.format("Vuelo: %s - %s a %s", 
-                flight.getId(), 
+            String airlineName = (flight.getAirline() != null) ? 
+                flight.getAirline().getName() : "Sin aerolínea";
+            labelFlightInfo.setText(String.format("Vuelo: %s (%s) - %s a %s", 
+                flight.getId(),
+                airlineName,
                 flight.getOriginCity(), 
                 flight.getDestinationCity()));
         }
@@ -80,36 +83,38 @@ public class FXMLSeatSelectorController implements Initializable {
             int capacity = (flight.getAirplane() != null) ? 
                 flight.getAirplane().getCapacity() : DEFAULT_CAPACITY;
             
-            // Configuración del avión (ejemplo para avión de 44 asientos)
-            int rows = 11;
-            String[] columns = {"A", "B", "", "C", "D"}; // Pasillo en el medio
+            // Determinar configuración del avión según capacidad
+            SeatConfiguration config = getSeatConfiguration(capacity);
             
             // Agregar etiquetas de columnas
-            for (int col = 0; col < columns.length; col++) {
-                if (!columns[col].isEmpty()) {
-                    Label colLabel = new Label(columns[col]);
+            for (int col = 0; col < config.columns.length; col++) {
+                if (!config.columns[col].isEmpty()) {
+                    Label colLabel = new Label(config.columns[col]);
                     colLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
                     colLabel.setAlignment(Pos.CENTER);
+                    colLabel.setPrefWidth(50);
                     seatsGrid.add(colLabel, col, 0);
                 }
             }
             
             // Crear asientos
-            for (int row = 1; row <= rows; row++) {
+            int seatCount = 0;
+            for (int row = 1; row <= config.rows && seatCount < capacity; row++) {
                 // Etiqueta de fila
                 Label rowLabel = new Label(String.valueOf(row));
                 rowLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
                 rowLabel.setAlignment(Pos.CENTER);
-                seatsGrid.add(rowLabel, columns.length, row);
+                rowLabel.setPrefWidth(30);
+                seatsGrid.add(rowLabel, config.columns.length, row);
                 
-                for (int col = 0; col < columns.length; col++) {
-                    if (columns[col].isEmpty()) {
+                for (int col = 0; col < config.columns.length && seatCount < capacity; col++) {
+                    if (config.columns[col].isEmpty()) {
                         // Espacio para el pasillo
                         Label aisle = new Label("");
                         aisle.setPrefWidth(30);
                         seatsGrid.add(aisle, col, row);
                     } else {
-                        String seatNumber = String.format("%02d%s", row, columns[col]);
+                        String seatNumber = String.format("%02d%s", row, config.columns[col]);
                         boolean isOccupied = soldTickets.stream()
                             .anyMatch(t -> t.getSeatNumber().equals(seatNumber));
                         
@@ -119,15 +124,52 @@ public class FXMLSeatSelectorController implements Initializable {
                         if (!isOccupied) {
                             availableSeatsCount++;
                         }
+                        seatCount++;
                     }
                 }
             }
             
-            labelAvailableSeats.setText("Asientos disponibles: " + availableSeatsCount);
+            labelAvailableSeats.setText(String.format("Asientos disponibles: %d de %d", 
+                availableSeatsCount, capacity));
             
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", 
                 "No se pudieron cargar los asientos: " + e.getMessage());
+        }
+    }
+    
+    private SeatConfiguration getSeatConfiguration(int capacity) {
+        // Configuraciones predefinidas según capacidad
+        if (capacity <= 20) {
+            // Avión pequeño: 2-2 configuración
+            return new SeatConfiguration(
+                new String[]{"A", "B", "", "C", "D"},
+                (int) Math.ceil(capacity / 4.0)
+            );
+        } else if (capacity <= 50) {
+            // Avión mediano: 3-3 configuración
+            return new SeatConfiguration(
+                new String[]{"A", "B", "C", "", "D", "E", "F"},
+                (int) Math.ceil(capacity / 6.0)
+            );
+        } else if (capacity <= 100) {
+            // Avión grande: 3-3 configuración con más filas
+            return new SeatConfiguration(
+                new String[]{"A", "B", "C", "", "D", "E", "F"},
+                (int) Math.ceil(capacity / 6.0)
+            );
+        } else if (capacity <= 200) {
+            // Avión muy grande: 3-4-3 configuración
+            return new SeatConfiguration(
+                new String[]{"A", "B", "C", "", "D", "E", "F", "G", "", "H", "J", "K"},
+                (int) Math.ceil(capacity / 10.0)
+            );
+        } else {
+            // Avión jumbo: 3-4-3 configuración
+            return new SeatConfiguration(
+                new String[]{"A", "B", "C", "", "D", "E", "F", "G", "", "H", "J", "K"},
+                (int) Math.ceil(capacity / 10.0)
+            );
         }
     }
     
@@ -176,5 +218,16 @@ public class FXMLSeatSelectorController implements Initializable {
     
     public String getSelectedSeat() {
         return selectedSeat;
+    }
+    
+    // Clase interna para configuración de asientos
+    private static class SeatConfiguration {
+        String[] columns;
+        int rows;
+        
+        SeatConfiguration(String[] columns, int rows) {
+            this.columns = columns;
+            this.rows = rows;
+        }
     }
 }
