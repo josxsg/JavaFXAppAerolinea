@@ -88,6 +88,42 @@ public class ExportUtil {
         }
     }
     
+    public static <T> void exportToCSV(List<T> data, String filePath, List<String> columnOrder) throws IOException {
+        if (data == null || data.isEmpty()) {
+            throw new IllegalArgumentException("La lista de datos no puede estar vacía");
+        }
+
+        try (Writer writer = new FileWriter(filePath)) {
+            // Configurar el escritor CSV
+            CSVWriter csvWriter = new CSVWriter(writer,
+                    CSVWriter.DEFAULT_SEPARATOR,
+                    CSVWriter.DEFAULT_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            // Escribir encabezados
+            csvWriter.writeNext(columnOrder.toArray(new String[0]));
+
+            // Escribir datos
+            for (T item : data) {
+                List<String> rowData = new ArrayList<>();
+                for (String column : columnOrder) {
+                    try {
+                        Object value = getFieldValue(item, column);
+                        rowData.add(value != null ? value.toString() : "");
+                    } catch (Exception e) {
+                        rowData.add("");
+                    }
+                }
+                csvWriter.writeNext(rowData.toArray(new String[0]));
+            }
+
+            csvWriter.flush();
+        } catch (Exception e) {
+            throw new IOException("Error al exportar a CSV: " + e.getMessage(), e);
+        }
+    }
+
     /**
      * Exporta una lista de objetos a un archivo Excel (XLS)
      * @param <T> Tipo de objeto a exportar
@@ -177,6 +213,71 @@ public class ExportUtil {
         }
     }
     
+    public static <T> void exportToXLS(List<T> data, String filePath, String sheetName, List<String> columnOrder) throws IOException {
+        if (data == null || data.isEmpty()) {
+            throw new IllegalArgumentException("La lista de datos no puede estar vacía");
+        }
+
+        try (Workbook workbook = new HSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet(sheetName);
+
+            // Crear estilo para encabezados
+            CellStyle headerStyle = workbook.createCellStyle();
+            org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+
+            // Crear fila de encabezados
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < columnOrder.size(); i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columnOrder.get(i));
+                cell.setCellStyle(headerStyle);
+            }
+
+            // Crear filas de datos
+            int rowNum = 1;
+            for (T item : data) {
+                Row row = sheet.createRow(rowNum++);
+                for (int i = 0; i < columnOrder.size(); i++) {
+                    Cell cell = row.createCell(i);
+                    try {
+                        Object value = getFieldValue(item, columnOrder.get(i));
+
+                        if (value == null) {
+                            cell.setCellValue("");
+                        } else if (value instanceof String) {
+                            cell.setCellValue((String) value);
+                        } else if (value instanceof Integer) {
+                            cell.setCellValue((Integer) value);
+                        } else if (value instanceof Double) {
+                            cell.setCellValue((Double) value);
+                        } else if (value instanceof Boolean) {
+                            cell.setCellValue((Boolean) value);
+                        } else if (value instanceof Date) {
+                            cell.setCellValue(new SimpleDateFormat("yyyy-MM-dd").format((Date) value));
+                        } else {
+                            cell.setCellValue(value.toString());
+                        }
+                    } catch (Exception e) {
+                        cell.setCellValue("");
+                    }
+                }
+            }
+
+            // Ajustar ancho de columnas
+            for (int i = 0; i < columnOrder.size(); i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Escribir a archivo
+            try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
+                workbook.write(outputStream);
+            }
+        } catch (Exception e) {
+            throw new IOException("Error al exportar a XLS: " + e.getMessage(), e);
+        }
+    }
     /**
      * Exporta una lista de objetos a un archivo Excel (XLSX)
      * @param <T> Tipo de objeto a exportar
@@ -257,6 +358,72 @@ public class ExportUtil {
                 sheet.autoSizeColumn(i);
             }
             
+            // Escribir a archivo
+            try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
+                workbook.write(outputStream);
+            }
+        } catch (Exception e) {
+            throw new IOException("Error al exportar a XLSX: " + e.getMessage(), e);
+        }
+    }
+    
+    public static <T> void exportToXLSX(List<T> data, String filePath, String sheetName, List<String> columnOrder) throws IOException {
+        if (data == null || data.isEmpty()) {
+            throw new IllegalArgumentException("La lista de datos no puede estar vacía");
+        }
+
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet(sheetName);
+
+            // Crear estilo para encabezados
+            CellStyle headerStyle = workbook.createCellStyle();
+            org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+
+            // Crear fila de encabezados
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < columnOrder.size(); i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columnOrder.get(i));
+                cell.setCellStyle(headerStyle);
+            }
+
+            // Crear filas de datos
+            int rowNum = 1;
+            for (T item : data) {
+                Row row = sheet.createRow(rowNum++);
+                for (int i = 0; i < columnOrder.size(); i++) {
+                    Cell cell = row.createCell(i);
+                    try {
+                        Object value = getFieldValue(item, columnOrder.get(i));
+
+                        if (value == null) {
+                            cell.setCellValue("");
+                        } else if (value instanceof String) {
+                            cell.setCellValue((String) value);
+                        } else if (value instanceof Integer) {
+                            cell.setCellValue((Integer) value);
+                        } else if (value instanceof Double) {
+                            cell.setCellValue((Double) value);
+                        } else if (value instanceof Boolean) {
+                            cell.setCellValue((Boolean) value);
+                        } else if (value instanceof Date) {
+                            cell.setCellValue(new SimpleDateFormat("yyyy-MM-dd").format((Date) value));
+                        } else {
+                            cell.setCellValue(value.toString());
+                        }
+                    } catch (Exception e) {
+                        cell.setCellValue("");
+                    }
+                }
+            }
+
+            // Ajustar ancho de columnas
+            for (int i = 0; i < columnOrder.size(); i++) {
+                sheet.autoSizeColumn(i);
+            }
+
             // Escribir a archivo
             try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
                 workbook.write(outputStream);
@@ -347,6 +514,64 @@ public class ExportUtil {
         }
     }
     
+    public static <T> void exportToPDF(List<T> data, String filePath, String title, List<String> columnOrder) throws IOException {
+        if (data == null || data.isEmpty()) {
+            throw new IllegalArgumentException("La lista de datos no puede estar vacía");
+        }
+
+        try {
+            Document document = new Document(PageSize.A4.rotate());
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+
+            // Agregar título
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+            Paragraph titleParagraph = new Paragraph(title, titleFont);
+            titleParagraph.setAlignment(Element.ALIGN_CENTER);
+            document.add(titleParagraph);
+            document.add(Chunk.NEWLINE);
+
+            // Crear tabla
+            PdfPTable table = new PdfPTable(columnOrder.size());
+            table.setWidthPercentage(100);
+
+            // Estilo para encabezados
+            Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+
+            // Agregar encabezados
+            for (String header : columnOrder) {
+                PdfPCell cell = new PdfPCell(new Phrase(header, headerFont));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(new java.awt.Color(220, 220, 220));
+                table.addCell(cell);
+            }
+
+            // Agregar datos
+            for (T item : data) {
+                for (String column : columnOrder) {
+                    try {
+                        Object value = getFieldValue(item, column);
+                        String cellValue = value != null ? value.toString() : "";
+
+                        // Formatear fechas
+                        if (value instanceof Date) {
+                            cellValue = new SimpleDateFormat("yyyy-MM-dd").format((Date) value);
+                        }
+
+                        table.addCell(cellValue);
+                    } catch (Exception e) {
+                        table.addCell("");
+                    }
+                }
+            }
+
+            document.add(table);
+            document.close();
+        } catch (Exception e) {
+            throw new IOException("Error al exportar a PDF: " + e.getMessage(), e);
+        }
+    }
+    
     /**
      * Exporta una lista de objetos a un archivo JSON
      * @param <T> Tipo de objeto a exportar
@@ -367,6 +592,26 @@ public class ExportUtil {
             gson.toJson(data, writer);
         } catch (Exception e) {
             throw new IOException("Error al exportar a JSON: " + e.getMessage(), e);
+        }
+    }
+    
+    private static Object getFieldValue(Object obj, String fieldName) throws Exception {
+        Class<?> clazz = obj.getClass();
+
+        // Intentar obtener el campo en la clase actual
+        try {
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.get(obj);
+        } catch (NoSuchFieldException e) {
+            // Si no se encuentra en la clase actual, buscar en la clase padre
+            clazz = clazz.getSuperclass();
+            if (clazz != null) {
+                Field field = clazz.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                return field.get(obj);
+            }
+            throw e;
         }
     }
 }

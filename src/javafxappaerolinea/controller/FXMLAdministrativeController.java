@@ -26,6 +26,7 @@ import javafxappaerolinea.model.dao.EmployeeDAO;
 import javafxappaerolinea.model.pojo.Administrative;
 import javafxappaerolinea.utility.DialogUtil;
 import java.io.File;
+import java.util.ArrayList;
 import javafx.stage.FileChooser;
 import java.util.List;
 import javafxappaerolinea.utility.ExportUtil;
@@ -153,19 +154,33 @@ public class FXMLAdministrativeController implements Initializable, Notification
                 // Crear nombre para la hoja de Excel
                 String sheetName = "Administrativos";
 
+                // Crear una lista con los nombres de las columnas en el orden deseado
+                List<String> columnOrder = new ArrayList<>();
+                // Primero los campos de Employee
+                columnOrder.add("id");
+                columnOrder.add("name");
+                columnOrder.add("address");
+                columnOrder.add("birthDate");
+                columnOrder.add("gender");
+                columnOrder.add("salary");
+                columnOrder.add("username");
+                // Luego los campos específicos de Administrative
+                columnOrder.add("department");
+                columnOrder.add("workHours");
+
                 // Exportar según el formato seleccionado
                 switch (extension) {
                     case "csv":
-                        ExportUtil.exportToCSV(administrativesToExport, filePath);
+                        ExportUtil.exportToCSV(administrativesToExport, filePath, columnOrder);
                         break;
                     case "xls":
-                        ExportUtil.exportToXLS(administrativesToExport, filePath, sheetName);
+                        ExportUtil.exportToXLS(administrativesToExport, filePath, sheetName, columnOrder);
                         break;
                     case "xlsx":
-                        ExportUtil.exportToXLSX(administrativesToExport, filePath, sheetName);
+                        ExportUtil.exportToXLSX(administrativesToExport, filePath, sheetName, columnOrder);
                         break;
                     case "pdf":
-                        ExportUtil.exportToPDF(administrativesToExport, filePath, title);
+                        ExportUtil.exportToPDF(administrativesToExport, filePath, title, columnOrder);
                         break;
                     default:
                         DialogUtil.showErrorAlert(
@@ -191,7 +206,7 @@ public class FXMLAdministrativeController implements Initializable, Notification
                 "Error inesperado: " + ex.getMessage()
             );
         }
-    }   
+    }  
 
     @Override
     public void operationSucceeded() {
@@ -266,6 +281,5 @@ public class FXMLAdministrativeController implements Initializable, Notification
         }
         return fileName.substring(lastIndexOf + 1);
     }
-    
     
 }
