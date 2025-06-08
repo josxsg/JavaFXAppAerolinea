@@ -27,17 +27,20 @@ import javafxappaerolinea.utility.JsonUtil;
 public class EmployeeDAO {
     private final JsonUtil<Employee> persistence;
     private static final String FILE_PATH = "data/empleados.json";
+    private String filePath;
 
     public EmployeeDAO() {
-        // Solo necesitamos la persistencia genérica para escribir datos.
-        // La lectura la haremos de forma personalizada.
+
         this.persistence = new JsonUtil<>(FILE_PATH, Employee.class);
     }
+    
+        public EmployeeDAO(String testFilePath) {
+        this.filePath = testFilePath;
+        this.persistence = new JsonUtil<>(this.filePath, Employee.class);
+    }
 
-    /**
-     * Método central que lee el JSON y crea una lista de empleados
-     * con sus tipos de objeto correctos (Administrative, Pilot, etc.).
-     */
+
+
     public List<Employee> findAll() throws IOException {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         List<Employee> employees = new ArrayList<>();
@@ -84,7 +87,7 @@ public class EmployeeDAO {
     }
 
     public Employee findById(String id) throws IOException, ResourceNotFoundException {
-        List<Employee> employees = findAll(); // Usamos el nuevo findAll()
+        List<Employee> employees = findAll(); 
         return employees.stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
@@ -92,43 +95,37 @@ public class EmployeeDAO {
     }
 
     public Employee findByUsername(String username) throws IOException, ResourceNotFoundException {
-        List<Employee> employees = findAll(); // Usamos el nuevo findAll()
+        List<Employee> employees = findAll();
         return employees.stream()
                 .filter(e -> e.getUsername().equals(username))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Empleado con usuario " + username + " no encontrado"));
     }
 
-    /**
-     * Filtra y devuelve solo los empleados administrativos de la lista completa.
-     */
+  
     public List<Administrative> findAllAdministratives() throws IOException {
-        List<Employee> employees = findAll(); // Obtenemos la lista completa y correctamente tipada
+        List<Employee> employees = findAll(); 
         return employees.stream()
-                .filter(e -> e instanceof Administrative) // Filtramos por el tipo de objeto
-                .map(e -> (Administrative) e) // Hacemos la conversión, que ahora es segura
+                .filter(e -> e instanceof Administrative)
+                .map(e -> (Administrative) e) 
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Filtra y devuelve solo los pilotos de la lista completa.
-     */
+ 
     public List<Pilot> findAllPilots() throws IOException {
-        List<Employee> employees = findAll(); // Obtenemos la lista completa y correctamente tipada
+        List<Employee> employees = findAll();
         return employees.stream()
-                .filter(e -> e instanceof Pilot) // Filtramos por el tipo de objeto
-                .map(e -> (Pilot) e) // Hacemos la conversión, que ahora es segura
+                .filter(e -> e instanceof Pilot) 
+                .map(e -> (Pilot) e) 
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Filtra y devuelve solo los asistentes de vuelo de la lista completa.
-     */
+  
     public List<Assistant> findAllAssistants() throws IOException {
-        List<Employee> employees = findAll(); // Obtenemos la lista completa y correctamente tipada
+        List<Employee> employees = findAll(); 
         return employees.stream()
-                .filter(e -> e instanceof Assistant) // Filtramos por el tipo de objeto
-                .map(e -> (Assistant) e) // Hacemos la conversión, que ahora es segura
+                .filter(e -> e instanceof Assistant) 
+                .map(e -> (Assistant) e) 
                 .collect(Collectors.toList());
     }
 
@@ -147,14 +144,11 @@ public class EmployeeDAO {
     }
 
     public void update(Employee employee) throws IOException, ResourceNotFoundException {
-        // Cargar todos los empleados con sus tipos correctos
         List<Employee> employees = findAll();
 
-        // Verificar que el empleado existe
         boolean found = false;
         for (int i = 0; i < employees.size(); i++) {
             if (employees.get(i).getId().equals(employee.getId())) {
-                // Reemplazar solo el empleado que se está actualizando
                 employees.set(i, employee);
                 found = true;
                 break;
@@ -165,7 +159,6 @@ public class EmployeeDAO {
             throw new ResourceNotFoundException("Empleado con ID " + employee.getId() + " no encontrado");
         }
 
-        // Guardar toda la lista preservando los tipos
         saveAllWithTypes(employees);
     }
 

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.dao;
 
 import javafxappaerolinea.exception.DuplicateResourceException;
@@ -13,10 +9,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author Dell
- */
 public class TicketDAO {
     private final JsonUtil<Ticket> persistence;
     private static final String FILE_PATH = "data/boletos.json";

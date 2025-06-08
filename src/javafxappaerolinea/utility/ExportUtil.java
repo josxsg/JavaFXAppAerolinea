@@ -1,14 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.utility;
 
 import com.opencsv.CSVWriter;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-// Importaciones correctas para OpenPDF
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
@@ -30,10 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-/**
- *
- * @author Dell
- */
+
 public class ExportUtil {
     
     
@@ -43,30 +35,25 @@ public class ExportUtil {
         }
         
         try (Writer writer = new FileWriter(filePath)) {
-            // Obtener los nombres de los campos de la clase
             Class<?> clazz = data.get(0).getClass();
             Field[] fields = clazz.getDeclaredFields();
             List<String> headers = new ArrayList<>();
             
             for (Field field : fields) {
                 field.setAccessible(true);
-                // Excluir campos que son listas o colecciones
                 if (!List.class.isAssignableFrom(field.getType())) {
                     headers.add(field.getName());
                 }
             }
             
-            // Configurar el escritor CSV
             CSVWriter csvWriter = new CSVWriter(writer,
                     CSVWriter.DEFAULT_SEPARATOR,
                     CSVWriter.DEFAULT_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
             
-            // Escribir encabezados
             csvWriter.writeNext(headers.toArray(new String[0]));
             
-            // Escribir datos
             for (T item : data) {
                 List<String> rowData = new ArrayList<>();
                 for (String header : headers) {
@@ -94,17 +81,14 @@ public class ExportUtil {
         }
 
         try (Writer writer = new FileWriter(filePath)) {
-            // Configurar el escritor CSV
             CSVWriter csvWriter = new CSVWriter(writer,
                     CSVWriter.DEFAULT_SEPARATOR,
                     CSVWriter.DEFAULT_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
 
-            // Escribir encabezados
             csvWriter.writeNext(columnOrder.toArray(new String[0]));
 
-            // Escribir datos
             for (T item : data) {
                 List<String> rowData = new ArrayList<>();
                 for (String column : columnOrder) {
@@ -124,14 +108,6 @@ public class ExportUtil {
         }
     }
 
-    /**
-     * Exporta una lista de objetos a un archivo Excel (XLS)
-     * @param <T> Tipo de objeto a exportar
-     * @param data Lista de objetos a exportar
-     * @param filePath Ruta del archivo Excel a generar
-     * @param sheetName Nombre de la hoja de cálculo
-     * @throws IOException Si ocurre un error de E/S
-     */
     public static <T> void exportToXLS(List<T> data, String filePath, String sheetName) throws IOException {
         if (data == null || data.isEmpty()) {
             throw new IllegalArgumentException("La lista de datos no puede estar vacía");
@@ -140,26 +116,22 @@ public class ExportUtil {
         try (Workbook workbook = new HSSFWorkbook()) {
             Sheet sheet = workbook.createSheet(sheetName);
             
-            // Crear estilo para encabezados
             CellStyle headerStyle = workbook.createCellStyle();
             org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
             headerFont.setBold(true);
             headerStyle.setFont(headerFont);
             
-            // Obtener los nombres de los campos de la clase
             Class<?> clazz = data.get(0).getClass();
             Field[] fields = clazz.getDeclaredFields();
             List<String> headers = new ArrayList<>();
             
             for (Field field : fields) {
                 field.setAccessible(true);
-                // Excluir campos que son listas o colecciones
                 if (!List.class.isAssignableFrom(field.getType())) {
                     headers.add(field.getName());
                 }
             }
             
-            // Crear fila de encabezados
             Row headerRow = sheet.createRow(0);
             for (int i = 0; i < headers.size(); i++) {
                 Cell cell = headerRow.createCell(i);
@@ -167,7 +139,6 @@ public class ExportUtil {
                 cell.setCellStyle(headerStyle);
             }
             
-            // Crear filas de datos
             int rowNum = 1;
             for (T item : data) {
                 Row row = sheet.createRow(rowNum++);
@@ -199,12 +170,10 @@ public class ExportUtil {
                 }
             }
             
-            // Ajustar ancho de columnas
             for (int i = 0; i < headers.size(); i++) {
                 sheet.autoSizeColumn(i);
             }
             
-            // Escribir a archivo
             try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
                 workbook.write(outputStream);
             }
@@ -221,13 +190,11 @@ public class ExportUtil {
         try (Workbook workbook = new HSSFWorkbook()) {
             Sheet sheet = workbook.createSheet(sheetName);
 
-            // Crear estilo para encabezados
             CellStyle headerStyle = workbook.createCellStyle();
             org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
             headerFont.setBold(true);
             headerStyle.setFont(headerFont);
 
-            // Crear fila de encabezados
             Row headerRow = sheet.createRow(0);
             for (int i = 0; i < columnOrder.size(); i++) {
                 Cell cell = headerRow.createCell(i);
@@ -235,7 +202,6 @@ public class ExportUtil {
                 cell.setCellStyle(headerStyle);
             }
 
-            // Crear filas de datos
             int rowNum = 1;
             for (T item : data) {
                 Row row = sheet.createRow(rowNum++);
@@ -264,13 +230,10 @@ public class ExportUtil {
                     }
                 }
             }
-
-            // Ajustar ancho de columnas
             for (int i = 0; i < columnOrder.size(); i++) {
                 sheet.autoSizeColumn(i);
             }
 
-            // Escribir a archivo
             try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
                 workbook.write(outputStream);
             }
@@ -278,14 +241,7 @@ public class ExportUtil {
             throw new IOException("Error al exportar a XLS: " + e.getMessage(), e);
         }
     }
-    /**
-     * Exporta una lista de objetos a un archivo Excel (XLSX)
-     * @param <T> Tipo de objeto a exportar
-     * @param data Lista de objetos a exportar
-     * @param filePath Ruta del archivo Excel a generar
-     * @param sheetName Nombre de la hoja de cálculo
-     * @throws IOException Si ocurre un error de E/S
-     */
+
     public static <T> void exportToXLSX(List<T> data, String filePath, String sheetName) throws IOException {
         if (data == null || data.isEmpty()) {
             throw new IllegalArgumentException("La lista de datos no puede estar vacía");
@@ -294,26 +250,22 @@ public class ExportUtil {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet(sheetName);
             
-            // Crear estilo para encabezados
             CellStyle headerStyle = workbook.createCellStyle();
             org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
             headerFont.setBold(true);
             headerStyle.setFont(headerFont);
             
-            // Obtener los nombres de los campos de la clase
             Class<?> clazz = data.get(0).getClass();
             Field[] fields = clazz.getDeclaredFields();
             List<String> headers = new ArrayList<>();
             
             for (Field field : fields) {
                 field.setAccessible(true);
-                // Excluir campos que son listas o colecciones
                 if (!List.class.isAssignableFrom(field.getType())) {
                     headers.add(field.getName());
                 }
             }
             
-            // Crear fila de encabezados
             Row headerRow = sheet.createRow(0);
             for (int i = 0; i < headers.size(); i++) {
                 Cell cell = headerRow.createCell(i);
@@ -321,7 +273,6 @@ public class ExportUtil {
                 cell.setCellStyle(headerStyle);
             }
             
-            // Crear filas de datos
             int rowNum = 1;
             for (T item : data) {
                 Row row = sheet.createRow(rowNum++);
@@ -353,12 +304,10 @@ public class ExportUtil {
                 }
             }
             
-            // Ajustar ancho de columnas
             for (int i = 0; i < headers.size(); i++) {
                 sheet.autoSizeColumn(i);
             }
             
-            // Escribir a archivo
             try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
                 workbook.write(outputStream);
             }
@@ -375,13 +324,11 @@ public class ExportUtil {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet(sheetName);
 
-            // Crear estilo para encabezados
             CellStyle headerStyle = workbook.createCellStyle();
             org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
             headerFont.setBold(true);
             headerStyle.setFont(headerFont);
 
-            // Crear fila de encabezados
             Row headerRow = sheet.createRow(0);
             for (int i = 0; i < columnOrder.size(); i++) {
                 Cell cell = headerRow.createCell(i);
@@ -389,7 +336,6 @@ public class ExportUtil {
                 cell.setCellStyle(headerStyle);
             }
 
-            // Crear filas de datos
             int rowNum = 1;
             for (T item : data) {
                 Row row = sheet.createRow(rowNum++);
@@ -419,12 +365,10 @@ public class ExportUtil {
                 }
             }
 
-            // Ajustar ancho de columnas
             for (int i = 0; i < columnOrder.size(); i++) {
                 sheet.autoSizeColumn(i);
             }
 
-            // Escribir a archivo
             try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
                 workbook.write(outputStream);
             }
@@ -433,14 +377,7 @@ public class ExportUtil {
         }
     }
     
-    /**
-     * Exporta una lista de objetos a un archivo PDF
-     * @param <T> Tipo de objeto a exportar
-     * @param data Lista de objetos a exportar
-     * @param filePath Ruta del archivo PDF a generar
-     * @param title Título del documento PDF
-     * @throws IOException Si ocurre un error de E/S
-     */
+   
     public static <T> void exportToPDF(List<T> data, String filePath, String title) throws IOException {
         if (data == null || data.isEmpty()) {
             throw new IllegalArgumentException("La lista de datos no puede estar vacía");
@@ -451,34 +388,28 @@ public class ExportUtil {
             PdfWriter.getInstance(document, new FileOutputStream(filePath));
             document.open();
             
-            // Agregar título
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
             Paragraph titleParagraph = new Paragraph(title, titleFont);
             titleParagraph.setAlignment(Element.ALIGN_CENTER);
             document.add(titleParagraph);
             document.add(Chunk.NEWLINE);
             
-            // Obtener los nombres de los campos de la clase
             Class<?> clazz = data.get(0).getClass();
             Field[] fields = clazz.getDeclaredFields();
             List<String> headers = new ArrayList<>();
             
             for (Field field : fields) {
                 field.setAccessible(true);
-                // Excluir campos que son listas o colecciones
                 if (!List.class.isAssignableFrom(field.getType())) {
                     headers.add(field.getName());
                 }
             }
             
-            // Crear tabla
             PdfPTable table = new PdfPTable(headers.size());
             table.setWidthPercentage(100);
             
-            // Estilo para encabezados
             Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
             
-            // Agregar encabezados
             for (String header : headers) {
                 PdfPCell cell = new PdfPCell(new Phrase(header, headerFont));
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -486,7 +417,6 @@ public class ExportUtil {
                 table.addCell(cell);
             }
             
-            // Agregar datos
             for (T item : data) {
                 for (String header : headers) {
                     try {
@@ -495,7 +425,6 @@ public class ExportUtil {
                         Object value = field.get(item);
                         String cellValue = value != null ? value.toString() : "";
                         
-                        // Formatear fechas
                         if (value instanceof Date) {
                             cellValue = new SimpleDateFormat("yyyy-MM-dd").format((Date) value);
                         }
@@ -524,21 +453,17 @@ public class ExportUtil {
             PdfWriter.getInstance(document, new FileOutputStream(filePath));
             document.open();
 
-            // Agregar título
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
             Paragraph titleParagraph = new Paragraph(title, titleFont);
             titleParagraph.setAlignment(Element.ALIGN_CENTER);
             document.add(titleParagraph);
             document.add(Chunk.NEWLINE);
 
-            // Crear tabla
             PdfPTable table = new PdfPTable(columnOrder.size());
             table.setWidthPercentage(100);
 
-            // Estilo para encabezados
             Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
 
-            // Agregar encabezados
             for (String header : columnOrder) {
                 PdfPCell cell = new PdfPCell(new Phrase(header, headerFont));
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -546,14 +471,12 @@ public class ExportUtil {
                 table.addCell(cell);
             }
 
-            // Agregar datos
             for (T item : data) {
                 for (String column : columnOrder) {
                     try {
                         Object value = getFieldValue(item, column);
                         String cellValue = value != null ? value.toString() : "";
 
-                        // Formatear fechas
                         if (value instanceof Date) {
                             cellValue = new SimpleDateFormat("yyyy-MM-dd").format((Date) value);
                         }
@@ -572,13 +495,6 @@ public class ExportUtil {
         }
     }
     
-    /**
-     * Exporta una lista de objetos a un archivo JSON
-     * @param <T> Tipo de objeto a exportar
-     * @param data Lista de objetos a exportar
-     * @param filePath Ruta del archivo JSON a generar
-     * @throws IOException Si ocurre un error de E/S
-     */
     public static <T> void exportToJSON(List<T> data, String filePath) throws IOException {
         if (data == null || data.isEmpty()) {
             throw new IllegalArgumentException("La lista de datos no puede estar vacía");
@@ -598,13 +514,11 @@ public class ExportUtil {
     private static Object getFieldValue(Object obj, String fieldName) throws Exception {
         Class<?> clazz = obj.getClass();
 
-        // Intentar obtener el campo en la clase actual
         try {
             Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
             return field.get(obj);
         } catch (NoSuchFieldException e) {
-            // Si no se encuentra en la clase actual, buscar en la clase padre
             clazz = clazz.getSuperclass();
             if (clazz != null) {
                 Field field = clazz.getDeclaredField(fieldName);

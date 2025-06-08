@@ -152,5 +152,39 @@
     "username": "puch",
     "password": "$2a$10$qz/.BAKh21ZnGe8m5.2UGOIk7lPKmGRq2SEbfI7ytCM77irF52QZe",
     "type": "Assistant"
+  },
+  {
+    "department": "Finance",
+    "workHours": 9,
+    "id": "ADM002",
+    "name": "New Admin",
+    "address": "New Addr",
+    "birthDate": "2025-06-08",
+    "gender": "F",
+    "salary": 60000.0,
+    "username": "newadmin",
+    "password": "newpass",
+    "type": "Administrative"
+  },
+  {
+    "yearsExperience": 5,
+    "email": "dup@test.com",
+    "flightHours": 500.0,
+    "licenseType": "Private",
+    "airline": {
+      "identificationNumber": 100,
+      "address": "Test Address",
+      "name": "Test Airline",
+      "contactPerson": "Test Contact",
+      "phoneNumber": "555-1234"
+    },
+    "id": "PIL001",
+    "name": "Duplicated Pilot",
+    "address": "Addr Dup",
+    "birthDate": "2025-06-08",
+    "gender": "M",
+    "salary": 80000.0,
+    "username": "anotheruser",
+    "password": "passdup"
   }
 ]
