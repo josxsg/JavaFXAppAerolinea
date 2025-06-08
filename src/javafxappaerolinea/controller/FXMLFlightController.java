@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -24,11 +20,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser; // Importar FileChooser
+import java.io.File; // Importar File
 import javafxappaerolinea.JavaFXAppAerolinea;
 import javafxappaerolinea.exception.ResourceNotFoundException;
 import javafxappaerolinea.model.dao.FlightDAO;
 import javafxappaerolinea.model.pojo.Flight;
 import javafxappaerolinea.utility.DialogUtil;
+import javafxappaerolinea.utility.ExportUtil; // Importar ExportUtil
 
 /**
  * FXML Controller class
@@ -172,7 +171,80 @@ public class FXMLFlightController implements Initializable {
 
     @FXML
     private void btnExport(ActionEvent event) {
-        DialogUtil.showInfoAlert("Función no implementada", "La exportación de datos aún no está disponible.");
+        try {
+            List<Flight> flightsToExport = tvFlights.getItems();
+
+            if (flightsToExport.isEmpty()) {
+                DialogUtil.showWarningAlert(
+                    "Sin datos",
+                    "No hay vuelos para exportar."
+                );
+                return;
+            }
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Exportar Vuelos");
+
+            // Configurar los filtros de extensión
+            FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
+            FileChooser.ExtensionFilter xlsFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
+            FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
+            FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
+            FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
+
+            fileChooser.getExtensionFilters().addAll(csvFilter, xlsFilter, xlsxFilter, pdfFilter, jsonFilter);
+
+            File file = fileChooser.showSaveDialog(tvFlights.getScene().getWindow());
+
+            if (file != null) {
+                String filePath = file.getAbsolutePath();
+                String extension = getFileExtension(filePath).toLowerCase();
+
+                String title = "Reporte de Vuelos";
+                String sheetName = "Vuelos";
+
+                switch (extension) {
+                    case "csv":
+                        ExportUtil.exportToCSV(flightsToExport, filePath);
+                        break;
+                    case "xls":
+                        ExportUtil.exportToXLS(flightsToExport, filePath, sheetName);
+                        break;
+                    case "xlsx":
+                        ExportUtil.exportToXLSX(flightsToExport, filePath, sheetName);
+                        break;
+                    case "pdf":
+                        ExportUtil.exportToPDF(flightsToExport, filePath, title);
+                        break;
+                    case "json":
+                        ExportUtil.exportToJSON(flightsToExport, filePath);
+                        break;
+                    default:
+                        // Si no tiene extensión o no es reconocida, usar XLSX por defecto
+                        if (!filePath.endsWith(".xlsx")) {
+                            filePath += ".xlsx";
+                        }
+                        ExportUtil.exportToXLSX(flightsToExport, filePath, sheetName);
+                        break;
+                }
+
+                DialogUtil.showInfoAlert(
+                    "Exportación Exitosa",
+                    "Los datos se han exportado correctamente a: " + file.getName()
+                );
+            }
+        } catch (IOException ex) {
+            DialogUtil.showErrorAlert(
+                "Error",
+                "Error al exportar los datos: " + ex.getMessage()
+            );
+        } catch (Exception ex) {
+            DialogUtil.showErrorAlert(
+                "Error",
+                "Error inesperado al exportar: " + ex.getMessage()
+            );
+            ex.printStackTrace();
+        }
     }
 
     @FXML
@@ -225,5 +297,19 @@ public class FXMLFlightController implements Initializable {
             DialogUtil.showErrorAlert("Error", "Error al abrir la vista de detalles del vuelo: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Obtiene la extensión de un archivo a partir de su nombre.
+     * Este método se utiliza para determinar el tipo de exportación.
+     * @param fileName Nombre del archivo.
+     * @return Extensión del archivo (ej. "xlsx", "csv", "pdf"), o cadena vacía si no tiene extensión.
+     */
+    private String getFileExtension(String fileName) {
+        int lastDotIndex = fileName.lastIndexOf(".");
+        if (lastDotIndex > 0) {
+            return fileName.substring(lastDotIndex + 1);
+        }
+        return "";
     }
 }
