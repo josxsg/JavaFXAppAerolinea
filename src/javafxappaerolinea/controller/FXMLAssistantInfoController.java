@@ -61,8 +61,10 @@ public class FXMLAssistantInfoController implements Initializable {
                 lbAssistanceHours.setText(String.valueOf(loggedAssistant.getAssistanceHours()));
                 lbNumberOfLanguages.setText(String.valueOf(loggedAssistant.getNumberOfLanguages()));
             }
-        } catch (Exception ex) {
-            showAlert("Error", "No se pudo cargar la información del asistente: " + ex.getMessage(), Alert.AlertType.ERROR);
+        } catch (NullPointerException | ClassCastException | IllegalArgumentException ex) {
+            showAlert("Error", 
+                    "No se pudo cargar la información del asistente: " + ex.getMessage(), 
+                    Alert.AlertType.ERROR);
         }
     }
     

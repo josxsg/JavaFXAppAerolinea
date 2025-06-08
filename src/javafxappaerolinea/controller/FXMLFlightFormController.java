@@ -30,6 +30,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafxappaerolinea.JavaFXAppAerolinea;
+import javafxappaerolinea.exception.DuplicateResourceException;
+import javafxappaerolinea.exception.ResourceNotFoundException;
 import javafxappaerolinea.model.dao.AirlineDAO;
 import javafxappaerolinea.model.dao.AirplaneDAO;
 import javafxappaerolinea.model.dao.FlightDAO;
@@ -120,9 +122,8 @@ public class FXMLFlightFormController implements Initializable {
                 DialogUtil.showInfoAlert("Éxito", "Vuelo registrado correctamente.");
             }
             closeWindow();
-        } catch (Exception e) {
+        } catch (IOException | DuplicateResourceException | ResourceNotFoundException e) {
             DialogUtil.showErrorAlert("Error al guardar", "Ocurrió un error al guardar el vuelo: " + e.getMessage());
-            e.printStackTrace();
         }
     }
     
@@ -402,7 +403,6 @@ public class FXMLFlightFormController implements Initializable {
 
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", "No se pudo abrir la ventana de gestión de tripulación: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }
