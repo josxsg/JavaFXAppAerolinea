@@ -16,9 +16,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafxappaerolinea.exception.ResourceNotFoundException;
-import javafxappaerolinea.model.dao.EmployeeDAO; // Para acceder a los pilotos
-import javafxappaerolinea.model.pojo.Pilot; // Asegúrate de que esta importación sea correcta
-import javafxappaerolinea.utility.DialogUtil; // Para mostrar alertas
+import javafxappaerolinea.model.dao.EmployeeDAO; 
+import javafxappaerolinea.model.pojo.Pilot; 
+import javafxappaerolinea.utility.DialogUtil; 
 
 /**
  * FXML Controller class
@@ -78,8 +78,7 @@ public class FXMLAddPilotController implements Initializable {
    
     public void initData(List<Pilot> currentFlightPilots) {
         if (currentFlightPilots != null && !currentFlightPilots.isEmpty()) {
-            // Mueve los pilotos que ya están asignados a la tabla de "añadidos"
-            // y los elimina de la tabla de "disponibles".
+
             List<Pilot> toRemoveFromAvailable = new ArrayList<>();
             for (Pilot currentPilot : currentFlightPilots) {
                 // Busca el piloto por ID en la lista de disponibles
@@ -91,19 +90,16 @@ public class FXMLAddPilotController implements Initializable {
                     addedPilotsData.add(foundPilot);
                     toRemoveFromAvailable.add(foundPilot);
                 } else {
-                    // Si el piloto ya asignado no está en los disponibles, lo añade directamente a 'añadidos'
-                    // Esto podría ocurrir si se filtra o si el piloto ya no es "disponible" por otra razón
+
                     addedPilotsData.add(currentPilot);
                 }
             }
             availablePilotsData.removeAll(toRemoveFromAvailable);
             
-            // Inicializa finalSelectedPilots con los pilotos que ya estaban
             finalSelectedPilots.addAll(addedPilotsData);
         }
     }
 
-    // Método para que la ventana que llamó pueda obtener los pilotos seleccionados
     public List<Pilot> getFinalSelectedPilots() {
         return finalSelectedPilots;
     }
@@ -111,19 +107,19 @@ public class FXMLAddPilotController implements Initializable {
     private void configureTableColumns() {
         // Configurar las columnas de la tabla de pilotos disponibles
         tcAvailableName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tcAvailableLicense.setCellValueFactory(new PropertyValueFactory<>("licenseType")); // Corregido a licenseType
-        tcAvailableAge.setCellValueFactory(new PropertyValueFactory<>("age")); // Pilot hereda de Employee, que tiene birthDate. Necesitas un getter para 'age' o calcularlo.
-        tcAvailableExperience.setCellValueFactory(new PropertyValueFactory<>("yearsExperience")); // Corregido a yearsExperience
-        tcAvailableFlightTypes.setCellValueFactory(new PropertyValueFactory<>("licenseType")); // Usando licenseType para esto, ajusta si tienes otra propiedad
+        tcAvailableLicense.setCellValueFactory(new PropertyValueFactory<>("licenseType")); 
+        tcAvailableAge.setCellValueFactory(new PropertyValueFactory<>("age")); 
+        tcAvailableExperience.setCellValueFactory(new PropertyValueFactory<>("yearsExperience")); 
+        tcAvailableFlightTypes.setCellValueFactory(new PropertyValueFactory<>("licenseType"));
 
         tvAvailablePilots.setItems(availablePilotsData);
 
         // Configurar las columnas de la tabla de pilotos añadidos
         tcAddedName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tcAddedLicense.setCellValueFactory(new PropertyValueFactory<>("licenseType")); // Corregido a licenseType
-        tcAddedAge.setCellValueFactory(new PropertyValueFactory<>("age")); // Pilot hereda de Employee, que tiene birthDate. Necesitas un getter para 'age' o calcularlo.
-        tcAddedExperience.setCellValueFactory(new PropertyValueFactory<>("yearsExperience")); // Corregido a yearsExperience
-        tcAddedFlightTypes.setCellValueFactory(new PropertyValueFactory<>("licenseType")); // Usando licenseType para esto, ajusta si tienes otra propiedad
+        tcAddedLicense.setCellValueFactory(new PropertyValueFactory<>("licenseType")); 
+        tcAddedAge.setCellValueFactory(new PropertyValueFactory<>("age")); 
+        tcAddedExperience.setCellValueFactory(new PropertyValueFactory<>("yearsExperience")); 
+        tcAddedFlightTypes.setCellValueFactory(new PropertyValueFactory<>("licenseType")); 
         
         tvAddedPilots.setItems(addedPilotsData);
     }
@@ -131,7 +127,7 @@ public class FXMLAddPilotController implements Initializable {
     private void loadAvailablePilots() {
         try {
             List<Pilot> allPilots = employeeDAO.findAllPilots(); //
-            availablePilotsData.setAll(allPilots); // Carga todos los pilotos inicialmente
+            availablePilotsData.setAll(allPilots); 
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error de carga", "No se pudieron cargar los pilotos disponibles: " + e.getMessage()); //
             e.printStackTrace();
@@ -142,7 +138,7 @@ public class FXMLAddPilotController implements Initializable {
     private void btnAdd(ActionEvent event) {
         Pilot selectedPilot = tvAvailablePilots.getSelectionModel().getSelectedItem();
         if (selectedPilot != null) {
-            if (addedPilotsData.size() < 2) { // Asumiendo un máximo de 2 pilotos por vuelo
+            if (addedPilotsData.size() < 2) { 
                 availablePilotsData.remove(selectedPilot);
                 addedPilotsData.add(selectedPilot);
             } else {
@@ -175,7 +171,6 @@ public class FXMLAddPilotController implements Initializable {
              return;
         }
 
-        // Guarda los pilotos actualmente en la tabla de "añadidos" como la selección final
         finalSelectedPilots.clear();
         finalSelectedPilots.addAll(addedPilotsData);
         
@@ -185,7 +180,6 @@ public class FXMLAddPilotController implements Initializable {
 
     @FXML
     private void btnCancel(ActionEvent event) {
-        // Si se cancela, no se actualiza finalSelectedPilots, conservando el estado inicial
         closeWindow();
     }
 

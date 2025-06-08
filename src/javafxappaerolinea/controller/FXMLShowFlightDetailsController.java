@@ -14,10 +14,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent; // Import for handleClose
-import javafxappaerolinea.model.pojo.Pilot; // Import your Pilot POJO
-import javafxappaerolinea.model.pojo.Assistant; // Import your Assistant POJO
-import javafxappaerolinea.model.pojo.Flight; // Import your Flight POJO
+import javafx.event.ActionEvent; 
+import javafxappaerolinea.model.pojo.Pilot;
+import javafxappaerolinea.model.pojo.Assistant;
+import javafxappaerolinea.model.pojo.Flight;
 
 /**
  * FXML Controller class
@@ -35,7 +35,7 @@ public class FXMLShowFlightDetailsController implements Initializable {
     @FXML
     private TableColumn<Pilot, Integer> tcPilotYearsExperience;
     @FXML
-    private TableColumn<Pilot, Double> tcPilotFlightHours; // Changed to Double if flightHours is double
+    private TableColumn<Pilot, Double> tcPilotFlightHours; 
     @FXML
     private TableColumn<Pilot, String> tcPilotEmail;
     
@@ -46,7 +46,7 @@ public class FXMLShowFlightDetailsController implements Initializable {
     @FXML
     private TableColumn<Assistant, Integer> tcAssistantAssistanceHours;
     @FXML
-    private TableColumn<Assistant, Integer> tcAssistantLanguages; // Assuming this is number of languages
+    private TableColumn<Assistant, Integer> tcAssistantLanguages;
     @FXML
     private TableColumn<Assistant, String> tcAssistantEmail;
 
