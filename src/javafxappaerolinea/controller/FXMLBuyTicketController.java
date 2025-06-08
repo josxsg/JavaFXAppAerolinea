@@ -1,7 +1,20 @@
 package javafxappaerolinea.controller;
 
+import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -22,6 +35,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxappaerolinea.exception.DuplicateResourceException;
@@ -101,7 +115,10 @@ public class FXMLBuyTicketController implements Initializable {
             labelFlightID.setText(flight.getId());
             labelOrigin.setText(flight.getOriginCity());
             labelDestination.setText(flight.getDestinationCity());
-            labelDepartureDate.setText(flight.getDepartureDate().toString());
+            
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            labelDepartureDate.setText(dateFormat.format(flight.getDepartureDate()) + " " + flight.getDepartureHour());
+            
             labelPrice.setText(String.format("$%.2f", flight.getTicketCost()));
         }
     }
@@ -133,8 +150,6 @@ public class FXMLBuyTicketController implements Initializable {
             controller.setFlight(flight);
             
             Scene scene = new Scene(root);
-            // Si tienes el archivo CSS, descomenta la siguiente línea
-            // scene.getStylesheets().add(getClass().getResource("/javafxappaerolinea/styles/seats.css").toExternalForm());
             
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -192,10 +207,14 @@ public class FXMLBuyTicketController implements Initializable {
             // Actualizar contador de pasajeros del vuelo
             flight.setPassengerCount(flight.getPassengerCount() + 1);
             
+            // Generar y descargar el PDF del boleto
+            generateTicketPDF(newTicket);
+            
             DialogUtil.showInfoAlert("Compra exitosa", 
                 "El boleto ha sido comprado exitosamente.\n" +
                 "Asiento: " + seatNumber + "\n" +
-                "Cliente: " + selectedCustomer.getName());
+                "Cliente: " + selectedCustomer.getName() + "\n\n" +
+                "Se ha descargado el PDF del boleto.");
             
             // Actualizar la tabla de vuelos
             if (ticketsController != null) {
@@ -211,6 +230,98 @@ public class FXMLBuyTicketController implements Initializable {
         } catch (DuplicateResourceException ex) {
             Logger.getLogger(FXMLBuyTicketController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void generateTicketPDF(Ticket ticket) {
+        try {
+            // Crear diálogo para guardar archivo
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Guardar Boleto");
+            fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
+            
+            // Nombre de archivo sugerido
+            String suggestedFileName = "Boleto_" + ticket.getId() + ".pdf";
+            fileChooser.setInitialFileName(suggestedFileName);
+            
+            File file = fileChooser.showSaveDialog(btnConfirm.getScene().getWindow());
+            
+            if (file != null) {
+                Document document = new Document(new Rectangle(500, 300));
+                PdfWriter.getInstance(document, new FileOutputStream(file));
+                document.open();
+                
+                // Título
+                Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+                Paragraph title = new Paragraph("BOLETO DE AVIÓN", titleFont);
+                title.setAlignment(Element.ALIGN_CENTER);
+                document.add(title);
+                
+                // Información del vuelo
+                PdfPTable table = new PdfPTable(2);
+                table.setWidthPercentage(100);
+                table.setSpacingBefore(20);
+                table.setSpacingAfter(20);
+                
+                // Estilos
+                Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+                Font contentFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
+                
+                // Número de boleto
+                addTableRow(table, "Número de Boleto:", ticket.getId(), headerFont, contentFont);
+                
+                // Información del vuelo
+                addTableRow(table, "Vuelo:", ticket.getFlight().getId(), headerFont, contentFont);
+                addTableRow(table, "Aerolínea:", ticket.getFlight().getAirline().getName(), headerFont, contentFont);
+                addTableRow(table, "Origen:", ticket.getFlight().getOriginCity(), headerFont, contentFont);
+                addTableRow(table, "Destino:", ticket.getFlight().getDestinationCity(), headerFont, contentFont);
+                
+                // Fecha y hora
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String departureDate = dateFormat.format(ticket.getFlight().getDepartureDate());
+                String departureTime = ticket.getFlight().getDepartureHour();
+                
+                addTableRow(table, "Fecha de Salida:", departureDate, headerFont, contentFont);
+                addTableRow(table, "Hora de Salida:", departureTime, headerFont, contentFont);
+                addTableRow(table, "Puerta:", ticket.getFlight().getGate(), headerFont, contentFont);
+                
+                // Información del pasajero
+                addTableRow(table, "Pasajero:", ticket.getCustomer().getName(), headerFont, contentFont);
+                addTableRow(table, "Asiento:", ticket.getSeatNumber(), headerFont, contentFont);
+                
+                // Fecha de compra
+                String purchaseDate = dateFormat.format(ticket.getPurchaseDate());
+                addTableRow(table, "Fecha de Compra:", purchaseDate, headerFont, contentFont);
+                
+                // Precio
+                addTableRow(table, "Precio:", String.format("$%.2f", ticket.getFlight().getTicketCost()), headerFont, contentFont);
+                
+                document.add(table);
+                
+                // Pie de página
+                Paragraph footer = new Paragraph("Gracias por volar con nosotros", contentFont);
+                footer.setAlignment(Element.ALIGN_CENTER);
+                document.add(footer);
+                
+                document.close();
+            }
+        } catch (Exception e) {
+            DialogUtil.showErrorAlert("Error al generar PDF", 
+                "No se pudo generar el PDF del boleto: " + e.getMessage());
+        }
+    }
+    
+    private void addTableRow(PdfPTable table, String header, String content, Font headerFont, Font contentFont) {
+        PdfPCell headerCell = new PdfPCell(new Phrase(header, headerFont));
+        headerCell.setBorder(Rectangle.NO_BORDER);
+        headerCell.setPadding(5);
+        
+        PdfPCell contentCell = new PdfPCell(new Phrase(content, contentFont));
+        contentCell.setBorder(Rectangle.NO_BORDER);
+        contentCell.setPadding(5);
+        
+        table.addCell(headerCell);
+        table.addCell(contentCell);
     }
     
     @FXML

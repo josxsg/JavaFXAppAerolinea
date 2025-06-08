@@ -14,90 +14,95 @@
 
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLTicketsController">
    <children>
-      <Label text="Gestión de Boletos" textFill="#2c3e50">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      
-      <VBox spacing="10.0">
-         <children>
-            <Label text="Filtros de búsqueda" textFill="#34495e">
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-            </Label>
-            <HBox alignment="CENTER_LEFT" spacing="15.0">
-               <children>
-                  <VBox spacing="5.0">
-                     <children>
-                        <Label text="Ciudad Origen:" />
-                        <TextField fx:id="txtOriginFilter" prefWidth="200.0" promptText="Buscar por origen..." />
-                     </children>
-                  </VBox>
-                  <VBox spacing="5.0">
-                     <children>
-                        <Label text="Ciudad Destino:" />
-                        <TextField fx:id="txtDestinationFilter" prefWidth="200.0" promptText="Buscar por destino..." />
-                     </children>
-                  </VBox>
-                  <VBox spacing="5.0">
-                     <children>
-                        <Label text="Fecha de Salida:" />
-                        <DatePicker fx:id="dpDepartureDateFilter" prefWidth="200.0" promptText="Seleccionar fecha..." />
-                     </children>
-                  </VBox>
-                  <VBox alignment="BOTTOM_LEFT" spacing="5.0">
-                     <children>
-                        <Label text=" " />
-                        <HBox spacing="10.0">
-                           <children>
-                              <Button fx:id="btnApplyFilter" mnemonicParsing="false" onAction="#handleApplyFilter" styleClass="btn-primary" text="Aplicar Filtros" />
-                              <Button fx:id="btnClearFilter" mnemonicParsing="false" onAction="#handleClearFilter" styleClass="btn-secondary" text="Limpiar" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-      
-      <Separator prefWidth="200.0" />
-      
-      <TableView fx:id="tableFlights" prefHeight="400.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <columns>
-          <TableColumn fx:id="columnId" prefWidth="80.0" text="ID Vuelo" />
-          <TableColumn fx:id="columnAirline" prefWidth="100.0" text="Aerolínea" />
-          <TableColumn fx:id="columnOriginCity" prefWidth="100.0" text="Ciudad Origen" />
-          <TableColumn fx:id="columnDestinationCity" prefWidth="100.0" text="Ciudad Destino" />
-          <TableColumn fx:id="columnDepartureDate" prefWidth="100.0" text="Fecha Salida" />
-          <TableColumn fx:id="columnDepartureHour" prefWidth="80.0" text="Hora Salida" />
-          <TableColumn fx:id="columnArrivalDate" prefWidth="100.0" text="Fecha Llegada" />
-          <TableColumn fx:id="columnArrivalHour" prefWidth="80.0" text="Hora Llegada" />
-          <TableColumn fx:id="columnTicketCost" prefWidth="80.0" text="Precio" />
-          <TableColumn fx:id="columnGate" prefWidth="60.0" text="Puerta" />
-          <TableColumn fx:id="columnPassengerCount" prefWidth="80.0" text="Pasajeros" />
-          <TableColumn fx:id="columnTravelTime" prefWidth="100.0" text="Duración" />
-        </columns>
-      </TableView>
-      
-      <HBox alignment="CENTER" spacing="20.0">
-         <children>
-            <Button fx:id="btnBuyTicket" mnemonicParsing="false" onAction="#handleBuyTicket" prefWidth="150.0" styleClass="btn-primary" text="Comprar Boleto">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnExport" mnemonicParsing="false" onAction="#handleExport" prefWidth="150.0" styleClass="btn-secondary" text="Exportar Datos">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
+    <Label text="Gestión de Boletos" textFill="#2c3e50">
+    <font>
+    <Font name="System Bold" size="24.0" />
+    </font>
+    </Label>
+    
+    <VBox spacing="10.0">
+    <children>
+    <Label text="Filtros de búsqueda" textFill="#34495e">
+    <font>
+    <Font name="System Bold" size="16.0" />
+    </font>
+    </Label>
+    <HBox alignment="CENTER_LEFT" spacing="15.0">
+    <children>
+    <VBox spacing="5.0">
+    <children>
+    <Label text="Ciudad Origen:" />
+    <TextField fx:id="txtOriginFilter" prefWidth="200.0" promptText="Buscar por origen..." />
+    </children>
+    </VBox>
+    <VBox spacing="5.0">
+    <children>
+    <Label text="Ciudad Destino:" />
+    <TextField fx:id="txtDestinationFilter" prefWidth="200.0" promptText="Buscar por destino..." />
+    </children>
+    </VBox>
+    <VBox spacing="5.0">
+    <children>
+    <Label text="Fecha de Salida:" />
+    <DatePicker fx:id="dpDepartureDateFilter" prefWidth="200.0" promptText="Seleccionar fecha..." />
+    </children>
+    </VBox>
+    <VBox alignment="BOTTOM_LEFT" spacing="5.0">
+    <children>
+    <Label text=" " />
+    <HBox spacing="10.0">
+    <children>
+    <Button fx:id="btnApplyFilter" mnemonicParsing="false" onAction="#handleApplyFilter" styleClass="btn-primary" text="Aplicar Filtros" />
+    <Button fx:id="btnClearFilter" mnemonicParsing="false" onAction="#handleClearFilter" styleClass="btn-secondary" text="Limpiar" />
+    </children>
+    </HBox>
+    </children>
+    </VBox>
+    </children>
+    </HBox>
+    </children>
+    </VBox>
+    
+    <Separator prefWidth="200.0" />
+    
+    <TableView fx:id="tableFlights" prefHeight="400.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+    <columns>
+    <TableColumn fx:id="columnId" prefWidth="80.0" text="ID Vuelo" />
+    <TableColumn fx:id="columnAirline" prefWidth="100.0" text="Aerolínea" />
+    <TableColumn fx:id="columnOriginCity" prefWidth="100.0" text="Ciudad Origen" />
+    <TableColumn fx:id="columnDestinationCity" prefWidth="100.0" text="Ciudad Destino" />
+    <TableColumn fx:id="columnDepartureDate" prefWidth="100.0" text="Fecha Salida" />
+    <TableColumn fx:id="columnDepartureHour" prefWidth="80.0" text="Hora Salida" />
+    <TableColumn fx:id="columnArrivalDate" prefWidth="100.0" text="Fecha Llegada" />
+    <TableColumn fx:id="columnArrivalHour" prefWidth="80.0" text="Hora Llegada" />
+    <TableColumn fx:id="columnTicketCost" prefWidth="80.0" text="Precio" />
+    <TableColumn fx:id="columnGate" prefWidth="60.0" text="Puerta" />
+    <TableColumn fx:id="columnPassengerCount" prefWidth="80.0" text="Pasajeros" />
+    <TableColumn fx:id="columnTravelTime" prefWidth="100.0" text="Duración" />
+    </columns>
+    </TableView>
+    
+    <HBox alignment="CENTER" spacing="20.0">
+    <children>
+    <Button fx:id="btnBuyTicket" mnemonicParsing="false" onAction="#handleBuyTicket" prefWidth="150.0" styleClass="btn-primary" text="Comprar Boleto">
+    <font>
+    <Font size="14.0" />
+    </font>
+    </Button>
+    <Button fx:id="btnViewSoldTickets" mnemonicParsing="false" onAction="#handleViewSoldTickets" prefWidth="150.0" styleClass="btn-info" text="Boletos Vendidos" disable="true">
+    <font>
+    <Font size="14.0" />
+    </font>
+    </Button>
+    <Button fx:id="btnExport" mnemonicParsing="false" onAction="#handleExport" prefWidth="150.0" styleClass="btn-secondary" text="Exportar Datos">
+    <font>
+    <Font size="14.0" />
+    </font>
+    </Button>
+    </children>
+    </HBox>
    </children>
    <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
 </VBox>

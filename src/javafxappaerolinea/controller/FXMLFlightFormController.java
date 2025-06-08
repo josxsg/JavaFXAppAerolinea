@@ -52,6 +52,7 @@ public class FXMLFlightFormController implements Initializable {
     @FXML private TextField tfArrivalHour;
     @FXML private TextField tfTicketCost;
     @FXML private TextField tfGate;
+    @FXML private TextField tfPassengerCount;
     @FXML private ComboBox<Airline> cbAirline;
     @FXML private ComboBox<Airplane> cbAirplane;
     @FXML private Label lbTitle;
@@ -63,6 +64,7 @@ public class FXMLFlightFormController implements Initializable {
     @FXML private Label lbArrivalHourError;
     @FXML private Label lbTicketCostError;
     @FXML private Label lbGateError;
+    @FXML private Label lbPassengerCountError;
     @FXML private Label lbAirlineError;
     @FXML private Label lbAirplaneError;
 
@@ -124,8 +126,6 @@ public class FXMLFlightFormController implements Initializable {
         }
     }
     
-    
-
     @FXML
     private void handleAirlineSelection(ActionEvent event) {
         Airline selectedAirline = cbAirline.getValue();
@@ -151,6 +151,11 @@ public class FXMLFlightFormController implements Initializable {
         flight.setGate(tfGate.getText().trim());
         flight.setAirline(cbAirline.getValue());
         flight.setAirplane(cbAirplane.getValue());
+        
+        // Establecer el número de pasajeros
+        if (!tfPassengerCount.getText().trim().isEmpty()) {
+            flight.setPassengerCount(Integer.parseInt(tfPassengerCount.getText().trim()));
+        }
 
         LocalDateTime departureDateTime = LocalDateTime.of(dpDepartureDate.getValue(), java.time.LocalTime.parse(tfDepartureHour.getText()));
         LocalDateTime arrivalDateTime = LocalDateTime.of(dpArrivalDate.getValue(), java.time.LocalTime.parse(tfArrivalHour.getText()));
@@ -172,6 +177,7 @@ public class FXMLFlightFormController implements Initializable {
         tfDestinationCity.setText(flight.getDestinationCity());
         tfTicketCost.setText(String.valueOf(flight.getTicketCost()));
         tfGate.setText(flight.getGate());
+        tfPassengerCount.setText(String.valueOf(flight.getPassengerCount()));
 
         cbAirline.setValue(flight.getAirline());
         handleAirlineSelection(null); 
@@ -221,6 +227,25 @@ public class FXMLFlightFormController implements Initializable {
             lbAirplaneError.setText("Seleccione un avión"); isValid = false;
         }
         
+        // Validación del número de pasajeros
+        if (tfPassengerCount.getText().trim().isEmpty()) {
+            lbPassengerCountError.setText("Campo requerido"); isValid = false;
+        } else {
+            try {
+                int passengerCount = Integer.parseInt(tfPassengerCount.getText().trim());
+                if (passengerCount < 0) {
+                    lbPassengerCountError.setText("Debe ser un número positivo"); isValid = false;
+                } else if (cbAirplane.getValue() != null) {
+                    int airplaneCapacity = cbAirplane.getValue().getCapacity();
+                    if (passengerCount > airplaneCapacity) {
+                        lbPassengerCountError.setText("Excede la capacidad del avión (" + airplaneCapacity + ")"); isValid = false;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                lbPassengerCountError.setText("Debe ser un número válido"); isValid = false;
+            }
+        }
+        
         if (isValid) {
             try {
                 LocalDateTime departure = LocalDateTime.of(dpDepartureDate.getValue(), java.time.LocalTime.parse(tfDepartureHour.getText()));
@@ -230,6 +255,7 @@ public class FXMLFlightFormController implements Initializable {
                     isValid = false;
                 }
             } catch (DateTimeParseException e) {
+                // Error ya manejado en validaciones anteriores
             }
         }
 
@@ -260,28 +286,55 @@ public class FXMLFlightFormController implements Initializable {
         });
 
         cbAirplane.setConverter(new StringConverter<Airplane>() {
-            @Override public String toString(Airplane airplane) { return airplane == null ? "" : airplane.getModel() + " (" + airplane.getRegistration() + ")"; }
+            @Override public String toString(Airplane airplane) { 
+                return airplane == null ? "" : airplane.getModel() + " (" + airplane.getRegistration() + ") - Cap: " + airplane.getCapacity(); 
+            }
             @Override public Airplane fromString(String string) { return null; }
         });
         
         cbAirplane.setDisable(true);
+        
+        // Actualizar el campo de pasajeros cuando se selecciona un avión
+        cbAirplane.setOnAction(event -> {
+            Airplane selectedAirplane = cbAirplane.getValue();
+            if (selectedAirplane != null) {
+                // Si ya hay un valor en el campo de pasajeros, verificar si excede la capacidad
+                if (!tfPassengerCount.getText().trim().isEmpty()) {
+                    try {
+                        int passengerCount = Integer.parseInt(tfPassengerCount.getText().trim());
+                        if (passengerCount > selectedAirplane.getCapacity()) {
+                            lbPassengerCountError.setText("Excede la capacidad del avión (" + selectedAirplane.getCapacity() + ")");
+                        } else {
+                            lbPassengerCountError.setText("");
+                        }
+                    } catch (NumberFormatException e) {
+                        // Se manejará en la validación completa
+                    }
+                }
+            }
+        });
     }
     
-private void applyFormatters() {
-    tfTicketCost.setTextFormatter(new TextFormatter<>(c -> 
-        c.getControlNewText().matches("\\d*\\.?\\d*") ? c : null));
+    private void applyFormatters() {
+        tfTicketCost.setTextFormatter(new TextFormatter<>(c -> 
+            c.getControlNewText().matches("\\d*\\.?\\d*") ? c : null));
 
-    tfGate.setTextFormatter(new TextFormatter<>(c -> 
-        c.getControlNewText().matches("[a-zA-Z0-9\\- ]*") ? c : null));
+        tfGate.setTextFormatter(new TextFormatter<>(c -> 
+            c.getControlNewText().matches("[a-zA-Z0-9\\- ]*") ? c : null));
 
-    TextFormatter<String> timeFormatter1 = new TextFormatter<>(c -> 
-        c.getControlNewText().matches("[0-9:]*") ? c : null);
-    tfDepartureHour.setTextFormatter(timeFormatter1);
+        TextFormatter<String> timeFormatter1 = new TextFormatter<>(c -> 
+            c.getControlNewText().matches("[0-9:]*") ? c : null);
+        tfDepartureHour.setTextFormatter(timeFormatter1);
 
-    TextFormatter<String> timeFormatter2 = new TextFormatter<>(c -> 
-        c.getControlNewText().matches("[0-9:]*") ? c : null);
-    tfArrivalHour.setTextFormatter(timeFormatter2);
-}
+        TextFormatter<String> timeFormatter2 = new TextFormatter<>(c -> 
+            c.getControlNewText().matches("[0-9:]*") ? c : null);
+        tfArrivalHour.setTextFormatter(timeFormatter2);
+        
+        // Formatter para el campo de número de pasajeros (solo números)
+        tfPassengerCount.setTextFormatter(new TextFormatter<>(c -> 
+            c.getControlNewText().matches("\\d*") ? c : null));
+    }
+    
     private boolean isValidTimeFormat(String time) {
         return time.matches("^([01]?[0-9]|2[0-3]):[0-5][0-9]$");
     }
@@ -299,6 +352,7 @@ private void applyFormatters() {
         lbArrivalHourError.setText("");
         lbTicketCostError.setText("");
         lbGateError.setText("");
+        lbPassengerCountError.setText("");
         lbAirlineError.setText("");
         lbAirplaneError.setText("");
     }

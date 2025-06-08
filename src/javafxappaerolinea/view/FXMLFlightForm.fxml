@@ -49,6 +49,8 @@
                   <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Ciudad de Origen:" />
@@ -107,16 +109,23 @@
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="Aerolínea:" GridPane.rowIndex="16" />
-                  <ComboBox fx:id="cbAirline" onAction="#handleAirlineSelection" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="16" />
-                  <Label fx:id="lbAirlineError" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="17">
+                  <Label text="Número de Pasajeros:" GridPane.rowIndex="16" />
+                  <TextField fx:id="tfPassengerCount" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                  <Label fx:id="lbPassengerCountError" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="17">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="Avión:" GridPane.rowIndex="18" />
-                  <ComboBox fx:id="cbAirplane" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="18" />
-                  <Label fx:id="lbAirplaneError" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="19">
+                  <Label text="Aerolínea:" GridPane.rowIndex="18" />
+                  <ComboBox fx:id="cbAirline" onAction="#handleAirlineSelection" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                  <Label fx:id="lbAirlineError" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="19">
+                     <GridPane.margin>
+                        <Insets left="5.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Avión:" GridPane.rowIndex="20" />
+                  <ComboBox fx:id="cbAirplane" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="20" />
+                  <Label fx:id="lbAirplaneError" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="21">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>

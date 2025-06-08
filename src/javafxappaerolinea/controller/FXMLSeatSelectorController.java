@@ -79,9 +79,9 @@ public class FXMLSeatSelectorController implements Initializable {
             // Obtener boletos vendidos para este vuelo
             List<Ticket> soldTickets = ticketDAO.findByFlight(flight.getId());
             
-            // Determinar capacidad del avión
-            int capacity = (flight.getAirplane() != null) ? 
-                flight.getAirplane().getCapacity() : DEFAULT_CAPACITY;
+            // Usar el número de pasajeros en lugar de la capacidad del avión
+            int capacity = (flight.getPassengerCount() > 0) ?
+                    flight.getPassengerCount() : DEFAULT_CAPACITY;
             
             // Determinar configuración del avión según capacidad
             SeatConfiguration config = getSeatConfiguration(capacity);

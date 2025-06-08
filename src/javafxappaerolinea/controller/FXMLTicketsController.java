@@ -75,6 +75,8 @@ public class FXMLTicketsController implements Initializable {
     @FXML
     private Button btnBuyTicket;
     @FXML
+    private Button btnViewSoldTickets;
+    @FXML
     private Button btnExport;
     
     private ObservableList<Flight> flights;
@@ -86,6 +88,11 @@ public class FXMLTicketsController implements Initializable {
         flightDAO = new FlightDAO();
         configureTableColumns();
         loadFlights();
+        
+        // Configurar listener para la selección de vuelo
+        tableFlights.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            btnViewSoldTickets.setDisable(newSelection == null);
+        });
     }
     
     private void configureTableColumns() {
@@ -199,25 +206,14 @@ public class FXMLTicketsController implements Initializable {
             return;
         }
         
-        // Verificar si el avión existe y tiene capacidad
-        if (selectedFlight.getAirplane() == null) {
-            // Si no hay avión asignado, usar una capacidad por defecto
-            DialogUtil.showWarningAlert("Aviso", 
-                "El vuelo no tiene un avión asignado. Se usará capacidad estándar de 44 asientos.");
-            
-            // Verificar contra capacidad estándar
-            if (selectedFlight.getPassengerCount() >= 44) {
-                DialogUtil.showWarningAlert("Vuelo lleno", 
-                    "El vuelo seleccionado no tiene asientos disponibles.");
-                return;
-            }
-        } else {
-            // Si hay avión, verificar contra su capacidad
-            if (selectedFlight.getPassengerCount() >= selectedFlight.getAirplane().getCapacity()) {
-                DialogUtil.showWarningAlert("Vuelo lleno", 
-                    "El vuelo seleccionado no tiene asientos disponibles.");
-                return;
-            }
+        // Verificar si hay asientos disponibles según el número de pasajeros
+        int maxPassengers = selectedFlight.getPassengerCount();
+        int capacity = selectedFlight.getCapacity(); // Capacidad del avión
+        
+        if (maxPassengers >= capacity) {
+            DialogUtil.showWarningAlert("Vuelo lleno", 
+                "El vuelo seleccionado no tiene asientos disponibles.");
+            return;
         }
         
         try {
@@ -240,6 +236,36 @@ public class FXMLTicketsController implements Initializable {
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", 
                 "No se pudo abrir la ventana para comprar boleto: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void handleViewSoldTickets(ActionEvent event) {
+        Flight selectedFlight = tableFlights.getSelectionModel().getSelectedItem();
+        if (selectedFlight == null) {
+            DialogUtil.showWarningAlert("Selección requerida", 
+                "Debe seleccionar un vuelo para ver los boletos vendidos.");
+            return;
+        }
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/javafxappaerolinea/view/FXMLSoldTickets.fxml"));
+            Parent root = loader.load();
+            
+            FXMLSoldTicketsController controller = loader.getController();
+            controller.setFlight(selectedFlight);
+            
+            Scene scene = new Scene(root);
+            
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Boletos Vendidos - Vuelo " + selectedFlight.getId());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            DialogUtil.showErrorAlert("Error", 
+                "No se pudo abrir la ventana de boletos vendidos: " + e.getMessage());
             e.printStackTrace();
         }
     }
