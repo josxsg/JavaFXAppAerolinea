@@ -232,7 +232,6 @@ public class FXMLAdminFormController implements Initializable {
         admin.setDepartment(tfDepartment.getText().trim());
         admin.setWorkHours(Integer.parseInt(tfWorkHours.getText().trim()));
         
-        // Convertir LocalDate a Date
         LocalDate localDate = dpBirthDate.getValue();
         Date birthDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         admin.setBirthDate(birthDate);
@@ -241,12 +240,10 @@ public class FXMLAdminFormController implements Initializable {
         admin.setSalary(Double.parseDouble(tfSalary.getText().trim()));
         admin.setUsername(tfUsername.getText().trim());
         
-        // Manejar la contraseña
         if (!isEditing || !pfPassword.getText().isEmpty()) {
             String hashedPassword = PasswordUtil.hashPassword(pfPassword.getText());
             admin.setPassword(hashedPassword);
         } else {
-            // Mantener la contraseña existente
             admin.setPassword(adminToEdit.getPassword());
         }
         admin.setType("Administrative");

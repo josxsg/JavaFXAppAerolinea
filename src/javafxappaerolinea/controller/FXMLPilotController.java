@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -122,10 +118,33 @@ public class FXMLPilotController implements Initializable, Notification {
         //TODO
     }
 
-    @FXML
-    private void btnViewFlights(ActionEvent event) {
-        //TODO
+@FXML
+private void btnViewFlights(ActionEvent event) {
+    // Get the currently selected pilot from the table
+    Pilot selectedPilot = getSelectedPilot(); 
+
+    if (selectedPilot != null) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/javafxappaerolinea/view/FXMLPilotUpcomingFlights.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller and pass the selected pilot data
+            FXMLPilotUpcomingFlightsController controller = loader.getController();
+            controller.initData(selectedPilot); // Pass the selected pilot to the Upcoming Flights controller
+
+            Stage stage = new Stage();
+            stage.setTitle("Vuelos Próximos del Piloto: " + selectedPilot.getName()); // Set title dynamically
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            DialogUtil.showErrorAlert(
+                "Error", 
+                "No se pudo abrir la ventana de vuelos próximos: " + e.getMessage()
+            );
+        }
     }
+}
     
     @Override
     public void operationSucceeded() {

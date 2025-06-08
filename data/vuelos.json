@@ -8,7 +8,7 @@
     "departureDate": "2025-06-08",
     "arrivalHour": 14,
     "departureHour": "12:30",
-    "passengerCount": 0,
+    "passengerCount": 3,
     "gate": "1",
     "travelTime": 1.5,
     "airplane": {
