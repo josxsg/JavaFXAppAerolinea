@@ -74,4 +74,8 @@ public class Airline {
         this.phoneNumber = phoneNumber;
     }
     
+    @Override
+    public String toString() {
+        return identificationNumber + " - " + name;
+    }
 }

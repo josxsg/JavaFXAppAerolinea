@@ -4,6 +4,9 @@
  */
 package javafxappaerolinea.model.pojo;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -37,6 +40,16 @@ public class Employee {
     }
     
     // Getters and Setters
+    
+       public int getAge() {
+        if (this.birthDate == null) {
+            return 0; // Return 0 or handle as an error if birthDate is null
+        }
+        LocalDate dob = this.birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate now = LocalDate.now(ZoneId.of("America/Mexico_City")); // Use current time in Mexico
+        return Period.between(dob, now).getYears();
+    }
+    
     public String getId() {
         return id;
     }

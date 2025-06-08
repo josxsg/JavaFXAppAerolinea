@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,15 +17,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafxappaerolinea.exception.ResourceNotFoundException;
-import javafxappaerolinea.model.dao.EmployeeDAO; // Para acceder a los asistentes
-import javafxappaerolinea.model.pojo.Assistant; // Importa tu clase Assistant
-import javafxappaerolinea.utility.DialogUtil; // Para mostrar alertas
+import javafxappaerolinea.model.dao.EmployeeDAO; 
+import javafxappaerolinea.model.pojo.Assistant; 
+import javafxappaerolinea.utility.DialogUtil; 
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
 public class FXMLAddAssistantController implements Initializable {
 
     @FXML
@@ -54,67 +50,80 @@ public class FXMLAddAssistantController implements Initializable {
     
     private EmployeeDAO employeeDAO;
 
-    // Esta lista se usará para devolver los asistentes seleccionados a la ventana que llamó
     private List<Assistant> finalSelectedAssistants;
+    private List<Assistant> initialAssistants; // Para guardar el estado inicial
+    private boolean changesSaved = false; // Para rastrear si se guardaron cambios
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         employeeDAO = new EmployeeDAO();
         availableAssistantsData = FXCollections.observableArrayList();
         addedAssistantsData = FXCollections.observableArrayList();
         finalSelectedAssistants = new ArrayList<>();
+        initialAssistants = new ArrayList<>();
 
         configureTableColumns();
         loadAvailableAssistants();
     }    
 
- 
     public void initData(List<Assistant> currentFlightAssistants) {
+        // Guardar el estado inicial
+        if (currentFlightAssistants != null) {
+            initialAssistants.addAll(currentFlightAssistants);
+        }
+        
         if (currentFlightAssistants != null && !currentFlightAssistants.isEmpty()) {
-            // Mueve los asistentes que ya están asignados a la tabla de "añadidos"
-            // y los elimina de la tabla de "disponibles".
             List<Assistant> toRemoveFromAvailable = new ArrayList<>();
             for (Assistant currentAssistant : currentFlightAssistants) {
-                // Busca el asistente por ID en la lista de disponibles
                 Assistant foundAssistant = availableAssistantsData.stream()
-                                    .filter(a -> a.getId().equals(currentAssistant.getId()))
-                                    .findFirst()
-                                    .orElse(null);
+                                        .filter(a -> a.getId().equals(currentAssistant.getId()))
+                                        .findFirst()
+                                        .orElse(null);
                 if (foundAssistant != null) {
                     addedAssistantsData.add(foundAssistant);
                     toRemoveFromAvailable.add(foundAssistant);
                 } else {
-                    // Si el asistente ya asignado no está en los disponibles, lo añade directamente a 'añadidos'
                     addedAssistantsData.add(currentAssistant);
                 }
             }
             availableAssistantsData.removeAll(toRemoveFromAvailable);
             
-            // Inicializa finalSelectedAssistants con los asistentes que ya estaban
-            finalSelectedAssistants.addAll(addedAssistantsData);
+            // Sincronizar finalSelectedAssistants con el estado inicial
+            finalSelectedAssistants.clear();
+            finalSelectedAssistants.addAll(addedAssistantsData); 
         }
     }
 
-    // Método para que la ventana que llamó pueda obtener los asistentes seleccionados
     public List<Assistant> getFinalSelectedAssistants() {
-        return finalSelectedAssistants;
+        // Si no se guardaron cambios, devolver la lista inicial
+        if (!changesSaved) {
+            return new ArrayList<>(initialAssistants);
+        }
+        return new ArrayList<>(finalSelectedAssistants);
     }
 
     private void configureTableColumns() {
-        // Configurar las columnas de la tabla de asistentes disponibles
         tcAvailableName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tcAvailableAge.setCellValueFactory(new PropertyValueFactory<>("age")); // Hereda de Employee
+        tcAvailableAge.setCellValueFactory(cellData -> {
+            Assistant assistant = cellData.getValue();
+            if (assistant != null && assistant.getBirthDate() != null) {
+                return new SimpleIntegerProperty(assistant.getAge()).asObject();
+            }
+            return new SimpleIntegerProperty(0).asObject(); 
+        });
         tcAvailableAssistanceHours.setCellValueFactory(new PropertyValueFactory<>("assistanceHours"));
         tcAvailableLanguages.setCellValueFactory(new PropertyValueFactory<>("numberOfLanguages"));
 
         tvAvailableAssistants.setItems(availableAssistantsData);
 
-        // Configurar las columnas de la tabla de asistentes añadidos
         tcAddedName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tcAddedAge.setCellValueFactory(new PropertyValueFactory<>("age")); // Hereda de Employee
+        tcAddedAge.setCellValueFactory(cellData -> {
+            Assistant assistant = cellData.getValue();
+            if (assistant != null && assistant.getBirthDate() != null) {
+                return new SimpleIntegerProperty(assistant.getAge()).asObject();
+            }
+            return new SimpleIntegerProperty(0).asObject();
+        });
         tcAddedAssistanceHours.setCellValueFactory(new PropertyValueFactory<>("assistanceHours"));
         tcAddedLanguages.setCellValueFactory(new PropertyValueFactory<>("numberOfLanguages"));
         
@@ -123,10 +132,10 @@ public class FXMLAddAssistantController implements Initializable {
 
     private void loadAvailableAssistants() {
         try {
-            List<Assistant> allAssistants = employeeDAO.findAllAssistants(); //
-            availableAssistantsData.setAll(allAssistants); // Carga todos los asistentes
+            List<Assistant> allAssistants = employeeDAO.findAllAssistants(); 
+            availableAssistantsData.setAll(allAssistants); 
         } catch (IOException e) {
-            DialogUtil.showErrorAlert("Error de carga", "No se pudieron cargar los asistentes disponibles: " + e.getMessage()); //
+            DialogUtil.showErrorAlert("Error de carga", "No se pudieron cargar los asistentes disponibles: " + e.getMessage()); 
             e.printStackTrace();
         }
     }
@@ -135,14 +144,15 @@ public class FXMLAddAssistantController implements Initializable {
     private void btnAdd(ActionEvent event) {
         Assistant selectedAssistant = tvAvailableAssistants.getSelectionModel().getSelectedItem();
         if (selectedAssistant != null) {
-            if (addedAssistantsData.size() < 4) { // Asumiendo un máximo de 4 asistentes por vuelo
+            if (addedAssistantsData.size() < 4) { 
                 availableAssistantsData.remove(selectedAssistant);
                 addedAssistantsData.add(selectedAssistant);
+                // No actualizar finalSelectedAssistants aquí, solo al guardar
             } else {
-                DialogUtil.showWarningAlert("Límite de Asistentes", "Un vuelo solo puede tener un máximo de 4 asistentes."); //
+                DialogUtil.showWarningAlert("Límite de Asistentes", "Un vuelo solo puede tener un máximo de 4 asistentes."); 
             }
         } else {
-            DialogUtil.showWarningAlert("Sin selección", "Por favor, selecciona un asistente de la tabla de asistentes disponibles."); //
+            DialogUtil.showWarningAlert("Sin selección", "Por favor, selecciona un asistente de la tabla de asistentes disponibles."); 
         }
     }
 
@@ -152,33 +162,36 @@ public class FXMLAddAssistantController implements Initializable {
         if (selectedAssistant != null) {
             addedAssistantsData.remove(selectedAssistant);
             availableAssistantsData.add(selectedAssistant);
+            // No actualizar finalSelectedAssistants aquí, solo al guardar
         } else {
-            DialogUtil.showWarningAlert("Sin selección", "Por favor, selecciona un asistente de la tabla de asistentes añadidos."); //
+            DialogUtil.showWarningAlert("Sin selección", "Por favor, selecciona un asistente de la tabla de asistentes añadidos."); 
         }
     }
 
     @FXML
     private void btnSaveChanges(ActionEvent event) {
         if (addedAssistantsData.isEmpty()) {
-            DialogUtil.showWarningAlert("Asistentes Requeridos", "Debe añadir al menos un asistente al vuelo."); //
+            DialogUtil.showWarningAlert("Asistentes Requeridos", "Debe añadir al menos un asistente al vuelo."); 
             return;
         }
         if (addedAssistantsData.size() > 4) {
-             DialogUtil.showWarningAlert("Límite de Asistentes", "Un vuelo solo puede tener un máximo de 4 asistentes. Por favor, remueve asistentes de la lista de añadidos."); //
+             DialogUtil.showWarningAlert("Límite de Asistentes", "Un vuelo solo puede tener un máximo de 4 asistentes. Por favor, remueve asistentes de la lista de añadidos."); 
              return;
         }
 
-        // Guarda los asistentes actualmente en la tabla de "añadidos" como la selección final
+        // Actualizar finalSelectedAssistants solo cuando se guardan los cambios
+        changesSaved = true;
         finalSelectedAssistants.clear();
         finalSelectedAssistants.addAll(addedAssistantsData);
         
-        DialogUtil.showInfoAlert("Cambios guardados", "Los asistentes seleccionados han sido registrados."); //
+        DialogUtil.showInfoAlert("Cambios guardados", "Los asistentes seleccionados han sido registrados."); 
         closeWindow();
     }
 
     @FXML
     private void btnCancel(ActionEvent event) {
-        // Si se cancela, no se actualiza finalSelectedAssistants, conservando el estado inicial
+        // No marcar cambios como guardados
+        changesSaved = false;
         closeWindow();
     }
 
