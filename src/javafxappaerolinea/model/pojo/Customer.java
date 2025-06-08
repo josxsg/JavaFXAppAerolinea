@@ -76,4 +76,11 @@ public class Customer {
     public void addTicket(Ticket ticket) {
         this.tickets.add(ticket);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+    
+    
 }
