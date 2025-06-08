@@ -154,5 +154,20 @@
       "contactPerson": "Puch",
       "phoneNumber": "1234556"
     }
+  },
+  {
+    "capacity": 10,
+    "age": 10,
+    "status": true,
+    "registration": "X-SD-SA",
+    "model": "JSO",
+    "weight": 1500.0,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "3 de mayo",
+      "name": "AeroMexico",
+      "contactPerson": "Miguel",
+      "phoneNumber": "123"
+    }
   }
 ]

@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,9 +33,6 @@ import javafxappaerolinea.model.pojo.Flight;
 import javafxappaerolinea.utility.DialogUtil;
 import javafxappaerolinea.utility.ExportUtil;
 
-/**
- * Controlador para la vista de boletos/vuelos
- */
 public class FXMLTicketsController implements Initializable {
     
     @FXML
@@ -46,13 +46,13 @@ public class FXMLTicketsController implements Initializable {
     @FXML
     private TableColumn<Flight, String> columnDestinationCity;
     @FXML
-    private TableColumn<Flight, LocalDate> columnDepartureDate;
+    private TableColumn<Flight, Date> columnDepartureDate;
     @FXML
     private TableColumn<Flight, String> columnDepartureHour;
     @FXML
-    private TableColumn<Flight, LocalDate> columnArrivalDate;
+    private TableColumn<Flight, Date> columnArrivalDate;
     @FXML
-    private TableColumn<Flight, String> columnArrivalHour;
+    private TableColumn<Flight, Integer> columnArrivalHour;
     @FXML
     private TableColumn<Flight, Double> columnTicketCost;
     @FXML
@@ -60,7 +60,7 @@ public class FXMLTicketsController implements Initializable {
     @FXML
     private TableColumn<Flight, Integer> columnPassengerCount;
     @FXML
-    private TableColumn<Flight, String> columnTravelTime;
+    private TableColumn<Flight, Double> columnTravelTime;
     
     @FXML
     private TextField txtOriginFilter;
@@ -81,9 +81,6 @@ public class FXMLTicketsController implements Initializable {
     private ObservableList<Flight> filteredFlights;
     private FlightDAO flightDAO;
     
-    /**
-     * Inicializa el controlador
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         flightDAO = new FlightDAO();
@@ -91,27 +88,57 @@ public class FXMLTicketsController implements Initializable {
         loadFlights();
     }
     
-    /**
-     * Configura las columnas de la tabla
-     */
     private void configureTableColumns() {
+        // Configurar columnas básicas
         columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        columnAirline.setCellValueFactory(new PropertyValueFactory<>("airline.name"));
-        columnOriginCity.setCellValueFactory(new PropertyValueFactory<>("origin"));
-        columnDestinationCity.setCellValueFactory(new PropertyValueFactory<>("destination"));
+        columnOriginCity.setCellValueFactory(new PropertyValueFactory<>("originCity"));
+        columnDestinationCity.setCellValueFactory(new PropertyValueFactory<>("destinationCity"));
         columnDepartureDate.setCellValueFactory(new PropertyValueFactory<>("departureDate"));
-        columnDepartureHour.setCellValueFactory(new PropertyValueFactory<>("departureTime"));
+        columnDepartureHour.setCellValueFactory(new PropertyValueFactory<>("departureHour"));
         columnArrivalDate.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
-        columnArrivalHour.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
-        columnTicketCost.setCellValueFactory(new PropertyValueFactory<>("price"));
+        columnArrivalHour.setCellValueFactory(new PropertyValueFactory<>("arrivalHour"));
+        columnTicketCost.setCellValueFactory(new PropertyValueFactory<>("ticketCost"));
         columnGate.setCellValueFactory(new PropertyValueFactory<>("gate"));
         columnPassengerCount.setCellValueFactory(new PropertyValueFactory<>("passengerCount"));
         columnTravelTime.setCellValueFactory(new PropertyValueFactory<>("travelTime"));
+        
+        // Configurar columna de aerolínea con manejo de null
+        columnAirline.setCellValueFactory(cellData -> {
+            Flight flight = cellData.getValue();
+            if (flight != null && flight.getAirline() != null) {
+                return new SimpleStringProperty(flight.getAirline().getName());
+            } else {
+                return new SimpleStringProperty("Sin aerolínea");
+            }
+        });
+        
+        // Formatear columna de precio
+        columnTicketCost.setCellFactory(column -> new javafx.scene.control.TableCell<Flight, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("$%.2f", item));
+                }
+            }
+        });
+        
+        // Formatear columna de tiempo de viaje
+        columnTravelTime.setCellFactory(column -> new javafx.scene.control.TableCell<Flight, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%.1f hrs", item));
+                }
+            }
+        });
     }
     
-    /**
-     * Carga los vuelos desde la base de datos
-     */
     private void loadFlights() {
         flights = FXCollections.observableArrayList();
         try {
@@ -121,13 +148,10 @@ public class FXMLTicketsController implements Initializable {
             tableFlights.setItems(filteredFlights);
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error al cargar vuelos", 
-                    "No se pudieron cargar los vuelos: " + e.getMessage());
+                "No se pudieron cargar los vuelos: " + e.getMessage());
         }
     }
     
-    /**
-     * Maneja el evento de aplicar filtros
-     */
     @FXML
     private void handleApplyFilter(ActionEvent event) {
         String origin = txtOriginFilter.getText().trim().toLowerCase();
@@ -135,24 +159,27 @@ public class FXMLTicketsController implements Initializable {
         LocalDate departureDate = dpDepartureDateFilter.getValue();
         
         filteredFlights = FXCollections.observableArrayList(flights.stream()
-                .filter(flight -> 
-                    (origin.isEmpty() || flight.getOriginCity().toLowerCase().contains(origin)) &&
-                    (destination.isEmpty() || flight.getDestinationCity().toLowerCase().contains(destination)) &&
-                    (departureDate == null || flight.getDepartureDate().equals(departureDate))
-                )
-                .collect(Collectors.toList()));
+            .filter(flight -> 
+                (origin.isEmpty() || flight.getOriginCity().toLowerCase().contains(origin)) &&
+                (destination.isEmpty() || flight.getDestinationCity().toLowerCase().contains(destination)) &&
+                (departureDate == null || isSameDate(flight.getDepartureDate(), departureDate))
+            )
+            .collect(Collectors.toList()));
         
         tableFlights.setItems(filteredFlights);
         
         if (filteredFlights.isEmpty()) {
             DialogUtil.showInfoAlert("Sin resultados", 
-                    "No se encontraron vuelos con los criterios especificados.");
+                "No se encontraron vuelos con los criterios especificados.");
         }
     }
     
-    /**
-     * Maneja el evento de limpiar filtros
-     */
+    private boolean isSameDate(Date date1, LocalDate date2) {
+        if (date1 == null || date2 == null) return false;
+        LocalDate localDate1 = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return localDate1.equals(date2);
+    }
+    
     @FXML
     private void handleClearFilter(ActionEvent event) {
         txtOriginFilter.clear();
@@ -163,22 +190,34 @@ public class FXMLTicketsController implements Initializable {
         tableFlights.setItems(filteredFlights);
     }
     
-    /**
-     * Maneja el evento de comprar un boleto
-     */
     @FXML
     private void handleBuyTicket(ActionEvent event) {
         Flight selectedFlight = tableFlights.getSelectionModel().getSelectedItem();
         if (selectedFlight == null) {
             DialogUtil.showWarningAlert("Selección requerida", 
-                    "Debe seleccionar un vuelo para comprar un boleto.");
+                "Debe seleccionar un vuelo para comprar un boleto.");
             return;
         }
         
-        if (selectedFlight.getPassengerCount() >= selectedFlight.getAirplane().getCapacity()) {
-            DialogUtil.showWarningAlert("Vuelo lleno", 
+        // Verificar si el avión existe y tiene capacidad
+        if (selectedFlight.getAirplane() == null) {
+            // Si no hay avión asignado, usar una capacidad por defecto
+            DialogUtil.showWarningAlert("Aviso", 
+                "El vuelo no tiene un avión asignado. Se usará capacidad estándar de 44 asientos.");
+            
+            // Verificar contra capacidad estándar
+            if (selectedFlight.getPassengerCount() >= 44) {
+                DialogUtil.showWarningAlert("Vuelo lleno", 
                     "El vuelo seleccionado no tiene asientos disponibles.");
-            return;
+                return;
+            }
+        } else {
+            // Si hay avión, verificar contra su capacidad
+            if (selectedFlight.getPassengerCount() >= selectedFlight.getAirplane().getCapacity()) {
+                DialogUtil.showWarningAlert("Vuelo lleno", 
+                    "El vuelo seleccionado no tiene asientos disponibles.");
+                return;
+            }
         }
         
         try {
@@ -190,6 +229,9 @@ public class FXMLTicketsController implements Initializable {
             controller.setTicketsController(this);
             
             Scene scene = new Scene(root);
+            // Comentar esta línea si no existe el archivo CSS
+            // scene.getStylesheets().add(getClass().getResource("/javafxappaerolinea/styles/style.css").toExternalForm());
+            
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setTitle("Comprar Boleto");
@@ -197,18 +239,16 @@ public class FXMLTicketsController implements Initializable {
             stage.showAndWait();
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", 
-                    "No se pudo abrir la ventana para comprar boleto: " + e.getMessage());
+                "No se pudo abrir la ventana para comprar boleto: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
-    /**
-     * Maneja el evento de exportar la tabla de vuelos
-     */
     @FXML
     private void handleExport(ActionEvent event) {
         if (filteredFlights == null || filteredFlights.isEmpty()) {
             DialogUtil.showWarningAlert("Sin datos", 
-                    "No hay datos para exportar.");
+                "No hay datos para exportar.");
             return;
         }
         
@@ -217,18 +257,18 @@ public class FXMLTicketsController implements Initializable {
         
         // Configurar filtros para diferentes formatos
         FileChooser.ExtensionFilter xlsxFilter = 
-                new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
+            new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
         FileChooser.ExtensionFilter xlsFilter = 
-                new FileChooser.ExtensionFilter("Excel 97-2003 (*.xls)", "*.xls");
+            new FileChooser.ExtensionFilter("Excel 97-2003 (*.xls)", "*.xls");
         FileChooser.ExtensionFilter csvFilter = 
-                new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
+            new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
         FileChooser.ExtensionFilter pdfFilter = 
-                new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
+            new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
         FileChooser.ExtensionFilter jsonFilter = 
-                new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
+            new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
         
         fileChooser.getExtensionFilters().addAll(xlsxFilter, xlsFilter, csvFilter, pdfFilter, jsonFilter);
-        fileChooser.setSelectedExtensionFilter(xlsxFilter); // Por defecto XLSX
+        fileChooser.setSelectedExtensionFilter(xlsxFilter);
         
         File file = fileChooser.showSaveDialog(btnExport.getScene().getWindow());
         
@@ -254,7 +294,6 @@ public class FXMLTicketsController implements Initializable {
                         ExportUtil.exportToJSON(new ArrayList<>(filteredFlights), filePath);
                         break;
                     default:
-                        // Si no tiene extensión o no es reconocida, usar XLSX por defecto
                         if (!filePath.endsWith(".xlsx")) {
                             filePath += ".xlsx";
                         }
@@ -263,17 +302,14 @@ public class FXMLTicketsController implements Initializable {
                 }
                 
                 DialogUtil.showInfoAlert("Exportación exitosa", 
-                        "Los datos se han exportado correctamente a " + filePath);
+                    "Los datos se han exportado correctamente a " + filePath);
             } catch (Exception e) {
                 DialogUtil.showErrorAlert("Error al exportar", 
-                        "No se pudieron exportar los datos: " + e.getMessage());
+                    "No se pudieron exportar los datos: " + e.getMessage());
             }
         }
     }
     
-    /**
-     * Obtiene la extensión de un archivo
-     */
     private String getFileExtension(String filePath) {
         int lastDotIndex = filePath.lastIndexOf(".");
         if (lastDotIndex > 0) {
@@ -282,9 +318,6 @@ public class FXMLTicketsController implements Initializable {
         return "";
     }
     
-    /**
-     * Actualiza la tabla de vuelos
-     */
     public void refreshFlights() {
         loadFlights();
     }
