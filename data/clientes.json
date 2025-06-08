@@ -5,5 +5,12 @@
     "nationality": "mexicana",
     "name": "miguel",
     "tickets": []
+  },
+  {
+    "email": "roluva@gmail.com",
+    "birthDate": "2003-07-18",
+    "nationality": "Mexico",
+    "name": "Rodrigo Luna",
+    "tickets": []
   }
 ]
