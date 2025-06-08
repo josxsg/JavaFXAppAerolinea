@@ -47,5 +47,27 @@
     "username": "pedriniBo",
     "password": "$2a$10$DlWJRyjGrRPPl8clgPZIgO6HddYnJoAew3CVfuVnkKXBi2LAjWxFu",
     "type": "Pilot"
+  },
+  {
+    "email": "kjksbsajv@gmail.com",
+    "assistanceHours": 78,
+    "numberOfLanguages": 4,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "asdas",
+      "name": "Migiel",
+      "contactPerson": "yo",
+      "phoneNumber": "123",
+      "airplanes": []
+    },
+    "id": "AST-59668",
+    "name": "Juan",
+    "address": "juan",
+    "birthDate": "2001-06-10",
+    "gender": "Femenino",
+    "salary": 45454.0,
+    "username": "juanahaQ",
+    "password": "$2a$10$g5SqpH0pTgiBbrAoDau.4ujSNtKmhiACRjGtJQqcyjCL94XfltZK2",
+    "type": "Assistant"
   }
 ]

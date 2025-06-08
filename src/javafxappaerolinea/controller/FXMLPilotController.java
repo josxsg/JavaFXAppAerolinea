@@ -156,7 +156,7 @@ public class FXMLPilotController implements Initializable, Notification {
         } catch (IOException e) {
             DialogUtil.showErrorAlert(
                 "Error al cargar datos", 
-                "No se pudieron cargar los administrativos: " + e.getMessage()
+                "No se pudieron cargar los pilotos: " + e.getMessage()
             );
         }
     }
