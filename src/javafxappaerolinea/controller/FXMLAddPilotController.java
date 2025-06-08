@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafxappaerolinea.exception.ResourceNotFoundException;
 import javafxappaerolinea.model.dao.EmployeeDAO; 
+import javafxappaerolinea.model.pojo.Airline;
 import javafxappaerolinea.model.pojo.Pilot; 
 import javafxappaerolinea.utility.DialogUtil; 
 
@@ -60,6 +61,7 @@ public class FXMLAddPilotController implements Initializable {
 
     // Esta lista se usará para devolver los pilotos seleccionados a la ventana que llamó
     private List<Pilot> finalSelectedPilots;
+    private Airline selectedAirline;
 
     /**
      * Initializes the controller class.
@@ -76,26 +78,29 @@ public class FXMLAddPilotController implements Initializable {
     }    
 
    
-    public void initData(List<Pilot> currentFlightPilots) {
-        if (currentFlightPilots != null && !currentFlightPilots.isEmpty()) {
+    public void initData(List<Pilot> currentFlightPilots, Airline airline) {
+        this.selectedAirline = airline;
 
+        // Recargar pilotos filtrados por aerolínea
+        if (airline != null) {
+            loadAvailablePilots();
+        }
+
+        if (currentFlightPilots != null && !currentFlightPilots.isEmpty()) {
             List<Pilot> toRemoveFromAvailable = new ArrayList<>();
             for (Pilot currentPilot : currentFlightPilots) {
-                // Busca el piloto por ID en la lista de disponibles
                 Pilot foundPilot = availablePilotsData.stream()
-                                    .filter(p -> p.getId().equals(currentPilot.getId()))
-                                    .findFirst()
-                                    .orElse(null);
+                    .filter(p -> p.getId().equals(currentPilot.getId()))
+                    .findFirst()
+                    .orElse(null);
                 if (foundPilot != null) {
                     addedPilotsData.add(foundPilot);
                     toRemoveFromAvailable.add(foundPilot);
                 } else {
-
                     addedPilotsData.add(currentPilot);
                 }
             }
             availablePilotsData.removeAll(toRemoveFromAvailable);
-            
             finalSelectedPilots.addAll(addedPilotsData);
         }
     }
@@ -126,10 +131,19 @@ public class FXMLAddPilotController implements Initializable {
 
     private void loadAvailablePilots() {
         try {
-            List<Pilot> allPilots = employeeDAO.findAllPilots(); //
-            availablePilotsData.setAll(allPilots); 
+            List<Pilot> allPilots = employeeDAO.findAllPilots();
+
+            // Filtrar por aerolínea si está seleccionada
+            if (selectedAirline != null) {
+                allPilots = allPilots.stream()
+                    .filter(pilot -> pilot.getAirline() != null && 
+                            pilot.getAirline().getIdentificationNumber() == selectedAirline.getIdentificationNumber())
+                    .collect(Collectors.toList());
+            }
+
+            availablePilotsData.setAll(allPilots);
         } catch (IOException e) {
-            DialogUtil.showErrorAlert("Error de carga", "No se pudieron cargar los pilotos disponibles: " + e.getMessage()); //
+            DialogUtil.showErrorAlert("Error de carga", "No se pudieron cargar los pilotos disponibles: " + e.getMessage());
             e.printStackTrace();
         }
     }

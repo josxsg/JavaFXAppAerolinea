@@ -121,8 +121,11 @@ public class FXMLFlightFormController implements Initializable {
             closeWindow();
         } catch (Exception e) {
             DialogUtil.showErrorAlert("Error al guardar", "Ocurrió un error al guardar el vuelo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+    
+    
 
     @FXML
     private void handleAirlineSelection(ActionEvent event) {
@@ -318,34 +321,41 @@ private void applyFormatters() {
     @FXML
     private void btnAddAssistants(ActionEvent event) {
         // Correct path to FXMLAddAssistant.fxml
-        openCrewManagementWindow("view/FXMLAddAsisstant.fxml", "Gestionar Asistentes");
+        openCrewManagementWindow("view/FXMLAddAssistant.fxml", "Gestionar Asistentes");
     }
     
     private void openCrewManagementWindow(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(JavaFXAppAerolinea.class.getResource(fxmlPath));
             Parent root = loader.load();
-            
+
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
+
+            Airline selectedAirline = cbAirline.getValue();
             
             // Logic to pass data to and retrieve data from the new window
             if ("view/FXMLAddPilot.fxml".equals(fxmlPath)) {
                 FXMLAddPilotController controller = loader.getController();
-                controller.initData(this.selectedPilots); // Pass currently selected pilots
+                controller.initData(this.selectedPilots, selectedAirline); // Pass currently selected pilots
                 stage.showAndWait();
                 this.selectedPilots = controller.getFinalSelectedPilots(); // Retrieve final selected pilots
-            } else if ("view/FXMLAddAssistant.fxml".equals(fxmlPath)) { // Corrected FXML name
+            } else if ("view/FXMLAddAssistant.fxml".equals(fxmlPath)) { // Corregido aquí también
                 FXMLAddAssistantController controller = loader.getController();
-                controller.initData(this.selectedAssistants); // Pass currently selected assistants
+                controller.initData(this.selectedAssistants, selectedAirline);// Pass currently selected assistants
                 stage.showAndWait();
-                this.selectedAssistants = controller.getFinalSelectedAssistants(); // Retrieve final selected assistants
+
+                // Obtener los asistentes seleccionados solo si se confirmaron
+                if (controller.isAssistantsConfirmed()) {
+                    this.selectedAssistants = controller.getSelectedAssistants();
+                }
+                // Si no se confirmaron, selectedAssistants mantiene su valor anterior
             } else {
                 stage.showAndWait();
             }
-            
+
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", "No se pudo abrir la ventana de gestión de tripulación: " + e.getMessage());
             e.printStackTrace();

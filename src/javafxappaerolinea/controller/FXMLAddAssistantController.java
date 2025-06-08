@@ -16,8 +16,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafxappaerolinea.exception.ResourceNotFoundException;
 import javafxappaerolinea.model.dao.EmployeeDAO; 
+import javafxappaerolinea.model.pojo.Airline;
 import javafxappaerolinea.model.pojo.Assistant; 
 import javafxappaerolinea.utility.DialogUtil; 
 
@@ -26,59 +26,57 @@ public class FXMLAddAssistantController implements Initializable {
     @FXML
     private TableView<Assistant> tvAvailableAssistants;
     @FXML
-    private TableColumn<Assistant, String> tcAvailableName;
+    private TableColumn tcAvailableName;
     @FXML
     private TableColumn<Assistant, Integer> tcAvailableAge;
     @FXML
-    private TableColumn<Assistant, Integer> tcAvailableAssistanceHours;
+    private TableColumn tcAvailableAssistanceHours;
     @FXML
-    private TableColumn<Assistant, Integer> tcAvailableLanguages;
+    private TableColumn tcAvailableLanguages;
 
     @FXML
     private TableView<Assistant> tvAddedAssistants;
     @FXML
-    private TableColumn<Assistant, String> tcAddedName;
+    private TableColumn tcAddedName;
     @FXML
     private TableColumn<Assistant, Integer> tcAddedAge;
     @FXML
-    private TableColumn<Assistant, Integer> tcAddedAssistanceHours;
+    private TableColumn tcAddedAssistanceHours;
     @FXML
-    private TableColumn<Assistant, Integer> tcAddedLanguages;
+    private TableColumn tcAddedLanguages;
 
     private ObservableList<Assistant> availableAssistantsData;
     private ObservableList<Assistant> addedAssistantsData;
     
     private EmployeeDAO employeeDAO;
-
-    private List<Assistant> finalSelectedAssistants;
-    private List<Assistant> initialAssistants; // Para guardar el estado inicial
-    private boolean changesSaved = false; // Para rastrear si se guardaron cambios
+    private boolean assistantsConfirmed = false;
+    private Airline selectedAirline;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         employeeDAO = new EmployeeDAO();
         availableAssistantsData = FXCollections.observableArrayList();
         addedAssistantsData = FXCollections.observableArrayList();
-        finalSelectedAssistants = new ArrayList<>();
-        initialAssistants = new ArrayList<>();
 
         configureTableColumns();
         loadAvailableAssistants();
     }    
 
-    public void initData(List<Assistant> currentFlightAssistants) {
-        // Guardar el estado inicial
-        if (currentFlightAssistants != null) {
-            initialAssistants.addAll(currentFlightAssistants);
+    public void initData(List<Assistant> currentFlightAssistants, Airline airline) {
+        this.selectedAirline = airline;
+
+        // Recargar asistentes filtrados por aerolínea
+        if (airline != null) {
+            loadAvailableAssistants();
         }
-        
+
         if (currentFlightAssistants != null && !currentFlightAssistants.isEmpty()) {
             List<Assistant> toRemoveFromAvailable = new ArrayList<>();
             for (Assistant currentAssistant : currentFlightAssistants) {
                 Assistant foundAssistant = availableAssistantsData.stream()
-                                        .filter(a -> a.getId().equals(currentAssistant.getId()))
-                                        .findFirst()
-                                        .orElse(null);
+                    .filter(a -> a.getId().equals(currentAssistant.getId()))
+                    .findFirst()
+                    .orElse(null);
                 if (foundAssistant != null) {
                     addedAssistantsData.add(foundAssistant);
                     toRemoveFromAvailable.add(foundAssistant);
@@ -87,19 +85,15 @@ public class FXMLAddAssistantController implements Initializable {
                 }
             }
             availableAssistantsData.removeAll(toRemoveFromAvailable);
-            
-            // Sincronizar finalSelectedAssistants con el estado inicial
-            finalSelectedAssistants.clear();
-            finalSelectedAssistants.addAll(addedAssistantsData); 
         }
     }
 
-    public List<Assistant> getFinalSelectedAssistants() {
-        // Si no se guardaron cambios, devolver la lista inicial
-        if (!changesSaved) {
-            return new ArrayList<>(initialAssistants);
-        }
-        return new ArrayList<>(finalSelectedAssistants);
+    public List<Assistant> getSelectedAssistants() {
+        return new ArrayList<>(addedAssistantsData);
+    }
+    
+    public boolean isAssistantsConfirmed() {
+        return assistantsConfirmed;
     }
 
     private void configureTableColumns() {
@@ -132,10 +126,20 @@ public class FXMLAddAssistantController implements Initializable {
 
     private void loadAvailableAssistants() {
         try {
-            List<Assistant> allAssistants = employeeDAO.findAllAssistants(); 
-            availableAssistantsData.setAll(allAssistants); 
+            List<Assistant> allAssistants = employeeDAO.findAllAssistants();
+
+            // Filtrar por aerolínea si está seleccionada
+            if (selectedAirline != null) {
+                allAssistants = allAssistants.stream()
+                    .filter(assistant -> assistant.getAirline() != null && 
+                            assistant.getAirline().getIdentificationNumber() == selectedAirline.getIdentificationNumber())
+                    .collect(Collectors.toList());
+            }
+
+            availableAssistantsData.setAll(allAssistants);
         } catch (IOException e) {
-            DialogUtil.showErrorAlert("Error de carga", "No se pudieron cargar los asistentes disponibles: " + e.getMessage()); 
+            DialogUtil.showErrorAlert("Error de carga", 
+                "No se pudieron cargar los asistentes disponibles: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -147,12 +151,13 @@ public class FXMLAddAssistantController implements Initializable {
             if (addedAssistantsData.size() < 4) { 
                 availableAssistantsData.remove(selectedAssistant);
                 addedAssistantsData.add(selectedAssistant);
-                // No actualizar finalSelectedAssistants aquí, solo al guardar
             } else {
-                DialogUtil.showWarningAlert("Límite de Asistentes", "Un vuelo solo puede tener un máximo de 4 asistentes."); 
+                DialogUtil.showWarningAlert("Límite de Asistentes", 
+                    "Un vuelo solo puede tener un máximo de 4 asistentes."); 
             }
         } else {
-            DialogUtil.showWarningAlert("Sin selección", "Por favor, selecciona un asistente de la tabla de asistentes disponibles."); 
+            DialogUtil.showWarningAlert("Sin selección", 
+                "Por favor, selecciona un asistente de la tabla de asistentes disponibles."); 
         }
     }
 
@@ -162,36 +167,38 @@ public class FXMLAddAssistantController implements Initializable {
         if (selectedAssistant != null) {
             addedAssistantsData.remove(selectedAssistant);
             availableAssistantsData.add(selectedAssistant);
-            // No actualizar finalSelectedAssistants aquí, solo al guardar
         } else {
-            DialogUtil.showWarningAlert("Sin selección", "Por favor, selecciona un asistente de la tabla de asistentes añadidos."); 
+            DialogUtil.showWarningAlert("Sin selección", 
+                "Por favor, selecciona un asistente de la tabla de asistentes añadidos."); 
         }
     }
 
     @FXML
     private void btnSaveChanges(ActionEvent event) {
         if (addedAssistantsData.isEmpty()) {
-            DialogUtil.showWarningAlert("Asistentes Requeridos", "Debe añadir al menos un asistente al vuelo."); 
+            DialogUtil.showWarningAlert("Asistentes Requeridos", 
+                "Debe añadir al menos un asistente al vuelo."); 
             return;
         }
+        
         if (addedAssistantsData.size() > 4) {
-             DialogUtil.showWarningAlert("Límite de Asistentes", "Un vuelo solo puede tener un máximo de 4 asistentes. Por favor, remueve asistentes de la lista de añadidos."); 
-             return;
+            DialogUtil.showWarningAlert("Límite de Asistentes", 
+                "Un vuelo solo puede tener un máximo de 4 asistentes."); 
+            return;
         }
 
-        // Actualizar finalSelectedAssistants solo cuando se guardan los cambios
-        changesSaved = true;
-        finalSelectedAssistants.clear();
-        finalSelectedAssistants.addAll(addedAssistantsData);
+        // Marcar que se confirmaron los asistentes
+        assistantsConfirmed = true;
         
-        DialogUtil.showInfoAlert("Cambios guardados", "Los asistentes seleccionados han sido registrados."); 
+        DialogUtil.showInfoAlert("Cambios guardados", 
+            "Los asistentes seleccionados han sido registrados."); 
         closeWindow();
     }
 
     @FXML
     private void btnCancel(ActionEvent event) {
-        // No marcar cambios como guardados
-        changesSaved = false;
+        // No confirmar los cambios
+        assistantsConfirmed = false;
         closeWindow();
     }
 
