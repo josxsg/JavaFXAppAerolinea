@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.dao;
 
 import javafxappaerolinea.exception.DuplicateResourceException;
@@ -11,16 +7,17 @@ import javafxappaerolinea.utility.JsonUtil;
 
 import java.io.IOException;
 import java.util.List;
-/**
- *
- * @author Dell
- */
+
 public class CustomerDAO {
     private final JsonUtil<Customer> persistence;
     private static final String FILE_PATH = "data/clientes.json";
 
     public CustomerDAO() {
         this.persistence = new JsonUtil<>(FILE_PATH, Customer.class);
+    }
+    
+      public CustomerDAO(String testFilePath) {
+        this.persistence = new JsonUtil<>(testFilePath, Customer.class);
     }
 
     public List<Customer> findAll() throws IOException {

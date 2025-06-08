@@ -73,7 +73,6 @@ public class FXMLFlightFormController implements Initializable {
     private Flight flight;
     private boolean isEditMode;
     
-    // Listas para guardar la tripulación seleccionada en las ventanas modales
     private List<Pilot> selectedPilots = new ArrayList<>();
     private List<Assistant> selectedAssistants = new ArrayList<>();
 
@@ -164,7 +163,6 @@ public class FXMLFlightFormController implements Initializable {
 
         flight.setTravelTime(calculateTravelTime(departureDateTime, arrivalDateTime));
         
-        // Ensure selectedPilots and selectedAssistants are properly set
         flight.setPilots(this.selectedPilots);
         flight.setAssistants(this.selectedAssistants);
     }
@@ -176,15 +174,14 @@ public class FXMLFlightFormController implements Initializable {
         tfGate.setText(flight.getGate());
 
         cbAirline.setValue(flight.getAirline());
-        handleAirlineSelection(null); // Carga los aviones de la aerolínea
+        handleAirlineSelection(null); 
         cbAirplane.setValue(flight.getAirplane());
         
         dpDepartureDate.setValue(flight.getDepartureDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         dpArrivalDate.setValue(flight.getArrivalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         tfDepartureHour.setText(flight.getDepartureHour());
-        tfArrivalHour.setText(String.format("%02d:00", flight.getArrivalHour())); // Formato HH:MM
+        tfArrivalHour.setText(String.format("%02d:00", flight.getArrivalHour())); 
         
-        // Initialize selectedPilots and selectedAssistants from the loaded flight
         this.selectedPilots = new ArrayList<>(flight.getPilots());
         this.selectedAssistants = new ArrayList<>(flight.getAssistants());
     }
@@ -224,7 +221,6 @@ public class FXMLFlightFormController implements Initializable {
             lbAirplaneError.setText("Seleccione un avión"); isValid = false;
         }
         
-        // Validar secuencia de fechas
         if (isValid) {
             try {
                 LocalDateTime departure = LocalDateTime.of(dpDepartureDate.getValue(), java.time.LocalTime.parse(tfDepartureHour.getText()));
@@ -234,11 +230,9 @@ public class FXMLFlightFormController implements Initializable {
                     isValid = false;
                 }
             } catch (DateTimeParseException e) {
-                // Ya manejado por las validaciones de formato de hora
             }
         }
 
-        // Validate that at least one pilot and one assistant are selected
         if (selectedPilots.isEmpty()) {
             DialogUtil.showWarningAlert("Pilotos Requeridos", "Debe añadir al menos un piloto al vuelo.");
             isValid = false;
@@ -320,7 +314,6 @@ private void applyFormatters() {
 
     @FXML
     private void btnAddAssistants(ActionEvent event) {
-        // Correct path to FXMLAddAssistant.fxml
         openCrewManagementWindow("view/FXMLAddAssistant.fxml", "Gestionar Asistentes");
     }
     
@@ -336,22 +329,19 @@ private void applyFormatters() {
 
             Airline selectedAirline = cbAirline.getValue();
             
-            // Logic to pass data to and retrieve data from the new window
             if ("view/FXMLAddPilot.fxml".equals(fxmlPath)) {
                 FXMLAddPilotController controller = loader.getController();
-                controller.initData(this.selectedPilots, selectedAirline); // Pass currently selected pilots
+                controller.initData(this.selectedPilots, selectedAirline); 
                 stage.showAndWait();
-                this.selectedPilots = controller.getFinalSelectedPilots(); // Retrieve final selected pilots
-            } else if ("view/FXMLAddAssistant.fxml".equals(fxmlPath)) { // Corregido aquí también
+                this.selectedPilots = controller.getFinalSelectedPilots(); 
+            } else if ("view/FXMLAddAssistant.fxml".equals(fxmlPath)) { 
                 FXMLAddAssistantController controller = loader.getController();
-                controller.initData(this.selectedAssistants, selectedAirline);// Pass currently selected assistants
+                controller.initData(this.selectedAssistants, selectedAirline);
                 stage.showAndWait();
 
-                // Obtener los asistentes seleccionados solo si se confirmaron
                 if (controller.isAssistantsConfirmed()) {
                     this.selectedAssistants = controller.getSelectedAssistants();
                 }
-                // Si no se confirmaron, selectedAssistants mantiene su valor anterior
             } else {
                 stage.showAndWait();
             }

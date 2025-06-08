@@ -17,17 +17,21 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TableCell; // Importar TableCell
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
+import java.io.File;
 import javafxappaerolinea.model.dao.FlightDAO;
 import javafxappaerolinea.model.pojo.Airline;
 import javafxappaerolinea.model.pojo.Flight;
 import javafxappaerolinea.utility.DialogUtil;
+import javafxappaerolinea.utility.ExportUtil;
+
 
 public class FXMLShowFlightsController implements Initializable {
 
@@ -40,13 +44,13 @@ public class FXMLShowFlightsController implements Initializable {
     @FXML
     private TableColumn<Flight, String> tcDestinationCity;
     @FXML
-    private TableColumn<Flight, Date> tcDepartureDate; // Corrected type to Date
+    private TableColumn<Flight, Date> tcDepartureDate;
     @FXML
     private TableColumn<Flight, String> tcDepartureHour;
     @FXML
-    private TableColumn<Flight, Date> tcArrivalDate; // Corrected type to Date
+    private TableColumn<Flight, Date> tcArrivalDate;
     @FXML
-    private TableColumn<Flight, String> tcArrivalHour; // Corrected type to String
+    private TableColumn<Flight, String> tcArrivalHour;
     @FXML
     private TableColumn<Flight, Double> tcTravelTime;
     @FXML
@@ -86,10 +90,7 @@ public class FXMLShowFlightsController implements Initializable {
         tcOriginCity.setCellValueFactory(new PropertyValueFactory<>("originCity"));
         tcDestinationCity.setCellValueFactory(new PropertyValueFactory<>("destinationCity"));
 
-        // Corrected setup for Date columns:
-        // 1. setCellValueFactory maps the property
         tcDepartureDate.setCellValueFactory(new PropertyValueFactory<>("departureDate"));
-        // 2. setCellFactory defines how the Date object is displayed as a String
         tcDepartureDate.setCellFactory(column -> {
             return new TableCell<Flight, Date>() {
                 @Override
@@ -205,11 +206,79 @@ public class FXMLShowFlightsController implements Initializable {
 
     @FXML
     private void btnExport(ActionEvent event) {
-        // This method is intentionally left empty as per user request to omit export functionality.
-        // If export is needed in the future, the code can be re-added here.
+        try {
+            List<Flight> flightsToExport = tvFlights.getItems();
+
+            if (flightsToExport.isEmpty()) {
+                DialogUtil.showWarningAlert(
+                    "Sin datos",
+                    "No hay vuelos para exportar."
+                );
+                return;
+            }
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Exportar Vuelos");
+
+            FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
+            FileChooser.ExtensionFilter xlsFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
+            FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
+            FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
+            FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
+
+            fileChooser.getExtensionFilters().addAll(csvFilter, xlsFilter, xlsxFilter, pdfFilter, jsonFilter);
+
+            File file = fileChooser.showSaveDialog(tvFlights.getScene().getWindow());
+
+            if (file != null) {
+                String filePath = file.getAbsolutePath();
+                String extension = getFileExtension(filePath).toLowerCase();
+
+                String title = "Reporte de Vuelos";
+                String sheetName = "Vuelos";
+
+                switch (extension) {
+                    case "csv":
+                        ExportUtil.exportToCSV(flightsToExport, filePath);
+                        break;
+                    case "xls":
+                        ExportUtil.exportToXLS(flightsToExport, filePath, sheetName);
+                        break;
+                    case "xlsx":
+                        ExportUtil.exportToXLSX(flightsToExport, filePath, sheetName);
+                        break;
+                    case "pdf":
+                        ExportUtil.exportToPDF(flightsToExport, filePath, title);
+                        break;
+                    case "json":
+                        ExportUtil.exportToJSON(flightsToExport, filePath);
+                        break;
+                    default:
+                        if (!filePath.endsWith(".xlsx")) {
+                            filePath += ".xlsx";
+                        }
+                        ExportUtil.exportToXLSX(flightsToExport, filePath, sheetName);
+                        break;
+                }
+                
+                DialogUtil.showInfoAlert(
+                    "Exportación Exitosa",
+                    "Los datos se han exportado correctamente a: " + file.getName()
+                );
+            }
+        } catch (IOException ex) {
+            DialogUtil.showErrorAlert(
+                "Error",
+                "Error al exportar los datos: " + ex.getMessage()
+            );
+        } catch (Exception ex) {
+            DialogUtil.showErrorAlert(
+                "Error",
+                "Error inesperado al exportar: " + ex.getMessage()
+            );
+            ex.printStackTrace();
+        }
     }
-    
-    // Removed the getFileExtension helper method as it was only used by btnExport.
     
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
@@ -223,5 +292,13 @@ public class FXMLShowFlightsController implements Initializable {
     private void btnClose(ActionEvent event) {
         Stage stage = (Stage) tvFlights.getScene().getWindow();
         stage.close();
+    }
+
+    private String getFileExtension(String fileName) {
+        int lastDotIndex = fileName.lastIndexOf(".");
+        if (lastDotIndex > 0) {
+            return fileName.substring(lastDotIndex + 1);
+        }
+        return "";
     }
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -24,11 +20,7 @@ import javafxappaerolinea.model.pojo.Airline;
 import javafxappaerolinea.model.pojo.Airplane;
 import javafxappaerolinea.utility.DialogUtil;
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
+
 public class FXMLAirplaneFormController implements Initializable {
 
     @FXML
@@ -46,7 +38,6 @@ public class FXMLAirplaneFormController implements Initializable {
     @FXML
     private ComboBox<Airline> cbAirline;
     
-    // Suponiendo que existen estos Labels en el FXML para mostrar errores
     @FXML private Label lbRegistrationError;
     @FXML private Label lbModelError;
     @FXML private Label lbCapacityError;
@@ -72,10 +63,8 @@ public class FXMLAirplaneFormController implements Initializable {
     }    
 
     private void configureForm() {
-        // Cargar opciones de estado
         cbStatus.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
 
-        // Cargar aerolíneas y configurar cómo se muestran
         try {
             cbAirline.setItems(FXCollections.observableArrayList(airlineDAO.findAll()));
             cbAirline.setConverter(new StringConverter<Airline>() {
@@ -86,14 +75,13 @@ public class FXMLAirplaneFormController implements Initializable {
 
                 @Override
                 public Airline fromString(String string) {
-                    return null; // No se necesita conversión inversa
+                    return null; 
                 }
             });
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error de Carga", "No se pudieron cargar las aerolíneas.");
         }
         
-        // Formateadores para campos numéricos
         tfCapacity.setTextFormatter(new TextFormatter<>(c -> c.getControlNewText().matches("\\d*") ? c : null));
         tfAge.setTextFormatter(new TextFormatter<>(c -> c.getControlNewText().matches("\\d*") ? c : null));
         tfWeight.setTextFormatter(new TextFormatter<>(c -> c.getControlNewText().matches("\\d*\\.?\\d*") ? c : null));
@@ -101,25 +89,22 @@ public class FXMLAirplaneFormController implements Initializable {
 
     public void initData(Airplane airplane) {
         if (airplane != null) {
-            // Modo Edición
             this.isEditMode = true;
             this.airplane = airplane;
             
             tfRegistration.setText(airplane.getRegistration());
-            tfRegistration.setDisable(true); // La matrícula no se puede editar
+            tfRegistration.setDisable(true); 
             tfModel.setText(airplane.getModel());
             tfCapacity.setText(String.valueOf(airplane.getCapacity()));
             tfAge.setText(String.valueOf(airplane.getAge()));
             tfWeight.setText(String.valueOf(airplane.getWeight()));
             cbStatus.setValue(airplane.isStatus() ? "Activo" : "Inactivo");
             
-            // Seleccionar la aerolínea correcta en el ComboBox
             if (airplane.getAirline() != null) {
                 cbAirline.getSelectionModel().select(airplane.getAirline());
             }
 
         } else {
-            // Modo Creación
             this.isEditMode = false;
             this.airplane = new Airplane();
         }

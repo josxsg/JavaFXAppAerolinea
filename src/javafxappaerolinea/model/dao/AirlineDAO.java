@@ -22,6 +22,9 @@ public class AirlineDAO {
     public AirlineDAO() {
         this.persistence = new JsonUtil<>(FILE_PATH, Airline.class);
     }
+        public AirlineDAO(String filePath) {
+        this.persistence = new JsonUtil<>(filePath, Airline.class);
+    }
 
     public List<Airline> findAll() throws IOException {
         return persistence.loadAll();

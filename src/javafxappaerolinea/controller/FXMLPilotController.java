@@ -28,11 +28,7 @@ import javafxappaerolinea.observable.Notification;
 import javafxappaerolinea.utility.DialogUtil;
 import javafxappaerolinea.utility.ExportUtil;
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
+
 public class FXMLPilotController implements Initializable, Notification {
 
     @FXML
@@ -120,7 +116,6 @@ public class FXMLPilotController implements Initializable, Notification {
     @FXML
     private void btnExport(ActionEvent event) {
         try {
-            // Obtener los pilotos para exportar
             List<Pilot> pilotsToExport = tvPilots.getItems();
 
             if (pilotsToExport.isEmpty()) {
@@ -131,11 +126,9 @@ public class FXMLPilotController implements Initializable, Notification {
                 return;
             }
 
-            // Configurar el diálogo de guardar archivo
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Archivo");
 
-            // Configurar los filtros de extensión (solo CSV, Excel y PDF)
             FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
             FileChooser.ExtensionFilter xlsFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
             FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
@@ -143,21 +136,16 @@ public class FXMLPilotController implements Initializable, Notification {
 
             fileChooser.getExtensionFilters().addAll(csvFilter, xlsFilter, xlsxFilter, pdfFilter);
 
-            // Mostrar el diálogo de guardar
             File file = fileChooser.showSaveDialog(tvPilots.getScene().getWindow());
 
             if (file != null) {
                 String filePath = file.getAbsolutePath();
                 String extension = getFileExtension(file.getName()).toLowerCase();
 
-                // Crear título para el documento
                 String title = "Pilotos - Aerolínea";
-                // Crear nombre para la hoja de Excel
                 String sheetName = "Pilotos";
 
-                // Crear una lista con los nombres de las columnas en el orden deseado
                 List<String> columnOrder = new ArrayList<>();
-                // Primero los campos de Employee
                 columnOrder.add("id");
                 columnOrder.add("name");
                 columnOrder.add("address");
@@ -165,13 +153,11 @@ public class FXMLPilotController implements Initializable, Notification {
                 columnOrder.add("gender");
                 columnOrder.add("salary");
                 columnOrder.add("username");
-                // Luego los campos específicos de Pilot
                 columnOrder.add("yearsExperience");
                 columnOrder.add("flightHours");
                 columnOrder.add("licenseType");
                 columnOrder.add("email");
 
-                // Exportar según el formato seleccionado
                 switch (extension) {
                     case "csv":
                         ExportUtil.exportToCSV(pilotsToExport, filePath, columnOrder);
@@ -213,7 +199,6 @@ public class FXMLPilotController implements Initializable, Notification {
 
 @FXML
 private void btnViewFlights(ActionEvent event) {
-    // Get the currently selected pilot from the table
     Pilot selectedPilot = getSelectedPilot(); 
 
     if (selectedPilot != null) {
@@ -221,12 +206,11 @@ private void btnViewFlights(ActionEvent event) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/javafxappaerolinea/view/FXMLPilotUpcomingFlights.fxml"));
             Parent root = loader.load();
 
-            // Get the controller and pass the selected pilot data
             FXMLPilotUpcomingFlightsController controller = loader.getController();
-            controller.initData(selectedPilot); // Pass the selected pilot to the Upcoming Flights controller
+            controller.initData(selectedPilot); 
 
             Stage stage = new Stage();
-            stage.setTitle("Vuelos Próximos del Piloto: " + selectedPilot.getName()); // Set title dynamically
+            stage.setTitle("Vuelos Próximos del Piloto: " + selectedPilot.getName());
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
@@ -310,7 +294,7 @@ private void btnViewFlights(ActionEvent event) {
     private String getFileExtension(String fileName) {
         int lastIndexOf = fileName.lastIndexOf(".");
         if (lastIndexOf == -1) {
-            return ""; // No hay extensión
+            return ""; 
         }
         return fileName.substring(lastIndexOf + 1);
     }

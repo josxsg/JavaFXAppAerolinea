@@ -72,19 +72,30 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
     private TextField tfFilterDestination;
     
     private ObservableList<Flight> upcomingFlights;
-    private Assistant currentAssistant; // Changed from loggedAssistant and made accessible for initData
+    private Assistant currentAssistant; 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTableColumns();
-        // loadUpcomingFlights(); // Removed this call from here, it will be called by initData
+        javafx.application.Platform.runLater(() -> {
+            if (currentAssistant == null) {
+                Object user = SessionManager.getInstance().getCurrentUser();
+                if (user instanceof Assistant) {
+                    currentAssistant = (Assistant) user;
+                }
+            }
+            
+            if (currentAssistant != null) {
+                loadUpcomingFlights();
+            } else {
+                showAlert("Error", "No se pudo obtener el asistente actual.", Alert.AlertType.ERROR);
+            }
+        });
     }
-
-    // New method to initialize data for the controller
+    
     public void initData(Assistant assistant) {
         this.currentAssistant = assistant;
-        loadUpcomingFlights(); // Call loadUpcomingFlights after the assistant is set
     }
     
     private void configureTableColumns() {
@@ -98,7 +109,6 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
         tcGate.setCellValueFactory(new PropertyValueFactory<>("gate"));
         tcPassengerCount.setCellValueFactory(new PropertyValueFactory<>("passengerCount"));
         
-        // Configuración para mostrar el nombre de la aerolínea
         tcAirline.setCellValueFactory(cellData -> {
             if (cellData.getValue().getAirline() != null) {
                 return new SimpleStringProperty(cellData.getValue().getAirline().getName());
@@ -106,7 +116,6 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
             return new SimpleStringProperty("");
         });
         
-        // Formato para las fechas
         tcDepartureDate.setCellFactory(column -> {
             return new TableCell<Flight, Date>() {
                 @Override
@@ -138,13 +147,10 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
     
     private void loadUpcomingFlights() {
         try {
-            // Use the currentAssistant object passed via initData
             if (currentAssistant != null) {
-                // Obtener todos los vuelos
                 FlightDAO flightDAO = new FlightDAO();
                 List<Flight> allFlights = flightDAO.findAll();
             
-                // Filtrar los vuelos donde el asistente actual está asignado
                 Date today = new Date();
                 List<Flight> futureFlights = allFlights.stream()
                     .filter(flight -> flight.getAssistants().stream()
@@ -159,10 +165,7 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
             }
         } catch (IOException ex) {
             showAlert("Error", "Error al cargar los datos: " + ex.getMessage(), Alert.AlertType.ERROR);
-        } catch (Exception ex) {
-            showAlert("Error", "No se pudieron cargar los vuelos programados: " + ex.getMessage(), Alert.AlertType.ERROR);
-            ex.printStackTrace(); // Print stack trace for debugging unexpected exceptions
-        }
+        } 
     }
     
     @FXML
@@ -200,7 +203,7 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
                 stage.setTitle("Detalles del Vuelo");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 showAlert("Error", "No se pudo abrir la ventana de detalles: " + ex.getMessage(), Alert.AlertType.ERROR);
             }
         } else {
@@ -211,7 +214,6 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
     @FXML
     private void btnExport(ActionEvent event) {
         try {
-            // Obtener los vuelos filtrados para exportar
             List<Flight> flightsToExport = tvUpcomingFlights.getItems();
         
             if (flightsToExport.isEmpty()) {
@@ -219,11 +221,9 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
                 return;
             }
         
-            // Configurar el diálogo de guardar archivo
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Archivo");
         
-            // Configurar los filtros de extensión
             FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
             FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
             FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
@@ -231,14 +231,12 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
         
             fileChooser.getExtensionFilters().addAll(csvFilter, xlsxFilter, pdfFilter, jsonFilter);
         
-            // Mostrar el diálogo de guardar
             File file = fileChooser.showSaveDialog(tvUpcomingFlights.getScene().getWindow());
         
             if (file != null) {
                 String filePath = file.getAbsolutePath();
                 String extension = getFileExtension(file.getName()).toLowerCase();
                 
-                // Determinar el tipo de usuario para personalizar el título
                 String userType = "";
                 Object currentUser = SessionManager.getInstance().getCurrentUser();
                 if (currentUser instanceof Pilot) {
@@ -247,7 +245,6 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
                     userType = "Asistente";
                 }
             
-                // Determinar si son vuelos próximos o pasados para el título
                 String flightType = "";
                 if (this.getClass().getSimpleName().contains("Upcoming")) {
                     flightType = "Próximos";
@@ -255,12 +252,9 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
                     flightType = "Pasados";
                 }
             
-                // Crear título para el documento
                 String title = "Vuelos " + flightType + " - " + userType;
-                // Crear nombre para la hoja de Excel
                 String sheetName = "Vuelos" + flightType;
             
-                // Exportar según el formato seleccionado
                 switch (extension) {
                     case "csv":
                         ExportUtil.exportToCSV(flightsToExport, filePath);
@@ -282,20 +276,13 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
             }
         } catch (IOException ex) {
             showAlert("Error", "Error al exportar los datos: " + ex.getMessage(), Alert.AlertType.ERROR);
-        } catch (Exception ex) {
-            showAlert("Error", "Error inesperado: " + ex.getMessage(), Alert.AlertType.ERROR);
-        }
+        } 
     }
 
-    /**
-     * Obtiene la extensión de un archivo a partir de su nombre
-     * @param fileName Nombre del archivo
-     * @return Extensión del archivo
-     */
     private String getFileExtension(String fileName) {
         int lastIndexOf = fileName.lastIndexOf(".");
         if (lastIndexOf == -1) {
-            return ""; // No hay extensión
+            return ""; 
         }
         return fileName.substring(lastIndexOf + 1);
     }

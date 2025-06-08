@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package javafxappaerolinea.service;
 
 import java.io.IOException;
@@ -11,16 +8,17 @@ import javafxappaerolinea.model.dao.EmployeeDAO;
 import javafxappaerolinea.model.pojo.Employee;
 import javafxappaerolinea.utility.PasswordUtil;
 
-/**
- *
- * @author Dell
- */
 public class AuthenticationService {
     private final EmployeeDAO employeeDAO;
     
     public AuthenticationService() {
         this.employeeDAO = new EmployeeDAO();
     }
+    
+    public AuthenticationService(EmployeeDAO employeeDAO) {
+    this.employeeDAO = employeeDAO;
+}
+
     
     public Employee login(String username, String password) throws AuthenticationException {
         try {

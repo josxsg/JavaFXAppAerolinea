@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -34,11 +30,7 @@ import javafxappaerolinea.utility.IdGeneratorUtil;
 import javafxappaerolinea.utility.PasswordUtil;
 import javafxappaerolinea.utility.ValidationUtil;
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
+
 public class FXMLPilotFormController implements Initializable {
 
     @FXML
@@ -159,7 +151,6 @@ public class FXMLPilotFormController implements Initializable {
             tfSalary.setText(String.valueOf(pilotToEdit.getSalary()));
             tfUsername.setText(pilotToEdit.getUsername());
             
-            // Seleccionar la aerolínea correcta
             if (pilotToEdit.getAirline() != null) {
                 for (Airline airline : cbAirline.getItems()) {
                     if (airline.getIdentificationNumber()== pilotToEdit.getAirline().getIdentificationNumber()) {
@@ -169,7 +160,6 @@ public class FXMLPilotFormController implements Initializable {
                 }
             }
             
-            // No cargar la contraseña por seguridad
             pfPassword.setPromptText("Dejar en blanco para mantener la actual");
         }
     }
@@ -294,7 +284,6 @@ public class FXMLPilotFormController implements Initializable {
         pilot.setFlightHours(Double.parseDouble(tfFlightHours.getText().trim()));
         pilot.setLicenseType(tfLicenseType.getText().trim());
         
-        // Convertir LocalDate a Date
         LocalDate localDate = dpBirthDate.getValue();
         Date birthDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         pilot.setBirthDate(birthDate);
@@ -303,12 +292,10 @@ public class FXMLPilotFormController implements Initializable {
         pilot.setSalary(Double.parseDouble(tfSalary.getText().trim()));
         pilot.setUsername(tfUsername.getText().trim());
         
-        // Manejar la contraseña
         if (!isEditing || !pfPassword.getText().isEmpty()) {
             String hashedPassword = PasswordUtil.hashPassword(pfPassword.getText());
             pilot.setPassword(hashedPassword);
         } else {
-            // Mantener la contraseña existente
             pilot.setPassword(pilotToEdit.getPassword());
         }
         

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -33,11 +29,7 @@ import javafxappaerolinea.utility.IdGeneratorUtil;
 import javafxappaerolinea.utility.PasswordUtil;
 import javafxappaerolinea.utility.ValidationUtil;
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
+
 public class FXMLAdminFormController implements Initializable {
 
     @FXML
@@ -118,7 +110,6 @@ public class FXMLAdminFormController implements Initializable {
             tfDepartment.setText(adminToEdit.getDepartment());
             tfWorkHours.setText(String.valueOf(adminToEdit.getWorkHours()));
             
-            // Convertir Date a LocalDate para el DatePicker
             Date birthDate = adminToEdit.getBirthDate();
             if (birthDate != null) {
                 LocalDate localDate = birthDate.toInstant()
@@ -131,7 +122,6 @@ public class FXMLAdminFormController implements Initializable {
             tfSalary.setText(String.valueOf(adminToEdit.getSalary()));
             tfUsername.setText(adminToEdit.getUsername());
             
-            // No cargar la contraseña por seguridad
             pfPassword.setVisible(false);
         }
     }

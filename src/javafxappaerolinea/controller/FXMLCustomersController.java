@@ -29,10 +29,7 @@ import javafxappaerolinea.model.pojo.Customer;
 import javafxappaerolinea.utility.DialogUtil;
 import javafxappaerolinea.utility.ExportUtil;
 
-/**
- * Controlador para la vista de clientes
- * @author zenbook i5
- */
+
 public class FXMLCustomersController implements Initializable {
 
     @FXML
@@ -63,19 +60,14 @@ public class FXMLCustomersController implements Initializable {
         loadCustomers();
     }    
 
-    /**
-     * Configura las columnas de la tabla
-     */
+
     private void configureTableColumns() {
         columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         columnBirthDate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
         columnNationality.setCellValueFactory(new PropertyValueFactory<>("nationality"));
     }
-    
-    /**
-     * Carga los clientes desde la base de datos
-     */
+
     private void loadCustomers() {
         customers = FXCollections.observableArrayList();
         try {
@@ -88,9 +80,7 @@ public class FXMLCustomersController implements Initializable {
         }
     }
 
-    /**
-     * Maneja el evento de agregar un nuevo cliente
-     */
+
     @FXML
     private void handleAddCustomer(ActionEvent event) {
         try {
@@ -112,9 +102,7 @@ public class FXMLCustomersController implements Initializable {
         }
     }
 
-    /**
-     * Maneja el evento de exportar la tabla de clientes
-     */
+
     @FXML
     private void handleExport(ActionEvent event) {
         if (customers == null || customers.isEmpty()) {
@@ -126,7 +114,6 @@ public class FXMLCustomersController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Exportar Clientes");
         
-        // Configurar filtros para diferentes formatos
         FileChooser.ExtensionFilter xlsxFilter = 
                 new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
         FileChooser.ExtensionFilter xlsFilter = 
@@ -139,7 +126,7 @@ public class FXMLCustomersController implements Initializable {
                 new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
         
         fileChooser.getExtensionFilters().addAll(xlsxFilter, xlsFilter, csvFilter, pdfFilter, jsonFilter);
-        fileChooser.setSelectedExtensionFilter(xlsxFilter); // Por defecto XLSX
+        fileChooser.setSelectedExtensionFilter(xlsxFilter); 
         
         File file = fileChooser.showSaveDialog(btnExport.getScene().getWindow());
         
@@ -165,7 +152,6 @@ public class FXMLCustomersController implements Initializable {
                         ExportUtil.exportToJSON(new ArrayList<>(customers), filePath);
                         break;
                     default:
-                        // Si no tiene extensión o no es reconocida, usar XLSX por defecto
                         if (!filePath.endsWith(".xlsx")) {
                             filePath += ".xlsx";
                         }
@@ -175,16 +161,14 @@ public class FXMLCustomersController implements Initializable {
                 
                 DialogUtil.showInfoAlert("Exportación exitosa", 
                         "Los datos se han exportado correctamente a " + filePath);
-            } catch (Exception e) {
+            } catch (IOException e) {
                 DialogUtil.showErrorAlert("Error al exportar", 
                         "No se pudieron exportar los datos: " + e.getMessage());
             }
         }
     }
     
-    /**
-     * Obtiene la extensión de un archivo
-     */
+ 
     private String getFileExtension(String filePath) {
         int lastDotIndex = filePath.lastIndexOf(".");
         if (lastDotIndex > 0) {
@@ -193,9 +177,7 @@ public class FXMLCustomersController implements Initializable {
         return "";
     }
     
-    /**
-     * Actualiza la tabla de clientes
-     */
+   
     public void refreshCustomers() {
         loadCustomers();
     }

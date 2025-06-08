@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -18,11 +14,6 @@ import javafxappaerolinea.model.pojo.Airline;
 import javafxappaerolinea.utility.DialogUtil;
 import javafxappaerolinea.utility.IdGeneratorUtil;
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
 public class FXMLAirlineFormController implements Initializable {
 
     @FXML
@@ -71,7 +62,7 @@ public class FXMLAirlineFormController implements Initializable {
     @FXML
     private void btnSave(ActionEvent event) {
         if (!validateFields()) {
-            return; // Detiene la ejecución si la validación falla
+            return; 
         }
 
         airline.setName(tfName.getText().trim());

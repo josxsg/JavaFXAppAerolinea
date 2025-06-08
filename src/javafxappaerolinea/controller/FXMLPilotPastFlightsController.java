@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.File;
@@ -101,7 +97,6 @@ public class FXMLPilotPastFlightsController implements Initializable {
         tcArrivalHour.setCellValueFactory(new PropertyValueFactory<>("arrivalHour"));
         tcTravelTime.setCellValueFactory(new PropertyValueFactory<>("travelTime"));
         
-        // Configuración para mostrar el nombre de la aerolínea
         tcAirline.setCellValueFactory(cellData -> {
             if (cellData.getValue().getAirline() != null) {
                 return new SimpleStringProperty(cellData.getValue().getAirline().getName());
@@ -109,7 +104,6 @@ public class FXMLPilotPastFlightsController implements Initializable {
             return new SimpleStringProperty("");
         });
         
-        // Formato para las fechas
         tcDepartureDate.setCellFactory(column -> {
             return new TableCell<Flight, Date>() {
                 @Override
@@ -151,11 +145,9 @@ public class FXMLPilotPastFlightsController implements Initializable {
         try {
             loggedPilot = (Pilot) SessionManager.getInstance().getCurrentUser();
             if (loggedPilot != null) {
-                // Obtener todos los vuelos
                 FlightDAO flightDAO = new FlightDAO();
                 List<Flight> allFlights = flightDAO.findAll();
                 
-                // Filtrar los vuelos donde el piloto actual está asignado
                 Date today = new Date();
                 List<Flight> completedFlights = allFlights.stream()
                     .filter(flight -> flight.getPilots().stream()
@@ -166,7 +158,6 @@ public class FXMLPilotPastFlightsController implements Initializable {
                 pastFlights = FXCollections.observableArrayList(completedFlights);
                 tvPastFlights.setItems(pastFlights);
                 
-                // Calcular total de horas de vuelo
                 double totalHours = completedFlights.stream()
                     .mapToDouble(Flight::getTravelTime)
                     .sum();
@@ -259,11 +250,9 @@ public class FXMLPilotPastFlightsController implements Initializable {
                 return;
             }
         
-            // Configurar el diálogo de guardar archivo
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Archivo");
         
-            // Configurar los filtros de extensión
             FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
             FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
             FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
@@ -271,14 +260,12 @@ public class FXMLPilotPastFlightsController implements Initializable {
         
             fileChooser.getExtensionFilters().addAll(csvFilter, xlsxFilter, pdfFilter, jsonFilter);
         
-            // Mostrar el diálogo de guardar
             File file = fileChooser.showSaveDialog(tvPastFlights.getScene().getWindow());
         
             if (file != null) {
                 String filePath = file.getAbsolutePath();
                 String extension = getFileExtension(file.getName()).toLowerCase();
                 
-                // Determinar el tipo de usuario para personalizar el título
                 String userType = "";
                 Object currentUser = SessionManager.getInstance().getCurrentUser();
                 if (currentUser instanceof Pilot) {
@@ -287,7 +274,6 @@ public class FXMLPilotPastFlightsController implements Initializable {
                     userType = "Asistente";
                 }
             
-                // Determinar si son vuelos próximos o pasados para el título
                 String flightType = "";
                 if (this.getClass().getSimpleName().contains("Upcoming")) {
                     flightType = "Próximos";
@@ -295,12 +281,9 @@ public class FXMLPilotPastFlightsController implements Initializable {
                     flightType = "Pasados";
                 }
             
-                // Crear título para el documento
                 String title = "Vuelos " + flightType + " - " + userType;
-                // Crear nombre para la hoja de Excel
                 String sheetName = "Vuelos" + flightType;
             
-                // Exportar según el formato seleccionado
                 switch (extension) {
                     case "csv":
                         ExportUtil.exportToCSV(flightsToExport, filePath);
@@ -322,20 +305,14 @@ public class FXMLPilotPastFlightsController implements Initializable {
             }
         } catch (IOException ex) {
             showAlert("Error", "Error al exportar los datos: " + ex.getMessage(), Alert.AlertType.ERROR);
-        } catch (Exception ex) {
-            showAlert("Error", "Error inesperado: " + ex.getMessage(), Alert.AlertType.ERROR);
-        }
+        } 
     }
 
-    /**
-     * Obtiene la extensión de un archivo a partir de su nombre
-     * @param fileName Nombre del archivo
-     * @return Extensión del archivo
-     */
+    
     private String getFileExtension(String fileName) {
         int lastIndexOf = fileName.lastIndexOf(".");
         if (lastIndexOf == -1) {
-            return ""; // No hay extensión
+            return ""; 
         }
         return fileName.substring(lastIndexOf + 1);
     }

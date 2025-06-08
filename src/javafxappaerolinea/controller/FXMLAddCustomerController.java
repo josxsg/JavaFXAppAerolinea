@@ -19,10 +19,7 @@ import javafxappaerolinea.model.pojo.Customer;
 import javafxappaerolinea.utility.DialogUtil;
 import javafxappaerolinea.utility.ValidationUtil;
 
-/**
- * Controlador para la vista de agregar cliente
- * @author zenbook i5
- */
+
 public class FXMLAddCustomerController implements Initializable {
 
     @FXML
@@ -51,16 +48,12 @@ public class FXMLAddCustomerController implements Initializable {
         dpBirthDate.setValue(LocalDate.now());
     }    
 
-    /**
-     * Establece el controlador de clientes para actualizar la tabla después de guardar
-     */
+   
     public void setCustomersController(FXMLCustomersController controller) {
         this.customersController = controller;
     }
     
-    /**
-     * Maneja el evento de guardar un cliente
-     */
+
     @FXML
     private void handleSave(ActionEvent event) {
         if (validateFields()) {
@@ -94,9 +87,7 @@ public class FXMLAddCustomerController implements Initializable {
         }
     }
 
-    /**
-     * Maneja el evento de cancelar
-     */
+    
     @FXML
     private void handleCancel(ActionEvent event) {
         boolean confirm = DialogUtil.showConfirmationDialog("Confirmar", 
@@ -107,34 +98,28 @@ public class FXMLAddCustomerController implements Initializable {
         }
     }
     
-    /**
-     * Valida los campos del formulario
-     */
+  
     private boolean validateFields() {
         boolean isValid = true;
         StringBuilder errorMessage = new StringBuilder("Por favor corrija los siguientes errores:\n");
         
-        // Validar nombre
         String nameError = ValidationUtil.validateNotEmptyUI(txtName.getText());
         if (nameError != null) {
             errorMessage.append("- El nombre ").append(nameError.toLowerCase()).append("\n");
             isValid = false;
         }
         
-        // Validar email
         String emailError = ValidationUtil.validateEmailUI(txtEmail.getText());
         if (emailError != null) {
             errorMessage.append("- El email ").append(emailError.toLowerCase()).append("\n");
             isValid = false;
         }
         
-        // Validar fecha de nacimiento
         String dateError = ValidationUtil.validateDateNotNullUI(dpBirthDate.getValue());
         if (dateError != null) {
             errorMessage.append("- La fecha de nacimiento ").append(dateError.toLowerCase()).append("\n");
             isValid = false;
         } else {
-            // Validar que la fecha no sea futura
             String pastDateError = ValidationUtil.validatePastDateUI(dpBirthDate.getValue());
             if (pastDateError != null) {
                 errorMessage.append("- La fecha de nacimiento ").append(pastDateError.toLowerCase()).append("\n");
@@ -142,7 +127,6 @@ public class FXMLAddCustomerController implements Initializable {
             }
         }
         
-        // Validar nacionalidad
         String nationalityError = ValidationUtil.validateNotEmptyUI(txtNationality.getText());
         if (nationalityError != null) {
             errorMessage.append("- La nacionalidad ").append(nationalityError.toLowerCase()).append("\n");
@@ -156,9 +140,7 @@ public class FXMLAddCustomerController implements Initializable {
         return isValid;
     }
     
-    /**
-     * Cierra la ventana actual
-     */
+   
     private void closeWindow() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
