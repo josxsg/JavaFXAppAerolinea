@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -33,11 +29,7 @@ import javafxappaerolinea.utility.DialogUtil;
 import javafxappaerolinea.utility.IdGeneratorUtil;
 import javafxappaerolinea.utility.PasswordUtil;
 import javafxappaerolinea.utility.ValidationUtil;
-/**
- * FXML Controller class
- *
- * @author Dell
- */
+
 public class FXMLAssistantFormController implements Initializable {
 
     @FXML
@@ -140,7 +132,6 @@ public class FXMLAssistantFormController implements Initializable {
             tfAssistanceHours.setText(String.valueOf(assistantToEdit.getAssistanceHours()));
             tfNumberOfLanguages.setText(String.valueOf(assistantToEdit.getNumberOfLanguages()));
             
-            // Convertir Date a LocalDate para el DatePicker
             Date birthDate = assistantToEdit.getBirthDate();
             if (birthDate != null) {
                 LocalDate localDate = birthDate.toInstant()
@@ -153,7 +144,6 @@ public class FXMLAssistantFormController implements Initializable {
             tfSalary.setText(String.valueOf(assistantToEdit.getSalary()));
             tfUsername.setText(assistantToEdit.getUsername());
             
-            // Seleccionar la aerolínea correcta
             if (assistantToEdit.getAirline() != null) {
                 for (Airline airline : cbAirline.getItems()) {
                     if (airline.getIdentificationNumber()== assistantToEdit.getAirline().getIdentificationNumber()) {
@@ -163,7 +153,6 @@ public class FXMLAssistantFormController implements Initializable {
                 }
             }
             
-            // No cargar la contraseña por seguridad
             pfPassword.setPromptText("Dejar en blanco para mantener la actual");
         }
     }
@@ -279,7 +268,6 @@ public class FXMLAssistantFormController implements Initializable {
         assistant.setAssistanceHours(Integer.parseInt(tfAssistanceHours.getText().trim()));
         assistant.setNumberOfLanguages(Integer.parseInt(tfNumberOfLanguages.getText().trim()));
         
-        // Convertir LocalDate a Date
         LocalDate localDate = dpBirthDate.getValue();
         Date birthDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         assistant.setBirthDate(birthDate);
@@ -288,12 +276,10 @@ public class FXMLAssistantFormController implements Initializable {
         assistant.setSalary(Double.parseDouble(tfSalary.getText().trim()));
         assistant.setUsername(tfUsername.getText().trim());
         
-        // Manejar la contraseña
         if (!isEditing || !pfPassword.getText().isEmpty()) {
             String hashedPassword = PasswordUtil.hashPassword(pfPassword.getText());
             assistant.setPassword(hashedPassword);
         } else {
-            // Mantener la contraseña existente
             assistant.setPassword(assistantToEdit.getPassword());
         }
         

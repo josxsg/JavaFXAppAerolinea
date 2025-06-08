@@ -17,20 +17,16 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
-import javafx.stage.FileChooser; // Importar FileChooser
-import java.io.File; // Importar File
+import javafx.stage.FileChooser; 
+import java.io.File; 
 import javafx.stage.Stage;
 import javafxappaerolinea.JavaFXAppAerolinea;
 import javafxappaerolinea.model.dao.AirplaneDAO;
 import javafxappaerolinea.model.pojo.Airplane;
 import javafxappaerolinea.utility.DialogUtil;
-import javafxappaerolinea.utility.ExportUtil; // Importar ExportUtil
+import javafxappaerolinea.utility.ExportUtil; 
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
+
 public class FXMLAirplaneController implements Initializable {
 
     @FXML
@@ -143,7 +139,6 @@ public class FXMLAirplaneController implements Initializable {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Exportar Aviones");
 
-            // Configurar los filtros de extensión
             FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
             FileChooser.ExtensionFilter xlsFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
             FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
@@ -178,7 +173,6 @@ public class FXMLAirplaneController implements Initializable {
                         ExportUtil.exportToJSON(airplanesToExport, filePath);
                         break;
                     default:
-                        // Si no tiene extensión o no es reconocida, usar XLSX por defecto
                         if (!filePath.endsWith(".xlsx")) {
                             filePath += ".xlsx";
                         }
@@ -219,18 +213,13 @@ public class FXMLAirplaneController implements Initializable {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            loadTableData(); // Refresh table after form is closed
+            loadTableData(); 
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", "Error al abrir el formulario de avión: " + e.getMessage());
         }
     }
 
-    /**
-     * Obtiene la extensión de un archivo a partir de su nombre.
-     * Este método se utiliza para determinar el tipo de exportación.
-     * @param fileName Nombre del archivo.
-     * @return Extensión del archivo (ej. "xlsx", "csv", "pdf"), o cadena vacía si no tiene extensión.
-     */
+
     private String getFileExtension(String fileName) {
         int lastDotIndex = fileName.lastIndexOf(".");
         if (lastDotIndex > 0) {

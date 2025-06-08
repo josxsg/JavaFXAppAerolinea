@@ -187,7 +187,6 @@ public class FXMLAddAssistantController implements Initializable {
             return;
         }
 
-        // Marcar que se confirmaron los asistentes
         assistantsConfirmed = true;
         
         DialogUtil.showInfoAlert("Cambios guardados", 
@@ -197,7 +196,6 @@ public class FXMLAddAssistantController implements Initializable {
 
     @FXML
     private void btnCancel(ActionEvent event) {
-        // No confirmar los cambios
         assistantsConfirmed = false;
         closeWindow();
     }

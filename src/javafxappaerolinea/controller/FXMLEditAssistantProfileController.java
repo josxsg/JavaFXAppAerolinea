@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -92,7 +88,6 @@ public class FXMLEditAssistantProfileController implements Initializable {
             tfName.setText(assistant.getName());
             tfAddress.setText(assistant.getAddress());
             
-            // Convertir Date a LocalDate para el DatePicker
             if (assistant.getBirthDate() != null) {
                 LocalDate birthDate = assistant.getBirthDate().toInstant()
                         .atZone(ZoneId.systemDefault())
@@ -113,11 +108,9 @@ public class FXMLEditAssistantProfileController implements Initializable {
         try {
             validateFields();
             
-            // Actualizar datos del asistente
             assistant.setName(tfName.getText().trim());
             assistant.setAddress(tfAddress.getText().trim());
             
-            // Convertir LocalDate a Date
             if (dpBirthDate.getValue() != null) {
                 Date birthDate = Date.from(dpBirthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
                 assistant.setBirthDate(birthDate);
@@ -129,17 +122,14 @@ public class FXMLEditAssistantProfileController implements Initializable {
             assistant.setAssistanceHours(Integer.parseInt(tfAssistanceHours.getText().trim()));
             assistant.setNumberOfLanguages(Integer.parseInt(tfNumberOfLanguages.getText().trim()));
             
-            // Actualizar contraseña si se proporcionó una nueva
             if (!pfPassword.getText().isEmpty()) {
                 String hashedPassword = PasswordUtil.hashPassword(pfPassword.getText());
                 assistant.setPassword(hashedPassword);
             }
             
-            // Guardar cambios en la base de datos usando el método update correcto
             try {
                 employeeDAO.update(assistant);
                 
-                // Actualizar la sesión con los datos actualizados
                 SessionManager.getInstance().setCurrentUser(assistant);
                 
                 showAlert("Actualización Exitosa", "El perfil se ha actualizado correctamente.", Alert.AlertType.INFORMATION);
@@ -159,7 +149,6 @@ public class FXMLEditAssistantProfileController implements Initializable {
     }
     
     private void validateFields() throws ValidationException {
-        // Validar campos requeridos
         ValidationUtil.validateNotEmpty(tfName.getText().trim(), "Nombre");
         ValidationUtil.validateNotEmpty(tfAddress.getText().trim(), "Dirección");
         
@@ -176,10 +165,8 @@ public class FXMLEditAssistantProfileController implements Initializable {
         ValidationUtil.validateNotEmpty(tfAssistanceHours.getText().trim(), "Horas de asistencia");
         ValidationUtil.validateNotEmpty(tfNumberOfLanguages.getText().trim(), "Número de idiomas");
         
-        // Validar formato de email usando el método correcto
         ValidationUtil.validateEmail(tfEmail.getText().trim(), "Email");
         
-        // Validar valores numéricos
         try {
             double salary = Double.parseDouble(tfSalary.getText().trim());
             if (salary <= 0) {
@@ -207,7 +194,6 @@ public class FXMLEditAssistantProfileController implements Initializable {
             throw new ValidationException("El número de idiomas debe ser un valor numérico válido.");
         }
         
-        // Validar contraseñas
         if (!pfPassword.getText().isEmpty() && !pfPassword.getText().equals(pfConfirmPassword.getText())) {
             throw new ValidationException("Las contraseñas no coinciden.");
         }

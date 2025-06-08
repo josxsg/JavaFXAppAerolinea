@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.net.URL;
@@ -95,7 +91,6 @@ public class FXMLPilotInfoController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             
-            // Recargar información después de editar
             loadPilotInfo();
         } catch (Exception ex) {
             showAlert("Error", "No se pudo abrir la ventana de edición: " + ex.getMessage(), Alert.AlertType.ERROR);

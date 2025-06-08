@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -25,11 +21,7 @@ import javafxappaerolinea.model.pojo.Employee;
 import javafxappaerolinea.model.pojo.Pilot;
 import javafxappaerolinea.service.SessionManager;
 
-/**
- * FXML Controller class for displaying airline information
- *
- * @author zenbook i5
- */
+
 public class FXMLAirlineInfoController implements Initializable {
 
     @FXML
@@ -79,10 +71,7 @@ public class FXMLAirlineInfoController implements Initializable {
         configureTableColumns();
         loadAirlineInfo();
     }
-    
-    /**
-     * Configures the table columns to display airplane properties
-     */
+
     private void configureTableColumns() {
         tcRegistration.setCellValueFactory(new PropertyValueFactory<>("registration"));
         tcModel.setCellValueFactory(new PropertyValueFactory<>("model"));
@@ -91,23 +80,17 @@ public class FXMLAirlineInfoController implements Initializable {
         tcWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
         tcStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
     }
-    
-    /**
-     * Loads the airline information based on the current logged-in employee
-     */
+
     private void loadAirlineInfo() {
         try {
-            // Get the current employee
             Employee currentEmployee = SessionManager.getInstance().getCurrentUser();
             
             if (currentEmployee != null) {
-                // Get the airline associated with the employee based on their type
                 if (currentEmployee instanceof Pilot) {
                     airline = ((Pilot) currentEmployee).getAirline();
                 } else if (currentEmployee instanceof Assistant) {
                     airline = ((Assistant) currentEmployee).getAirline();
                 } else {
-                    // For other employee types, show a message
                     showAlert("Información no disponible", 
                              "Este tipo de empleado no tiene una aerolínea asociada directamente.", 
                              Alert.AlertType.INFORMATION);
@@ -115,14 +98,12 @@ public class FXMLAirlineInfoController implements Initializable {
                 }
                 
                 if (airline != null) {
-                    // Display airline information
                     lbIdentificationNumber.setText(String.valueOf(airline.getIdentificationNumber()));
                     lbName.setText(airline.getName());
                     lbAddress.setText(airline.getAddress());
                     lbContactPerson.setText(airline.getContactPerson());
                     lbPhoneNumber.setText(airline.getPhoneNumber());
                     
-                    // Load airplanes for the airline
                     loadAirplanes();
                 } else {
                     showAlert("Información no disponible", 
@@ -137,20 +118,16 @@ public class FXMLAirlineInfoController implements Initializable {
         }
     }
     
-    /**
-     * Loads the airplanes associated with the current airline
-     */
+   
     private void loadAirplanes() {
         try {
             AirplaneDAO airplaneDAO = new AirplaneDAO();
-            // Use the findByAirline method which should filter airplanes by airline ID
             List<Airplane> airplaneList = airplaneDAO.findByAirline(airline.getIdentificationNumber());
             
             if (airplaneList != null && !airplaneList.isEmpty()) {
                 airplanes = FXCollections.observableArrayList(airplaneList);
                 tvAirplanes.setItems(airplanes);
             } else {
-                // Clear the table if no airplanes are found
                 tvAirplanes.setItems(FXCollections.observableArrayList());
                 showAlert("Información", 
                          "No hay aviones registrados para esta aerolínea.", 
@@ -163,9 +140,7 @@ public class FXMLAirlineInfoController implements Initializable {
         }
     }
     
-    /**
-     * Shows an alert dialog with the specified title, message, and type
-     */
+ 
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -103,7 +99,6 @@ public class FXMLEditPilotProfileController implements Initializable {
             tfName.setText(pilot.getName());
             tfAddress.setText(pilot.getAddress());
             
-            // Convertir Date a LocalDate para el DatePicker
             if (pilot.getBirthDate() != null) {
                 LocalDate birthDate = pilot.getBirthDate().toInstant()
                         .atZone(ZoneId.systemDefault())
@@ -125,11 +120,9 @@ public class FXMLEditPilotProfileController implements Initializable {
         try {
             validateFields();
             
-            // Actualizar datos del piloto
             pilot.setName(tfName.getText().trim());
             pilot.setAddress(tfAddress.getText().trim());
             
-            // Convertir LocalDate a Date
             if (dpBirthDate.getValue() != null) {
                 Date birthDate = Date.from(dpBirthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
                 pilot.setBirthDate(birthDate);
@@ -142,17 +135,14 @@ public class FXMLEditPilotProfileController implements Initializable {
             pilot.setFlightHours(Double.parseDouble(tfFlightHours.getText().trim()));
             pilot.setLicenseType(cbLicenseType.getValue());
             
-            // Actualizar contraseña si se proporcionó una nueva
             if (!pfPassword.getText().isEmpty()) {
                 String hashedPassword = PasswordUtil.hashPassword(pfPassword.getText());
                 pilot.setPassword(hashedPassword);
             }
             
-            // Guardar cambios en la base de datos usando el método update correcto
             try {
                 employeeDAO.update(pilot);
                 
-                // Actualizar la sesión con los datos actualizados
                 SessionManager.getInstance().setCurrentUser(pilot);
                 
                 showAlert("Actualización Exitosa", "El perfil se ha actualizado correctamente.", Alert.AlertType.INFORMATION);
@@ -172,7 +162,6 @@ public class FXMLEditPilotProfileController implements Initializable {
     }
     
     private void validateFields() throws ValidationException {
-        // Validar campos requeridos
         ValidationUtil.validateNotEmpty(tfName.getText().trim(), "Nombre");
         ValidationUtil.validateNotEmpty(tfAddress.getText().trim(), "Dirección");
         
@@ -193,10 +182,8 @@ public class FXMLEditPilotProfileController implements Initializable {
             throw new ValidationException("El tipo de licencia es requerido.");
         }
         
-        // Validar formato de email usando el método correcto
         ValidationUtil.validateEmail(tfEmail.getText().trim(), "Email");
         
-        // Validar valores numéricos
         try {
             double salary = Double.parseDouble(tfSalary.getText().trim());
             if (salary <= 0) {
@@ -224,7 +211,6 @@ public class FXMLEditPilotProfileController implements Initializable {
             throw new ValidationException("Las horas de vuelo deben ser un valor numérico válido.");
         }
         
-        // Validar contraseñas
         if (!pfPassword.getText().isEmpty() && !pfPassword.getText().equals(pfConfirmPassword.getText())) {
             throw new ValidationException("Las contraseñas no coinciden.");
         }

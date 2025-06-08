@@ -21,11 +21,6 @@ import javafxappaerolinea.model.pojo.Airline;
 import javafxappaerolinea.model.pojo.Pilot; 
 import javafxappaerolinea.utility.DialogUtil; 
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
 public class FXMLAddPilotController implements Initializable {
 
     @FXML
@@ -52,14 +47,13 @@ public class FXMLAddPilotController implements Initializable {
     @FXML
     private TableColumn<Pilot, String> tcAddedExperience;
     @FXML
-    private TableColumn<Pilot, String> tcAddedFlightTypes; // Se mapeará a licenseType en Pilot
+    private TableColumn<Pilot, String> tcAddedFlightTypes; 
 
     private ObservableList<Pilot> availablePilotsData;
     private ObservableList<Pilot> addedPilotsData;
     
     private EmployeeDAO employeeDAO;
 
-    // Esta lista se usará para devolver los pilotos seleccionados a la ventana que llamó
     private List<Pilot> finalSelectedPilots;
     private Airline selectedAirline;
 
@@ -81,7 +75,6 @@ public class FXMLAddPilotController implements Initializable {
     public void initData(List<Pilot> currentFlightPilots, Airline airline) {
         this.selectedAirline = airline;
 
-        // Recargar pilotos filtrados por aerolínea
         if (airline != null) {
             loadAvailablePilots();
         }
@@ -110,7 +103,6 @@ public class FXMLAddPilotController implements Initializable {
     }
 
     private void configureTableColumns() {
-        // Configurar las columnas de la tabla de pilotos disponibles
         tcAvailableName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tcAvailableLicense.setCellValueFactory(new PropertyValueFactory<>("licenseType")); 
         tcAvailableAge.setCellValueFactory(new PropertyValueFactory<>("age")); 
@@ -119,7 +111,6 @@ public class FXMLAddPilotController implements Initializable {
 
         tvAvailablePilots.setItems(availablePilotsData);
 
-        // Configurar las columnas de la tabla de pilotos añadidos
         tcAddedName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tcAddedLicense.setCellValueFactory(new PropertyValueFactory<>("licenseType")); 
         tcAddedAge.setCellValueFactory(new PropertyValueFactory<>("age")); 
@@ -133,7 +124,6 @@ public class FXMLAddPilotController implements Initializable {
         try {
             List<Pilot> allPilots = employeeDAO.findAllPilots();
 
-            // Filtrar por aerolínea si está seleccionada
             if (selectedAirline != null) {
                 allPilots = allPilots.stream()
                     .filter(pilot -> pilot.getAirline() != null && 
