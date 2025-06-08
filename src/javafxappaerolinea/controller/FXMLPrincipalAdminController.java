@@ -92,7 +92,7 @@ public class FXMLPrincipalAdminController implements Initializable {
 
     @FXML
     private void openBuyTicketWindow(ActionEvent event) {
-        loadScene("view/FXMLBuyTicket.fxml");
+        loadScene("view/FXMLTickets.fxml");
         lbWindowName.setText("");
     }
 
