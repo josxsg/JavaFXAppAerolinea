@@ -291,7 +291,7 @@ public class FXMLPilotFormController implements Initializable {
         pilot.setAddress(tfAddress.getText().trim());
         pilot.setEmail(tfEmail.getText().trim());
         pilot.setYearsExperience(Integer.parseInt(tfYearsExperience.getText().trim()));
-        pilot.setFlightHours(Integer.parseInt(tfFlightHours.getText().trim()));
+        pilot.setFlightHours(Double.parseDouble(tfFlightHours.getText().trim()));
         pilot.setLicenseType(tfLicenseType.getText().trim());
         
         // Convertir LocalDate a Date
