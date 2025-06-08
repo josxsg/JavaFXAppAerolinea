@@ -59,6 +59,24 @@ public class Flight {
         //this.tickets = new ArrayList<>();
     }
     
+    // Método para obtener la capacidad real del vuelo
+    public int getCapacity() {
+        if (airplane != null) {
+            return airplane.getCapacity();
+        }
+        return 44; // Capacidad por defecto
+    }
+    
+    // Método para verificar si hay asientos disponibles
+    public boolean hasAvailableSeats() {
+        return passengerCount < getCapacity();
+    }
+    
+    // Método para obtener número de asientos disponibles
+    public int getAvailableSeats() {
+        return getCapacity() - passengerCount;
+    }
+    
     public String getId() {
         return id;
     }
@@ -202,5 +220,10 @@ public class Flight {
 
     public void setAirline(Airline airline) {
         this.airline = airline;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("Vuelo %s: %s -> %s", id, originCity, destinationCity);
     }
 }
