@@ -75,7 +75,7 @@ public class FXMLFlightDetailsController implements Initializable {
         // Inicialización vacía, los datos se cargarán cuando se establezca el vuelo
     }
     
-    public void setFlight(Flight flight) {
+    public void initData(Flight flight) {
         this.flight = flight;
         loadFlightDetails();
     }

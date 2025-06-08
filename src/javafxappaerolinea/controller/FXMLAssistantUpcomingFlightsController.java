@@ -188,7 +188,7 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
                 Parent root = loader.load();
                 
                 FXMLFlightDetailsController controller = loader.getController();
-                controller.setFlight(selectedFlight);
+                controller.initData(selectedFlight);
                 
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));

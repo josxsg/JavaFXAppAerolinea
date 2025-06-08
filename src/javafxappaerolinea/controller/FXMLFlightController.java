@@ -88,14 +88,14 @@ public class FXMLFlightController implements Initializable {
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcOriginCity.setCellValueFactory(new PropertyValueFactory<>("originCity"));
         tcDestinationCity.setCellValueFactory(new PropertyValueFactory<>("destinationCity"));
-        
+
         tcDepartureDate.setCellValueFactory(cellData -> {
             Date date = cellData.getValue().getDepartureDate();
             return new SimpleStringProperty(date != null ? dateFormat.format(date) : "");
         });
-        
+
         tcDepartureHour.setCellValueFactory(new PropertyValueFactory<>("departureHour"));
-        
+
         tcArrivalDate.setCellValueFactory(cellData -> {
             Date date = cellData.getValue().getArrivalDate();
             return new SimpleStringProperty(date != null ? dateFormat.format(date) : "");
@@ -106,14 +106,14 @@ public class FXMLFlightController implements Initializable {
         tcTicketCost.setCellValueFactory(new PropertyValueFactory<>("ticketCost"));
         tcPassengerCount.setCellValueFactory(new PropertyValueFactory<>("passengerCount"));
         tcGate.setCellValueFactory(new PropertyValueFactory<>("gate"));
-        
+
         tcAirplane.setCellValueFactory(cellData -> {
             if (cellData.getValue().getAirplane() != null) {
                 return new SimpleStringProperty(cellData.getValue().getAirplane().getModel());
             }
             return new SimpleStringProperty("N/A");
         });
-        
+
         tcAirline.setCellValueFactory(cellData -> {
             if (cellData.getValue().getAirline() != null) {
                 return new SimpleStringProperty(cellData.getValue().getAirline().getName());
@@ -163,7 +163,7 @@ public class FXMLFlightController implements Initializable {
             try {
                 flightDAO.delete(selectedFlight.getId());
                 DialogUtil.showInfoAlert("Éxito", "Vuelo eliminado exitosamente.");
-                loadTableData(); // Refresh the table
+                loadTableData();
             } catch (IOException | ResourceNotFoundException e) {
                 DialogUtil.showErrorAlert("Error", "Error al eliminar el vuelo: " + e.getMessage());
             }
@@ -172,14 +172,17 @@ public class FXMLFlightController implements Initializable {
 
     @FXML
     private void btnExport(ActionEvent event) {
-        // Lógica para exportar datos (p. ej., a CSV, PDF)
         DialogUtil.showInfoAlert("Función no implementada", "La exportación de datos aún no está disponible.");
     }
 
     @FXML
     private void btnViewDetails(ActionEvent event) {
-        // Lógica para ver detalles completos del vuelo
-        DialogUtil.showInfoAlert("Función no implementada", "La vista de detalles aún no está disponible.");
+        Flight selectedFlight = tvFlights.getSelectionModel().getSelectedItem();
+        if (selectedFlight == null) {
+            DialogUtil.showWarningAlert("Sin selección", "Por favor, seleccione un vuelo para ver detalles.");
+            return;
+        }
+        openFlightDetails(selectedFlight);
     }
 
     private void openFlightForm(Flight flight) {
@@ -188,8 +191,8 @@ public class FXMLFlightController implements Initializable {
             Parent root = loader.load();
 
             FXMLFlightFormController controller = loader.getController();
-            // Debes crear un método initData en FXMLFlightFormController
-            // controller.initData(flight);
+            // If you need to pass the flight to the form controller, do it here
+            // controller.initData(flight); // Assuming FXMLFlightFormController has an initData method
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -197,9 +200,29 @@ public class FXMLFlightController implements Initializable {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            loadTableData(); // Refrescar la tabla después de cerrar el formulario
+            loadTableData();
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", "Error al abrir el formulario de vuelo: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void openFlightDetails(Flight flight) {
+        try {
+            FXMLLoader loader = new FXMLLoader(JavaFXAppAerolinea.class.getResource("view/FXMLFlightDetails.fxml"));
+            Parent root = loader.load();
+
+            FXMLFlightDetailsController controller = loader.getController();
+            controller.initData(flight);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL); // Makes the details window block interaction with parent
+            stage.setTitle("Detalles del Vuelo");
+            stage.setScene(new Scene(root));
+            stage.showAndWait(); // showAndWait makes sure this window closes before interacting with parent again
+
+        } catch (IOException e) {
+            DialogUtil.showErrorAlert("Error", "Error al abrir la vista de detalles del vuelo: " + e.getMessage());
             e.printStackTrace();
         }
     }
