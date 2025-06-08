@@ -56,7 +56,7 @@ public class Flight {
         this.airline = airline;
         this.pilots = new ArrayList<>();
         this.assistants = new ArrayList<>();
-        this.tickets = new ArrayList<>();
+        //this.tickets = new ArrayList<>();
     }
     
     public String getId() {
