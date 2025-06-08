@@ -134,7 +134,6 @@ public class FXMLAddPilotController implements Initializable {
             availablePilotsData.setAll(allPilots);
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error de carga", "No se pudieron cargar los pilotos disponibles: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 

@@ -54,9 +54,6 @@ public class FXMLAssistantController implements Initializable, Notification {
     private TableColumn tcNumberOfLanguages;
     private ObservableList<Assistant> assistants;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTable();
@@ -185,12 +182,7 @@ public class FXMLAssistantController implements Initializable, Notification {
                 "Error", 
                 "Error al exportar los datos: " + ex.getMessage()
             );
-        } catch (Exception ex) {
-            DialogUtil.showErrorAlert(
-                "Error", 
-                "Error inesperado: " + ex.getMessage()
-            );
-        }
+        } 
     }
 
     @FXML

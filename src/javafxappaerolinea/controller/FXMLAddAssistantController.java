@@ -140,7 +140,6 @@ public class FXMLAddAssistantController implements Initializable {
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error de carga", 
                 "No se pudieron cargar los asistentes disponibles: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 

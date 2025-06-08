@@ -190,12 +190,6 @@ public class FXMLAirplaneController implements Initializable {
                 "Error",
                 "Error al exportar los datos: " + ex.getMessage()
             );
-        } catch (Exception ex) {
-            DialogUtil.showErrorAlert(
-                "Error",
-                "Error inesperado al exportar: " + ex.getMessage()
-            );
-            ex.printStackTrace();
         }
     }
 

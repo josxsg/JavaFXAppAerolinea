@@ -182,12 +182,7 @@ public class FXMLAdministrativeController implements Initializable, Notification
                 "Error", 
                 "Error al exportar los datos: " + ex.getMessage()
             );
-        } catch (Exception ex) {
-            DialogUtil.showErrorAlert(
-                "Error", 
-                "Error inesperado: " + ex.getMessage()
-            );
-        }
+        } 
     }  
 
     @Override

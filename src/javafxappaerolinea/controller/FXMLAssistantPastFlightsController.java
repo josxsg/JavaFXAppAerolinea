@@ -162,9 +162,7 @@ public class FXMLAssistantPastFlightsController implements Initializable {
             }
         } catch (IOException ex) {
             showAlert("Error", "Error al cargar los datos: " + ex.getMessage(), Alert.AlertType.ERROR);
-        } catch (Exception ex) {
-            showAlert("Error", "No se pudieron cargar los vuelos realizados: " + ex.getMessage(), Alert.AlertType.ERROR);
-        }
+        } 
     }
     
     @FXML
@@ -228,8 +226,8 @@ public class FXMLAssistantPastFlightsController implements Initializable {
                 stage.setTitle("Detalles del Vuelo");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
-            } catch (Exception ex) {
-                showAlert("Error", "No se pudo abrir la ventana de detalles: " + ex.getMessage(), Alert.AlertType.ERROR);
+            } catch (IOException ex) {
+                showAlert("Error de carga", "No se pudo cargar el archivo FXML: " + ex.getMessage(), Alert.AlertType.ERROR);
             }
         } else {
             showAlert("Selección Requerida", "Por favor, seleccione un vuelo para ver sus detalles.", Alert.AlertType.INFORMATION);
@@ -301,9 +299,7 @@ public class FXMLAssistantPastFlightsController implements Initializable {
             }
         } catch (IOException ex) {
             showAlert("Error", "Error al exportar los datos: " + ex.getMessage(), Alert.AlertType.ERROR);
-        } catch (Exception ex) {
-            showAlert("Error", "Error inesperado: " + ex.getMessage(), Alert.AlertType.ERROR);
-        }
+        } 
     }
 
     private String getFileExtension(String fileName) {

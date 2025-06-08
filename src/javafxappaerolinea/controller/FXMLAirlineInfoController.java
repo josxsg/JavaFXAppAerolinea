@@ -136,9 +136,9 @@ public class FXMLAirlineInfoController implements Initializable {
                             Alert.AlertType.INFORMATION);
                 }
             }
-        } catch (Exception ex) {
+        } catch (NullPointerException | ClassCastException | IllegalArgumentException | IllegalStateException ex) {
             showAlert("Error", 
-                    "No se pudo cargar la información de la aerolínea: " + ex.getMessage(), 
+                    "Se produjo un error al cargar la información: " + ex.getMessage(), 
                     Alert.AlertType.ERROR);
         }
     }

@@ -281,11 +281,6 @@ public class FXMLAdminFormController implements Initializable {
                 "Error", 
                 "Error al guardar los datos: " + e.getMessage()
             );
-        } catch (Exception e) {
-            DialogUtil.showErrorAlert(
-                "Error", 
-                "Ocurrió un error inesperado: " + e.getMessage()
-            );
         }
     }
     
