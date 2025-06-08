@@ -7,38 +7,33 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxappaerolinea.exception.DuplicateResourceException;
-import javafxappaerolinea.exception.ResourceNotFoundException;
 import javafxappaerolinea.model.dao.CustomerDAO;
-import javafxappaerolinea.model.dao.FlightDAO;
 import javafxappaerolinea.model.dao.TicketDAO;
 import javafxappaerolinea.model.pojo.Customer;
 import javafxappaerolinea.model.pojo.Flight;
 import javafxappaerolinea.model.pojo.Ticket;
 import javafxappaerolinea.utility.DialogUtil;
-import javafxappaerolinea.utility.ValidationUtil;
 
-/**
- * Controlador para la vista de compra de boletos
- * @author zenbook i5
- */
 public class FXMLBuyTicketController implements Initializable {
-
-    @FXML
-    private Button btnConfirm;
-    @FXML
-    private Button btnCancel;
+    
     @FXML
     private Label labelFlightID;
     @FXML
@@ -55,52 +50,52 @@ public class FXMLBuyTicketController implements Initializable {
     private DatePicker datePickerPurchaseDate;
     @FXML
     private TextField textFieldSeatNumber;
+    @FXML
+    private Button btnSelectSeat;
+    @FXML
+    private Button btnConfirm;
+    @FXML
+    private Button btnCancel;
     
     private Flight flight;
-    private ObservableList<Customer> customers;
-    private FXMLTicketsController ticketsController;
     private CustomerDAO customerDAO;
     private TicketDAO ticketDAO;
-    private FlightDAO flightDAO;
-
-    /**
-     * Inicializa el controlador
-     */
+    private FXMLTicketsController ticketsController;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         customerDAO = new CustomerDAO();
         ticketDAO = new TicketDAO();
-        flightDAO = new FlightDAO();
         
-        // Establecer fecha actual
-        datePickerPurchaseDate.setValue(LocalDate.now());
-        
-        // Cargar clientes
-        loadCustomers();
-        
-        // Configurar eventos
+        // Configurar eventos de botones
+        btnSelectSeat.setOnAction(this::handleSelectSeat);
         btnConfirm.setOnAction(this::handleConfirm);
         btnCancel.setOnAction(this::handleCancel);
-    }    
+        
+        // Configurar DatePicker para no permitir fechas futuras
+        datePickerPurchaseDate.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isAfter(LocalDate.now()));
+            }
+        });
+        
+        // Establecer fecha actual por defecto
+        datePickerPurchaseDate.setValue(LocalDate.now());
+        
+        loadCustomers();
+    }
     
-    /**
-     * Establece el vuelo seleccionado
-     */
     public void setFlight(Flight flight) {
         this.flight = flight;
         updateFlightInfo();
     }
     
-    /**
-     * Establece el controlador de boletos para actualizar la tabla después de comprar
-     */
     public void setTicketsController(FXMLTicketsController controller) {
         this.ticketsController = controller;
     }
     
-    /**
-     * Actualiza la información del vuelo en la interfaz
-     */
     private void updateFlightInfo() {
         if (flight != null) {
             labelFlightID.setText(flight.getId());
@@ -111,144 +106,144 @@ public class FXMLBuyTicketController implements Initializable {
         }
     }
     
-    /**
-     * Carga los clientes desde la base de datos
-     */
     private void loadCustomers() {
-        customers = FXCollections.observableArrayList();
         try {
-            List<Customer> customersList = customerDAO.findAll();
-            customers.addAll(customersList);
-            comboBoxCustomer.setItems(customers);
+            List<Customer> customers = customerDAO.findAll();
+            ObservableList<Customer> customerList = FXCollections.observableArrayList(customers);
+            comboBoxCustomer.setItems(customerList);
+        } catch (IOException e) {
+            DialogUtil.showErrorAlert("Error", 
+                "No se pudieron cargar los clientes: " + e.getMessage());
+        }
+    }
+    
+    @FXML
+    private void handleSelectSeat(ActionEvent event) {
+        if (flight == null) {
+            DialogUtil.showWarningAlert("Error", 
+                "No se ha seleccionado un vuelo.");
+            return;
+        }
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/javafxappaerolinea/view/FXMLSeatSelector.fxml"));
+            Parent root = loader.load();
             
-            // Configurar cómo se muestran los clientes en el ComboBox
-            comboBoxCustomer.setCellFactory(param -> new javafx.scene.control.ListCell<Customer>() {
-                @Override
-                protected void updateItem(Customer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getName() + " " + item.getEmail());
-                    }
-                }
-            });
+            FXMLSeatSelectorController controller = loader.getController();
+            controller.setFlight(flight);
             
-            comboBoxCustomer.setButtonCell(new javafx.scene.control.ListCell<Customer>() {
-                @Override
-                protected void updateItem(Customer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getName() + " " + item.getEmail());
-                    }
-                }
-            });
+            Scene scene = new Scene(root);
+            // Si tienes el archivo CSS, descomenta la siguiente línea
+            // scene.getStylesheets().add(getClass().getResource("/javafxappaerolinea/styles/seats.css").toExternalForm());
+            
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Seleccionar Asiento");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            
+            // Obtener el asiento seleccionado
+            String selectedSeat = (String) stage.getUserData();
+            if (selectedSeat != null) {
+                textFieldSeatNumber.setText(selectedSeat);
+            }
             
         } catch (IOException e) {
-            DialogUtil.showErrorAlert("Error al cargar clientes", 
-                    "No se pudieron cargar los clientes: " + e.getMessage());
+            DialogUtil.showErrorAlert("Error", 
+                "No se pudo abrir el selector de asientos: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
-    /**
-     * Maneja el evento de confirmar la compra
-     */
+    @FXML
     private void handleConfirm(ActionEvent event) {
-        if (validateFields()) {
-            Customer selectedCustomer = comboBoxCustomer.getSelectionModel().getSelectedItem();
+        // Validar campos
+        if (!validateFields()) {
+            return;
+        }
+        
+        Customer selectedCustomer = comboBoxCustomer.getValue();
+        LocalDate purchaseDate = datePickerPurchaseDate.getValue();
+        String seatNumber = textFieldSeatNumber.getText().trim();
+        
+        // Verificar que el asiento no esté ocupado
+        try {
+            List<Ticket> existingTickets = ticketDAO.findByFlight(flight.getId());
+            boolean seatOccupied = existingTickets.stream()
+                .anyMatch(t -> t.getSeatNumber().equals(seatNumber));
             
-            try {
-                Ticket ticket = new Ticket();
-                ticket.setId(java.util.UUID.randomUUID().toString()); // Generar ID único
-                ticket.setFlight(flight);
-                ticket.setCustomer(selectedCustomer);
-                LocalDate localDate = datePickerPurchaseDate.getValue();
-                if (localDate != null) {
-                    Date purchaseDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                    ticket.setPurchaseDate(purchaseDate);
-                }
-                ticket.setSeatNumber(textFieldSeatNumber.getText().trim());
-                
-                ticketDAO.save(ticket);
-                
-                // Actualizar pasajeros del vuelo
-                flight.setPassengerCount(flight.getPassengerCount() + 1);
-                flightDAO.update(flight);
-                
-                DialogUtil.showInfoAlert("Boleto comprado", 
-                        "El boleto se ha comprado correctamente para " + 
-                                selectedCustomer.getName() + ".\n" +
-                                "Número de asiento: " + ticket.getSeatNumber());
-                
-                if (ticketsController != null) {
-                    ticketsController.refreshFlights();
-                }
-                
-                closeWindow();
-            } catch (DuplicateResourceException e) {
-                DialogUtil.showErrorAlert("Error", 
-                        "Ya existe un boleto con el mismo ID.");
-            } catch (ResourceNotFoundException e) {
-                DialogUtil.showErrorAlert("Error", 
-                        "No se encontró el vuelo para actualizar.");
-            } catch (IOException e) {
-                DialogUtil.showErrorAlert("Error en la base de datos", 
-                        "Ocurrió un error al intentar comprar el boleto: " + e.getMessage());
+            if (seatOccupied) {
+                DialogUtil.showWarningAlert("Asiento ocupado", 
+                    "El asiento " + seatNumber + " ya está ocupado. Por favor seleccione otro.");
+                return;
             }
-        }
-    }
-    
-    /**
-     * Maneja el evento de cancelar
-     */
-    private void handleCancel(ActionEvent event) {
-        boolean confirm = DialogUtil.showConfirmationDialog("Confirmar", 
-                "¿Está seguro que desea cancelar la compra?");
-        
-        if (confirm) {
+            
+            // Crear nuevo ticket
+            Ticket newTicket = new Ticket();
+            newTicket.setId(generateTicketId());
+            newTicket.setFlight(flight);
+            newTicket.setCustomer(selectedCustomer);
+            newTicket.setPurchaseDate(Date.from(purchaseDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            newTicket.setSeatNumber(seatNumber);
+            
+            // Guardar ticket
+            ticketDAO.save(newTicket);
+            
+            // Actualizar contador de pasajeros del vuelo
+            flight.setPassengerCount(flight.getPassengerCount() + 1);
+            
+            DialogUtil.showInfoAlert("Compra exitosa", 
+                "El boleto ha sido comprado exitosamente.\n" +
+                "Asiento: " + seatNumber + "\n" +
+                "Cliente: " + selectedCustomer.getName());
+            
+            // Actualizar la tabla de vuelos
+            if (ticketsController != null) {
+                ticketsController.refreshFlights();
+            }
+            
+            // Cerrar ventana
             closeWindow();
+            
+        } catch (IOException e) {
+            DialogUtil.showErrorAlert("Error", 
+                "No se pudo completar la compra: " + e.getMessage());
+        } catch (DuplicateResourceException ex) {
+            Logger.getLogger(FXMLBuyTicketController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    /**
-     * Valida los campos del formulario
-     */
+    @FXML
+    private void handleCancel(ActionEvent event) {
+        closeWindow();
+    }
+    
     private boolean validateFields() {
-        boolean isValid = true;
-        StringBuilder errorMessage = new StringBuilder("Por favor corrija los siguientes errores:\n");
-        
-        // Validar cliente seleccionado
-        if (comboBoxCustomer.getSelectionModel().getSelectedItem() == null) {
-            errorMessage.append("- Debe seleccionar un cliente\n");
-            isValid = false;
+        if (comboBoxCustomer.getValue() == null) {
+            DialogUtil.showWarningAlert("Campos incompletos", 
+                "Debe seleccionar un cliente.");
+            return false;
         }
         
-        // Validar fecha de compra
-        String dateError = ValidationUtil.validateDateNotNullUI(datePickerPurchaseDate.getValue());
-        if (dateError != null) {
-            errorMessage.append("- La fecha de compra ").append(dateError.toLowerCase()).append("\n");
-            isValid = false;
+        if (datePickerPurchaseDate.getValue() == null) {
+            DialogUtil.showWarningAlert("Campos incompletos", 
+                "Debe seleccionar una fecha de compra.");
+            return false;
         }
         
-        // Validar número de asiento
-        String seatError = ValidationUtil.validateNotEmptyUI(textFieldSeatNumber.getText());
-        if (seatError != null) {
-            errorMessage.append("- El número de asiento ").append(seatError.toLowerCase()).append("\n");
-            isValid = false;
+        if (textFieldSeatNumber.getText().trim().isEmpty()) {
+            DialogUtil.showWarningAlert("Campos incompletos", 
+                "Debe seleccionar un asiento.");
+            return false;
         }
         
-        if (!isValid) {
-            DialogUtil.showWarningAlert("Datos incompletos o inválidos", errorMessage.toString());
-        }
-        
-        return isValid;
+        return true;
     }
     
-    /**
-     * Cierra la ventana actual
-     */
+    private String generateTicketId() {
+        return "TKT" + System.currentTimeMillis();
+    }
+    
     private void closeWindow() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
