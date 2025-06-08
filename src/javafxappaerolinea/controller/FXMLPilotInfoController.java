@@ -7,16 +7,10 @@ package javafxappaerolinea.controller;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafxappaerolinea.model.pojo.Pilot;
 import javafxappaerolinea.service.SessionManager;
 
@@ -77,28 +71,6 @@ public class FXMLPilotInfoController implements Initializable {
             }
         } catch (Exception ex) {
             showAlert("Error", "No se pudo cargar la información del piloto: " + ex.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
-    
-    @FXML
-    private void btnEditProfile(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/javafxappaerolinea/view/FXMLEditPilotProfile.fxml"));
-            Parent root = loader.load();
-            
-            FXMLEditPilotProfileController controller = loader.getController();
-            controller.setPilot(loggedPilot);
-            
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Editar Perfil");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-            
-            // Recargar información después de editar
-            loadPilotInfo();
-        } catch (Exception ex) {
-            showAlert("Error", "No se pudo abrir la ventana de edición: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
     

@@ -25,11 +25,6 @@ import javafxappaerolinea.model.pojo.Employee;
 import javafxappaerolinea.model.pojo.Pilot;
 import javafxappaerolinea.service.SessionManager;
 
-/**
- * FXML Controller class for displaying airline information
- *
- * @author zenbook i5
- */
 public class FXMLAirlineInfoController implements Initializable {
 
     @FXML
@@ -51,7 +46,7 @@ public class FXMLAirlineInfoController implements Initializable {
     private TableView<Airplane> tvAirplanes;
     
     @FXML
-    private TableColumn<Airplane, String> tcRegistration;
+    private TableColumn<Airplane, Integer> tcAirplaneId;
     
     @FXML
     private TableColumn<Airplane, String> tcModel;
@@ -60,112 +55,87 @@ public class FXMLAirlineInfoController implements Initializable {
     private TableColumn<Airplane, Integer> tcCapacity;
     
     @FXML
-    private TableColumn<Airplane, Integer> tcAge;
+    private TableColumn<Airplane, String> tcManufacturer;
     
     @FXML
-    private TableColumn<Airplane, Double> tcWeight;
-    
-    @FXML
-    private TableColumn<Airplane, Boolean> tcStatus;
+    private TableColumn<Airplane, Integer> tcYearOfManufacture;
     
     private Airline airline;
     private ObservableList<Airplane> airplanes;
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTableColumns();
         loadAirlineInfo();
     }
     
-    /**
-     * Configures the table columns to display airplane properties
-     */
     private void configureTableColumns() {
-        tcRegistration.setCellValueFactory(new PropertyValueFactory<>("registration"));
+        // Asegúrate de que los nombres de las propiedades coincidan con tu clase Airplane
+        tcAirplaneId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcModel.setCellValueFactory(new PropertyValueFactory<>("model"));
         tcCapacity.setCellValueFactory(new PropertyValueFactory<>("capacity"));
-        tcAge.setCellValueFactory(new PropertyValueFactory<>("age"));
-        tcWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
-        tcStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        tcManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+        tcYearOfManufacture.setCellValueFactory(new PropertyValueFactory<>("yearOfManufacture"));
     }
     
-    /**
-     * Loads the airline information based on the current logged-in employee
-     */
     private void loadAirlineInfo() {
         try {
-            // Get the current employee
             Employee currentEmployee = SessionManager.getInstance().getCurrentUser();
             
             if (currentEmployee != null) {
-                // Get the airline associated with the employee based on their type
                 if (currentEmployee instanceof Pilot) {
                     airline = ((Pilot) currentEmployee).getAirline();
                 } else if (currentEmployee instanceof Assistant) {
                     airline = ((Assistant) currentEmployee).getAirline();
                 } else {
-                    // For other employee types, show a message
                     showAlert("Información no disponible", 
-                             "Este tipo de empleado no tiene una aerolínea asociada directamente.", 
-                             Alert.AlertType.INFORMATION);
+                        "Este tipo de empleado no tiene una aerolínea asociada directamente.", 
+                        Alert.AlertType.INFORMATION);
                     return;
                 }
                 
                 if (airline != null) {
-                    // Display airline information
                     lbIdentificationNumber.setText(String.valueOf(airline.getIdentificationNumber()));
                     lbName.setText(airline.getName());
                     lbAddress.setText(airline.getAddress());
                     lbContactPerson.setText(airline.getContactPerson());
                     lbPhoneNumber.setText(airline.getPhoneNumber());
                     
-                    // Load airplanes for the airline
                     loadAirplanes();
                 } else {
                     showAlert("Información no disponible", 
-                             "No se encontró información de la aerolínea asociada.", 
-                             Alert.AlertType.INFORMATION);
+                        "No se encontró información de la aerolínea asociada.", 
+                        Alert.AlertType.INFORMATION);
                 }
             }
         } catch (Exception ex) {
             showAlert("Error", 
-                     "No se pudo cargar la información de la aerolínea: " + ex.getMessage(), 
-                     Alert.AlertType.ERROR);
+                "No se pudo cargar la información de la aerolínea: " + ex.getMessage(), 
+                Alert.AlertType.ERROR);
         }
     }
     
-    /**
-     * Loads the airplanes associated with the current airline
-     */
     private void loadAirplanes() {
         try {
             AirplaneDAO airplaneDAO = new AirplaneDAO();
-            // Use the findByAirline method which should filter airplanes by airline ID
             List<Airplane> airplaneList = airplaneDAO.findByAirline(airline.getIdentificationNumber());
             
             if (airplaneList != null && !airplaneList.isEmpty()) {
                 airplanes = FXCollections.observableArrayList(airplaneList);
                 tvAirplanes.setItems(airplanes);
             } else {
-                // Clear the table if no airplanes are found
                 tvAirplanes.setItems(FXCollections.observableArrayList());
                 showAlert("Información", 
-                         "No hay aviones registrados para esta aerolínea.", 
-                         Alert.AlertType.INFORMATION);
+                    "No hay aviones registrados para esta aerolínea.", 
+                    Alert.AlertType.INFORMATION);
             }
         } catch (IOException ex) {
             showAlert("Error", 
-                     "Error al cargar los aviones: " + ex.getMessage(), 
-                     Alert.AlertType.ERROR);
+                "Error al cargar los aviones: " + ex.getMessage(), 
+                Alert.AlertType.ERROR);
         }
     }
     
-    /**
-     * Shows an alert dialog with the specified title, message, and type
-     */
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
