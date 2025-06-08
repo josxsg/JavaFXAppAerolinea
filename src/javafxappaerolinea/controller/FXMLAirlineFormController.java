@@ -9,15 +9,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafxappaerolinea.JavaFXAppAerolinea;
 import javafxappaerolinea.model.dao.AirlineDAO;
 import javafxappaerolinea.model.pojo.Airline;
 import javafxappaerolinea.utility.DialogUtil;
@@ -134,27 +129,6 @@ public class FXMLAirlineFormController implements Initializable {
     @FXML
     private void btnCancel(ActionEvent event) {
         closeStage();
-    }
-
-    @FXML
-    private void btnAddAirplane(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(JavaFXAppAerolinea.class.getResource("view/FXMLAddAirplane.fxml"));
-            Parent root = loader.load();
-
-            FXMLAddAirplaneController controller = loader.getController();
-            // Aquí se pasaría la información necesaria al controlador de la nueva ventana
-            // controller.initData(this.airline); 
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Agregar Aviones a Aerolínea");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-
-        } catch (IOException e) {
-            DialogUtil.showErrorAlert("Error", "Error al abrir el formulario para agregar aviones: " + e.getMessage());
-        }
     }
 
     private void closeStage() {

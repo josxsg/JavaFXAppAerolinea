@@ -26,6 +26,9 @@ import javafxappaerolinea.model.dao.AirlineDAO;
 import javafxappaerolinea.model.pojo.Airline;
 import javafxappaerolinea.utility.DialogUtil;
 
+// Importa el controlador de la ventana que quieres abrir
+import javafxappaerolinea.controller.FXMLShowAirplanesController;
+
 /**
  * FXML Controller class
  *
@@ -122,7 +125,28 @@ public class FXMLAirlineController implements Initializable {
 
     @FXML
     private void btnViewAirplanes(ActionEvent event) {
-        // Implementation for viewing airplanes
+        Airline selectedAirline = tvAirlines.getSelectionModel().getSelectedItem();
+        if (selectedAirline == null) {
+            DialogUtil.showWarningAlert("Sin selección", "Por favor, seleccione una aerolínea para ver sus aviones.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(JavaFXAppAerolinea.class.getResource("view/FXMLShowAirplanes.fxml"));
+            Parent root = loader.load();
+
+            FXMLShowAirplanesController controller = loader.getController();
+            controller.initData(selectedAirline); // Pasa la aerolínea seleccionada al otro controlador
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Aviones de " + selectedAirline.getName());
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            DialogUtil.showErrorAlert("Error", "Error al abrir la vista de aviones: " + e.getMessage());
+        }
     }
 
     @FXML

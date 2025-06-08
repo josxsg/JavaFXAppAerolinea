@@ -1,17 +1,5 @@
 [
   {
-    "capacity": 189,
-    "age": 8,
-    "status": true,
-    "registration": "XA-VAV",
-    "model": "Boeing 737-800",
-    "weight": 41413.0,
-    "airline": {
-      "name": "Volaris",
-      "country": "Mexico"
-    }
-  },
-  {
     "capacity": 186,
     "age": 5,
     "status": true,
@@ -19,8 +7,8 @@
     "model": "Airbus A320neo",
     "weight": 42600.0,
     "airline": {
-      "name": "Aeroméxico",
-      "country": "Mexico"
+      "identificationNumber": 0,
+      "name": "Aeroméxico"
     }
   },
   {
@@ -31,20 +19,8 @@
     "model": "Boeing 787-9 Dreamliner",
     "weight": 128850.0,
     "airline": {
-      "name": "American Airlines",
-      "country": "USA"
-    }
-  },
-  {
-    "capacity": 150,
-    "age": 3,
-    "status": true,
-    "registration": "EC-NCS",
-    "model": "Airbus A320-200",
-    "weight": 42400.0,
-    "airline": {
-      "name": "Iberia",
-      "country": "Spain"
+      "identificationNumber": 0,
+      "name": "American Airlines"
     }
   },
   {
@@ -55,8 +31,8 @@
     "model": "Airbus A380-800",
     "weight": 277000.0,
     "airline": {
-      "name": "Air France",
-      "country": "France"
+      "identificationNumber": 0,
+      "name": "Air France"
     }
   },
   {
@@ -67,8 +43,8 @@
     "model": "Airbus A350-900",
     "weight": 129000.0,
     "airline": {
-      "name": "Lufthansa",
-      "country": "Germany"
+      "identificationNumber": 0,
+      "name": "Lufthansa"
     }
   },
   {
@@ -79,8 +55,8 @@
     "model": "Airbus A320-200",
     "weight": 42400.0,
     "airline": {
-      "name": "Viva Aerobus",
-      "country": "Mexico"
+      "identificationNumber": 0,
+      "name": "Viva Aerobus"
     }
   },
   {
@@ -91,8 +67,8 @@
     "model": "Boeing 747-400",
     "weight": 183500.0,
     "airline": {
-      "name": "British Airways",
-      "country": "UK"
+      "identificationNumber": 0,
+      "name": "British Airways"
     }
   },
   {
@@ -103,8 +79,8 @@
     "model": "Boeing 737 MAX 8",
     "weight": 45070.0,
     "airline": {
-      "name": "Air Canada",
-      "country": "Canada"
+      "identificationNumber": 0,
+      "name": "Air Canada"
     }
   },
   {
@@ -115,8 +91,68 @@
     "model": "Boeing 787-9 Dreamliner",
     "weight": 128850.0,
     "airline": {
-      "name": "All Nippon Airways",
-      "country": "Japan"
+      "identificationNumber": 0,
+      "name": "All Nippon Airways"
+    }
+  },
+  {
+    "capacity": 200,
+    "age": 23,
+    "status": true,
+    "registration": "XX-FF",
+    "model": "Voin",
+    "weight": 2000.0,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "3 de mayo",
+      "name": "AeroMexico",
+      "contactPerson": "Miguel",
+      "phoneNumber": "123"
+    }
+  },
+  {
+    "capacity": 230,
+    "age": 21,
+    "status": false,
+    "registration": "XX-GG",
+    "model": "Boing",
+    "weight": 3000.0,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "3 de mayo",
+      "name": "AeroMexico",
+      "contactPerson": "Miguel",
+      "phoneNumber": "123"
+    }
+  },
+  {
+    "capacity": 2,
+    "age": 12,
+    "status": true,
+    "registration": "GG-PP",
+    "model": "caza",
+    "weight": 200.0,
+    "airline": {
+      "identificationNumber": 2,
+      "address": "mahuixtlan",
+      "name": "Viva Aerobus",
+      "contactPerson": "Puch",
+      "phoneNumber": "1234556"
+    }
+  },
+  {
+    "capacity": 3,
+    "age": 2,
+    "status": true,
+    "registration": "Prueba",
+    "model": "sepa",
+    "weight": 1.0,
+    "airline": {
+      "identificationNumber": 2,
+      "address": "mahuixtlan",
+      "name": "Viva Aerobus",
+      "contactPerson": "Puch",
+      "phoneNumber": "1234556"
     }
   }
 ]

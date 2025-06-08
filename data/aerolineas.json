@@ -1,10 +1,16 @@
 [
   {
     "identificationNumber": 1,
-    "address": "asdas",
-    "name": "Migiel",
-    "contactPerson": "yo",
-    "phoneNumber": "123",
-    "airplanes": []
+    "address": "3 de mayo",
+    "name": "AeroMexico",
+    "contactPerson": "Miguel",
+    "phoneNumber": "123"
+  },
+  {
+    "identificationNumber": 2,
+    "address": "mahuixtlan",
+    "name": "Viva Aerobus",
+    "contactPerson": "Puch",
+    "phoneNumber": "1234556"
   }
 ]

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxappaerolinea.controller.FXMLShowFlightDetailsController">
+   <children>
+      <Label layoutX="32.0" layoutY="25.0" text="Detalles del Vuelo">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="32.0" layoutY="70.0" text="Pilotos Asignados">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tvPilots" layoutX="32.0" layoutY="100.0" prefHeight="200.0" prefWidth="736.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0">
+        <columns>
+          <TableColumn fx:id="tcPilotName" prefWidth="150.0" text="Nombre" />
+          <TableColumn fx:id="tcPilotLicense" prefWidth="150.0" text="Tipo Licencia" />
+            <TableColumn fx:id="tcPilotYearsExperience" prefWidth="120.0" text="Años Experiencia" />
+            <TableColumn fx:id="tcPilotFlightHours" prefWidth="120.0" text="Horas Vuelo" />
+            <TableColumn fx:id="tcPilotEmail" prefWidth="195.0" text="Email" />
+        </columns>
+      </TableView>
+      <Label layoutX="32.0" layoutY="320.0" text="Asistentes de Vuelo Asignados">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tvAssistants" layoutX="32.0" layoutY="350.0" prefHeight="200.0" prefWidth="736.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0">
+        <columns>
+          <TableColumn fx:id="tcAssistantName" prefWidth="180.0" text="Nombre" />
+          <TableColumn fx:id="tcAssistantAssistanceHours" prefWidth="180.0" text="Horas Asistencia" />
+            <TableColumn fx:id="tcAssistantLanguages" prefWidth="180.0" text="No. Idiomas" />
+            <TableColumn fx:id="tcAssistantEmail" prefWidth="195.0" text="Email" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

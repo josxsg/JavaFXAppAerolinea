@@ -63,14 +63,6 @@
                   </VBox>
                </children>
             </GridPane>
-            <HBox alignment="CENTER" spacing="10.0">
-               <children>
-                  <Button onAction="#btnAddAirplane" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;" text="Agregar Aviones" />
-               </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </HBox>
             <HBox alignment="CENTER_RIGHT" spacing="10.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button onAction="#btnSave" prefWidth="100.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" text="Guardar" />
