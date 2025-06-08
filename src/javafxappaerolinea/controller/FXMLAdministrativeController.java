@@ -155,7 +155,7 @@ public class FXMLAdministrativeController implements Initializable, Notification
             Parent root = loader.load();
             
             FXMLAdminFormController controller = loader.getController();
-            //controller.initializeData(isEditing, adminToEdit, this);
+            controller.initializeData(isEditing, adminToEdit, this);
             
             Stage stage = new Stage();
             stage.setTitle(isEditing ? "Editar Administrativo" : "Nuevo Administrativo");

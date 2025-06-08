@@ -8,8 +8,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -132,28 +134,62 @@ public class EmployeeDAO {
 
     public void save(Employee employee) throws IOException, DuplicateResourceException {
         List<Employee> employees = findAll();
+
         if (employees.stream().anyMatch(e -> e.getId().equals(employee.getId()))) {
             throw new DuplicateResourceException("Ya existe un empleado con ID " + employee.getId());
         }
         if (employees.stream().anyMatch(e -> e.getUsername().equals(employee.getUsername()))) {
             throw new DuplicateResourceException("Ya existe un empleado con usuario " + employee.getUsername());
         }
-        persistence.save(employee);
+
+        employees.add(employee);
+        saveAllWithTypes(employees);
     }
 
     public void update(Employee employee) throws IOException, ResourceNotFoundException {
+        // Cargar todos los empleados con sus tipos correctos
         List<Employee> employees = findAll();
-        if (employees.stream().noneMatch(e -> e.getId().equals(employee.getId()))) {
+
+        // Verificar que el empleado existe
+        boolean found = false;
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).getId().equals(employee.getId())) {
+                // Reemplazar solo el empleado que se está actualizando
+                employees.set(i, employee);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
             throw new ResourceNotFoundException("Empleado con ID " + employee.getId() + " no encontrado");
         }
-        persistence.update(employee, e -> e.getId().equals(employee.getId()));
+
+        // Guardar toda la lista preservando los tipos
+        saveAllWithTypes(employees);
     }
 
     public void delete(String id) throws IOException, ResourceNotFoundException {
         List<Employee> employees = findAll();
+
         if (employees.stream().noneMatch(e -> e.getId().equals(id))) {
             throw new ResourceNotFoundException("Empleado con ID " + id + " no encontrado");
         }
-        persistence.delete(e -> e.getId().equals(id));
+
+        employees.removeIf(e -> e.getId().equals(id));
+        saveAllWithTypes(employees);
+    }
+    
+    private void saveAllWithTypes(List<Employee> employees) throws IOException {
+        Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .setDateFormat("yyyy-MM-dd")
+            .create();
+
+        try (Writer writer = new FileWriter(FILE_PATH)) {
+            gson.toJson(employees, writer);
+        } catch (Exception e) {
+            throw new IOException("Error al guardar datos en JSON: " + e.getMessage(), e);
+        }
     }
 }

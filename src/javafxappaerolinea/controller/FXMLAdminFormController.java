@@ -273,12 +273,10 @@ public class FXMLAdminFormController implements Initializable {
                 );
             }
             
-            // Notificar al observador
             if (observer != null) {
                 observer.operationSucceeded();
             }
             
-            // Cerrar ventana
             closeWindow();
             
         } catch (DuplicateResourceException e) {

@@ -12,13 +12,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafxappaerolinea.exception.ResourceNotFoundException;
 import javafxappaerolinea.model.dao.EmployeeDAO;
 import javafxappaerolinea.model.pojo.Administrative;
 import javafxappaerolinea.model.pojo.Pilot;
+import javafxappaerolinea.observable.Notification;
 import javafxappaerolinea.utility.DialogUtil;
 
 /**
@@ -26,7 +33,7 @@ import javafxappaerolinea.utility.DialogUtil;
  *
  * @author migue
  */
-public class FXMLPilotController implements Initializable {
+public class FXMLPilotController implements Initializable, Notification {
 
     @FXML
     private TableView<Pilot> tvPilots;
@@ -65,24 +72,65 @@ public class FXMLPilotController implements Initializable {
 
     @FXML
     private void btnAddPilot(ActionEvent event) {
+        openPilotForm(false, null);
     }
 
     @FXML
     private void btnEditPilot(ActionEvent event) {
+        Pilot selectedPilot = getSelectedPilot();
+        if (selectedPilot != null) {
+            openPilotForm(true, selectedPilot);
+        }
     }
 
     @FXML
     private void btnDeletePilot(ActionEvent event) {
+        Pilot selectedPilot = getSelectedPilot();
+        
+        if (selectedPilot != null) {
+            boolean confirmed = DialogUtil.showConfirmationDialog(
+                "Confirmar eliminación",
+                "¿Estás seguro de eliminar este piloto? Esta acción no se puede deshacer."
+            );
+
+            if (confirmed) {
+                try {
+                    EmployeeDAO employeeDAO = new EmployeeDAO();
+                    employeeDAO.delete(selectedPilot.getId());
+                    DialogUtil.showInfoAlert(
+                        "Eliminación exitosa", 
+                        "El piloto ha sido eliminado correctamente."
+                    );
+                    operationSucceeded();
+                } catch (ResourceNotFoundException e) {
+                    DialogUtil.showErrorAlert(
+                        "Error al eliminar", 
+                        "No se encontró el piloto: " + e.getMessage()
+                    );
+                } catch (IOException e) {
+                    DialogUtil.showErrorAlert(
+                        "Error", 
+                        "No se pudo eliminar el piloto: " + e.getMessage()
+                    );
+                }
+            }
+        }
     }
 
     @FXML
     private void btnExport(ActionEvent event) {
+        //TODO
     }
 
     @FXML
     private void btnViewFlights(ActionEvent event) {
+        //TODO
     }
     
+    @Override
+    public void operationSucceeded() {
+        loadTableData();
+    }
     private void configureTable() {
         tcId.setCellValueFactory(new PropertyValueFactory("id"));
         tcName.setCellValueFactory(new PropertyValueFactory("name"));
@@ -111,5 +159,39 @@ public class FXMLPilotController implements Initializable {
                 "No se pudieron cargar los administrativos: " + e.getMessage()
             );
         }
+    }
+    
+    private void openPilotForm(boolean isEditing, Pilot pilotToEdit) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/javafxappaerolinea/view/FXMLPilotForm.fxml"));
+            Parent root = loader.load();
+            
+            FXMLPilotFormController controller = loader.getController();
+            controller.initializeData(isEditing, pilotToEdit, this);
+            
+            Stage stage = new Stage();
+            stage.setTitle(isEditing ? "Editar Piloto" : "Nuevo Piloto");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            DialogUtil.showErrorAlert(
+                "Error", 
+                "No se pudo abrir el formulario: " + e.getMessage()
+            );
+        }
+    }
+    
+    private Pilot getSelectedPilot() {
+        Pilot selectedPilot = tvPilots.getSelectionModel().getSelectedItem();
+        
+        if (selectedPilot == null) {
+            DialogUtil.showWarningAlert(
+                "Sin selección", 
+                "Por favor, selecciona un piloto de la tabla."
+            );
+        }
+        
+        return selectedPilot;
     }
 }
