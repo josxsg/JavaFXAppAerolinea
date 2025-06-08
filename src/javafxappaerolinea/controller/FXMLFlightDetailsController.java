@@ -1,27 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory; // Import this class
 import javafx.stage.Stage;
+import javafx.event.ActionEvent; 
+import javafxappaerolinea.model.pojo.Pilot;
 import javafxappaerolinea.model.pojo.Assistant;
 import javafxappaerolinea.model.pojo.Flight;
-import javafxappaerolinea.model.pojo.Pilot;
 
+/**
+ * FXML Controller class
+ *
+ * @author migue
+ */
 public class FXMLFlightDetailsController implements Initializable {
-    
+
     @FXML
     private Label lbFlightId;
     
@@ -61,20 +63,56 @@ public class FXMLFlightDetailsController implements Initializable {
     @FXML
     private Label lbAirline;
     
+    // Removed old ListView declarations
+
     @FXML
-    private ListView<String> lvPilots;
+    private TableView<Pilot> tvPilots; // Corrected type parameter
+    @FXML
+    private TableColumn<Pilot, String> tcPilotName; // Corrected type parameter
+    @FXML
+    private TableColumn<Pilot, String> tcPilotLicense; // Corrected type parameter
+    @FXML
+    private TableColumn<Pilot, Integer> tcPilotYearsExperience; // Corrected type parameter
+    @FXML
+    private TableColumn<Pilot, Double> tcPilotFlightHours; // Corrected type parameter
+    @FXML
+    private TableColumn<Pilot, String> tcPilotEmail; // Corrected type parameter
     
     @FXML
-    private ListView<String> lvAssistants;
-    
+    private TableView<Assistant> tvAssistants; // Corrected type parameter
+    @FXML
+    private TableColumn<Assistant, String> tcAssistantName; // Corrected type parameter
+    @FXML
+    private TableColumn<Assistant, Integer> tcAssistantAssistanceHours; // Corrected type parameter
+    @FXML
+    private TableColumn<Assistant, Integer> tcAssistantLanguages; // Corrected type parameter
+    @FXML
+    private TableColumn<Assistant, String> tcAssistantEmail; // Corrected type parameter
+
+    private ObservableList<Pilot> pilotsObservableList;
+    private ObservableList<Assistant> assistantsObservableList;
+
     private Flight flight;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Inicialización vacía, los datos se cargarán cuando se establezca el vuelo
-    }
-    
+        // Initialize ObservableLists
+        pilotsObservableList = FXCollections.observableArrayList();
+        assistantsObservableList = FXCollections.observableArrayList();
+        
+        // Set ObservableLists to TableViews
+        tvPilots.setItems(pilotsObservableList);
+        tvAssistants.setItems(assistantsObservableList);
+        
+        // Configure table columns
+        configurePilotTable();
+        configureAssistantTable();
+    }    
+
     public void initData(Flight flight) {
         this.flight = flight;
         loadFlightDetails();
@@ -97,7 +135,7 @@ public class FXMLFlightDetailsController implements Initializable {
             // Información del avión
             if (flight.getAirplane() != null) {
                 lbAirplane.setText(flight.getAirplane().getModel() + " (Capacidad: " + 
-                        flight.getAirplane().getCapacity() + ")");
+                                   flight.getAirplane().getCapacity() + ")");
             } else {
                 lbAirplane.setText("No asignado");
             }
@@ -109,35 +147,46 @@ public class FXMLFlightDetailsController implements Initializable {
                 lbAirline.setText("No asignada");
             }
             
-            // Cargar pilotos
-            ObservableList<String> pilotsList = FXCollections.observableArrayList();
-            if (flight.getPilots() != null && !flight.getPilots().isEmpty()) {
-                for (Pilot pilot : flight.getPilots()) {
-                    pilotsList.add(pilot.getName() + " - " + pilot.getLicenseType() + 
-                            " (" + pilot.getYearsExperience() + " años de experiencia)");
-                }
+            // Populate Piloting TableView
+            if (flight.getPilots() != null) {
+                pilotsObservableList.setAll(flight.getPilots());
             } else {
-                pilotsList.add("No hay pilotos asignados");
+                pilotsObservableList.clear(); // Clear if no pilots
             }
-            lvPilots.setItems(pilotsList);
             
-            // Cargar asistentes
-            ObservableList<String> assistantsList = FXCollections.observableArrayList();
-            if (flight.getAssistants() != null && !flight.getAssistants().isEmpty()) {
-                for (Assistant assistant : flight.getAssistants()) {
-                    assistantsList.add(assistant.getName() + " - " + 
-                            assistant.getNumberOfLanguages() + " idiomas");
-                }
+            // Populate Assistants TableView
+            if (flight.getAssistants() != null) {
+                assistantsObservableList.setAll(flight.getAssistants());
             } else {
-                assistantsList.add("No hay asistentes asignados");
+                assistantsObservableList.clear(); // Clear if no assistants
             }
-            lvAssistants.setItems(assistantsList);
         }
+    }
+    
+    // Configures the pilot table columns with PropertyValueFactory
+    private void configurePilotTable() {
+        tcPilotName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tcPilotLicense.setCellValueFactory(new PropertyValueFactory<>("licenseType"));
+        tcPilotYearsExperience.setCellValueFactory(new PropertyValueFactory<>("yearsExperience"));
+        tcPilotFlightHours.setCellValueFactory(new PropertyValueFactory<>("flightHours"));
+        tcPilotEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+    }
+    
+    // Configures the assistant table columns with PropertyValueFactory
+    private void configureAssistantTable() {
+        tcAssistantName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tcAssistantAssistanceHours.setCellValueFactory(new PropertyValueFactory<>("assistanceHours"));
+        tcAssistantLanguages.setCellValueFactory(new PropertyValueFactory<>("numberOfLanguages"));
+        tcAssistantEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
     }
     
     @FXML
     private void btnClose(ActionEvent event) {
         Stage stage = (Stage) lbFlightId.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void btnExport(ActionEvent event) {
     }
 }

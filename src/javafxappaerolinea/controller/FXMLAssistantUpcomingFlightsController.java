@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.File;
@@ -76,13 +72,19 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
     private TextField tfFilterDestination;
     
     private ObservableList<Flight> upcomingFlights;
-    private Assistant loggedAssistant;
+    private Assistant currentAssistant; // Changed from loggedAssistant and made accessible for initData
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTableColumns();
-        loadUpcomingFlights();
+        // loadUpcomingFlights(); // Removed this call from here, it will be called by initData
+    }
+
+    // New method to initialize data for the controller
+    public void initData(Assistant assistant) {
+        this.currentAssistant = assistant;
+        loadUpcomingFlights(); // Call loadUpcomingFlights after the assistant is set
     }
     
     private void configureTableColumns() {
@@ -136,8 +138,8 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
     
     private void loadUpcomingFlights() {
         try {
-            loggedAssistant = (Assistant) SessionManager.getInstance().getCurrentUser();
-            if (loggedAssistant != null) {
+            // Use the currentAssistant object passed via initData
+            if (currentAssistant != null) {
                 // Obtener todos los vuelos
                 FlightDAO flightDAO = new FlightDAO();
                 List<Flight> allFlights = flightDAO.findAll();
@@ -146,17 +148,20 @@ public class FXMLAssistantUpcomingFlightsController implements Initializable {
                 Date today = new Date();
                 List<Flight> futureFlights = allFlights.stream()
                     .filter(flight -> flight.getAssistants().stream()
-                        .anyMatch(assistant -> assistant.getId().equals(loggedAssistant.getId())))
+                        .anyMatch(assistant -> assistant.getId().equals(currentAssistant.getId())))
                     .filter(flight -> flight.getDepartureDate().after(today))
                     .collect(Collectors.toList());
                 
                 upcomingFlights = FXCollections.observableArrayList(futureFlights);
                 tvUpcomingFlights.setItems(upcomingFlights);
+            } else {
+                showAlert("Error de datos", "No se proporcionó información del asistente para cargar los vuelos.", Alert.AlertType.ERROR);
             }
         } catch (IOException ex) {
             showAlert("Error", "Error al cargar los datos: " + ex.getMessage(), Alert.AlertType.ERROR);
         } catch (Exception ex) {
             showAlert("Error", "No se pudieron cargar los vuelos programados: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ex.printStackTrace(); // Print stack trace for debugging unexpected exceptions
         }
     }
     

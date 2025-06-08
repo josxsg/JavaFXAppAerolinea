@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -26,6 +22,7 @@ import javafxappaerolinea.model.dao.EmployeeDAO;
 import javafxappaerolinea.model.pojo.Assistant;
 import javafxappaerolinea.observable.Notification;
 import javafxappaerolinea.utility.DialogUtil;
+
 /**
  * FXML Controller class
  *
@@ -115,10 +112,32 @@ public class FXMLAssistantController implements Initializable, Notification {
 
     @FXML
     private void btnExport(ActionEvent event) {
+        // TODO: Implement export functionality for assistants table
     }
 
     @FXML
     private void btnViewFlights(ActionEvent event) {
+        Assistant selectedAssistant = getSelectedAssistant();
+        if (selectedAssistant != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/javafxappaerolinea/view/FXMLAssistantUpcomingFlights.fxml"));
+                Parent root = loader.load();
+                
+                FXMLAssistantUpcomingFlightsController controller = loader.getController();
+                controller.initData(selectedAssistant); // Pass the selected assistant
+
+                Stage stage = new Stage();
+                stage.setTitle("Vuelos Próximos del Asistente: " + selectedAssistant.getName());
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+            } catch (IOException e) {
+                DialogUtil.showErrorAlert(
+                    "Error", 
+                    "No se pudo abrir la ventana de vuelos próximos: " + e.getMessage()
+                );
+            }
+        }
     }
 
     @Override
