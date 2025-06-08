@@ -1,10 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,10 +12,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafxappaerolinea.exception.DuplicateResourceException;
+import javafxappaerolinea.model.dao.CustomerDAO;
+import javafxappaerolinea.model.pojo.Customer;
+import javafxappaerolinea.utility.DialogUtil;
+import javafxappaerolinea.utility.ValidationUtil;
 
 /**
- * FXML Controller class
- *
+ * Controlador para la vista de agregar cliente
  * @author zenbook i5
  */
 public class FXMLAddCustomerController implements Initializable {
@@ -32,21 +37,130 @@ public class FXMLAddCustomerController implements Initializable {
     private DatePicker dpBirthDate;
     @FXML
     private TextField txtNationality;
+    
+    private FXMLCustomersController customersController;
+    private CustomerDAO customerDAO;
 
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        customerDAO = new CustomerDAO();
+        // Establecer fecha por defecto (hoy)
+        dpBirthDate.setValue(LocalDate.now());
     }    
 
-    @FXML
-    private void handleSave(ActionEvent event) {
-    }
-
-    @FXML
-    private void handleCancel(ActionEvent event) {
+    /**
+     * Establece el controlador de clientes para actualizar la tabla después de guardar
+     */
+    public void setCustomersController(FXMLCustomersController controller) {
+        this.customersController = controller;
     }
     
+    /**
+     * Maneja el evento de guardar un cliente
+     */
+    @FXML
+    private void handleSave(ActionEvent event) {
+        if (validateFields()) {
+            Customer customer = new Customer();
+            customer.setName(txtName.getText().trim());
+            customer.setEmail(txtEmail.getText().trim());
+            LocalDate localDate = dpBirthDate.getValue();
+            if (localDate != null) {
+                Date birthDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                customer.setBirthDate(birthDate);
+            }
+            customer.setNationality(txtNationality.getText().trim());
+            
+            try {
+                customerDAO.save(customer);
+                DialogUtil.showInfoAlert("Cliente guardado", 
+                        "El cliente se ha registrado correctamente.");
+                
+                if (customersController != null) {
+                    customersController.refreshCustomers();
+                }
+                
+                closeWindow();
+            } catch (DuplicateResourceException e) {
+                DialogUtil.showErrorAlert("Cliente duplicado", 
+                        "Ya existe un cliente con el correo electrónico proporcionado.");
+            } catch (IOException e) {
+                DialogUtil.showErrorAlert("Error en la base de datos", 
+                        "Ocurrió un error al intentar guardar el cliente: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Maneja el evento de cancelar
+     */
+    @FXML
+    private void handleCancel(ActionEvent event) {
+        boolean confirm = DialogUtil.showConfirmationDialog("Confirmar", 
+                "¿Está seguro que desea cancelar? Los datos no guardados se perderán.");
+        
+        if (confirm) {
+            closeWindow();
+        }
+    }
+    
+    /**
+     * Valida los campos del formulario
+     */
+    private boolean validateFields() {
+        boolean isValid = true;
+        StringBuilder errorMessage = new StringBuilder("Por favor corrija los siguientes errores:\n");
+        
+        // Validar nombre
+        String nameError = ValidationUtil.validateNotEmptyUI(txtName.getText());
+        if (nameError != null) {
+            errorMessage.append("- El nombre ").append(nameError.toLowerCase()).append("\n");
+            isValid = false;
+        }
+        
+        // Validar email
+        String emailError = ValidationUtil.validateEmailUI(txtEmail.getText());
+        if (emailError != null) {
+            errorMessage.append("- El email ").append(emailError.toLowerCase()).append("\n");
+            isValid = false;
+        }
+        
+        // Validar fecha de nacimiento
+        String dateError = ValidationUtil.validateDateNotNullUI(dpBirthDate.getValue());
+        if (dateError != null) {
+            errorMessage.append("- La fecha de nacimiento ").append(dateError.toLowerCase()).append("\n");
+            isValid = false;
+        } else {
+            // Validar que la fecha no sea futura
+            String pastDateError = ValidationUtil.validatePastDateUI(dpBirthDate.getValue());
+            if (pastDateError != null) {
+                errorMessage.append("- La fecha de nacimiento ").append(pastDateError.toLowerCase()).append("\n");
+                isValid = false;
+            }
+        }
+        
+        // Validar nacionalidad
+        String nationalityError = ValidationUtil.validateNotEmptyUI(txtNationality.getText());
+        if (nationalityError != null) {
+            errorMessage.append("- La nacionalidad ").append(nationalityError.toLowerCase()).append("\n");
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            DialogUtil.showWarningAlert("Datos incompletos o inválidos", errorMessage.toString());
+        }
+        
+        return isValid;
+    }
+    
+    /**
+     * Cierra la ventana actual
+     */
+    private void closeWindow() {
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
+        stage.close();
+    }
 }
