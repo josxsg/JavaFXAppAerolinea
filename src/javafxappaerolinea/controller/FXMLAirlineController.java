@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -151,7 +147,28 @@ public class FXMLAirlineController implements Initializable {
 
     @FXML
     private void btnViewFlights(ActionEvent event) {
-        // Implementation for viewing flights
+        Airline selectedAirline = tvAirlines.getSelectionModel().getSelectedItem();
+        if (selectedAirline == null) {
+            DialogUtil.showWarningAlert("Sin selección", "Por favor, seleccione una aerolínea para ver sus vuelos.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(JavaFXAppAerolinea.class.getResource("view/FXMLShowFlights.fxml"));
+            Parent root = loader.load();
+
+            FXMLShowFlightsController controller = loader.getController();
+            controller.initData(selectedAirline); // Pass the selected airline to the flights controller
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Vuelos de " + selectedAirline.getName());
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            DialogUtil.showErrorAlert("Error", "Error al abrir la vista de vuelos: " + e.getMessage());
+        }
     }
 
     private void openAirlineForm(Airline airline) {
