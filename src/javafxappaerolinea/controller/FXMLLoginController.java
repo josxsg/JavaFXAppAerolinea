@@ -108,11 +108,11 @@ public class FXMLLoginController implements Initializable {
     
     private void openAppropriateWindow(Employee employee) {
         if (employee instanceof Administrative) {
-            goToMainScreen("view/FXMLPrincipal.fxml", "UniAir - Panel Administrativo", employee);
+            goToMainScreen("view/FXMLPrincipalAdmin.fxml", "UniAir - Panel Administrativo", employee);
         } else if (employee instanceof Pilot) {
-            goToMainScreen("view/FXMLPilotMainMenu.fxml", "UniAir - Panel de Piloto", employee);
+            goToMainScreen("view/FXMLPrincipalPilot.fxml", "UniAir - Panel de Piloto", employee);
         } else if (employee instanceof Assistant) {
-            goToMainScreen("view/FXMLAssistantMainMenu.fxml", "UniAir - Panel de Asistente", employee);
+            goToMainScreen("view/FXMLPrincipalAssistant.fxml", "UniAir - Panel de Asistente", employee);
         } 
     }
     

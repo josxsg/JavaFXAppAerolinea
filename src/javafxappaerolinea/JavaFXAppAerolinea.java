@@ -20,7 +20,7 @@ public class JavaFXAppAerolinea extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent vista  = FXMLLoader.load(getClass().getResource("view/FXMLPrincipalAdmin.fxml"));
+            Parent vista  = FXMLLoader.load(getClass().getResource("view/FXMLLogin.fxml"));
             Scene escenaInicioSesion = new Scene(vista);
             
             primaryStage.setScene(escenaInicioSesion);

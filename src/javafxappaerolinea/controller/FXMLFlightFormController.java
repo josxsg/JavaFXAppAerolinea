@@ -1,4 +1,3 @@
-// JavaFXAppAerolinea/src/javafxappaerolinea/controller/FXMLFlightFormController.java
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -6,6 +5,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -72,25 +72,21 @@ public class FXMLFlightFormController implements Initializable {
 
     private Flight flight;
     private boolean isEditMode;
-
+    
     // Listas para guardar la tripulación seleccionada en las ventanas modales
-    private List<Pilot> selectedPilots;
-    private List<Assistant> selectedAssistants;
+    private List<Pilot> selectedPilots = new ArrayList<>();
+    private List<Assistant> selectedAssistants = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         flightDAO = new FlightDAO();
         airlineDAO = new AirlineDAO();
         airplaneDAO = new AirplaneDAO();
-
+        
         configureComboBoxes();
         applyFormatters();
         loadAirlines();
-
-        // Asegurarse de que las listas estén inicializadas al cargar el controlador
-        this.selectedPilots = new ArrayList<>();
-        this.selectedAssistants = new ArrayList<>();
-    }
+    }    
 
     public void initData(Flight flight) {
         if (flight != null) {
@@ -102,12 +98,9 @@ public class FXMLFlightFormController implements Initializable {
             this.isEditMode = false;
             this.flight = new Flight();
             lbTitle.setText("Registrar Nuevo Vuelo");
-            // Asegurarse de que las listas estén inicializadas para un nuevo vuelo
-            this.selectedPilots = new ArrayList<>();
-            this.selectedAssistants = new ArrayList<>();
         }
     }
-
+    
     @FXML
     private void btnSave(ActionEvent event) {
         if (!validateFields()) {
@@ -116,7 +109,7 @@ public class FXMLFlightFormController implements Initializable {
 
         try {
             populateFlightObject();
-
+            
             if (isEditMode) {
                 flightDAO.update(flight);
                 DialogUtil.showInfoAlert("Éxito", "Vuelo actualizado correctamente.");
@@ -127,10 +120,12 @@ public class FXMLFlightFormController implements Initializable {
             }
             closeWindow();
         } catch (Exception e) {
-            e.printStackTrace();
             DialogUtil.showErrorAlert("Error al guardar", "Ocurrió un error al guardar el vuelo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+    
+    
 
     @FXML
     private void handleAirlineSelection(ActionEvent event) {
@@ -160,21 +155,20 @@ public class FXMLFlightFormController implements Initializable {
 
         LocalDateTime departureDateTime = LocalDateTime.of(dpDepartureDate.getValue(), java.time.LocalTime.parse(tfDepartureHour.getText()));
         LocalDateTime arrivalDateTime = LocalDateTime.of(dpArrivalDate.getValue(), java.time.LocalTime.parse(tfArrivalHour.getText()));
-
+        
         flight.setDepartureDate(Date.from(departureDateTime.atZone(ZoneId.systemDefault()).toInstant()));
         flight.setArrivalDate(Date.from(arrivalDateTime.atZone(ZoneId.systemDefault()).toInstant()));
-
+        
         flight.setDepartureHour(tfDepartureHour.getText());
-        flight.setArrivalHour(arrivalDateTime.getHour());
+        flight.setArrivalHour(arrivalDateTime.getHour()); 
 
         flight.setTravelTime(calculateTravelTime(departureDateTime, arrivalDateTime));
-
-        // Asegurarse de que selectedPilots y selectedAssistants estén correctamente establecidos
-        // These are already updated by openCrewManagementWindow if changes were confirmed.
+        
+        // Ensure selectedPilots and selectedAssistants are properly set
         flight.setPilots(this.selectedPilots);
         flight.setAssistants(this.selectedAssistants);
     }
-
+    
     private void loadFlightData() {
         tfOriginCity.setText(flight.getOriginCity());
         tfDestinationCity.setText(flight.getDestinationCity());
@@ -184,21 +178,21 @@ public class FXMLFlightFormController implements Initializable {
         cbAirline.setValue(flight.getAirline());
         handleAirlineSelection(null); // Carga los aviones de la aerolínea
         cbAirplane.setValue(flight.getAirplane());
-
+        
         dpDepartureDate.setValue(flight.getDepartureDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         dpArrivalDate.setValue(flight.getArrivalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         tfDepartureHour.setText(flight.getDepartureHour());
-        tfArrivalHour.setText(String.format("%02d:00", flight.getArrivalHour()));
-
-        // Inicializar selectedPilots y selectedAssistants desde el vuelo cargado
+        tfArrivalHour.setText(String.format("%02d:00", flight.getArrivalHour())); // Formato HH:MM
+        
+        // Initialize selectedPilots and selectedAssistants from the loaded flight
         this.selectedPilots = new ArrayList<>(flight.getPilots());
         this.selectedAssistants = new ArrayList<>(flight.getAssistants());
     }
-
+    
     private boolean validateFields() {
         clearErrors();
         boolean isValid = true;
-
+        
         if (tfOriginCity.getText().trim().isEmpty()) {
             lbOriginCityError.setText("Campo requerido"); isValid = false;
         }
@@ -229,7 +223,8 @@ public class FXMLFlightFormController implements Initializable {
         if (cbAirplane.getValue() == null) {
             lbAirplaneError.setText("Seleccione un avión"); isValid = false;
         }
-
+        
+        // Validar secuencia de fechas
         if (isValid) {
             try {
                 LocalDateTime departure = LocalDateTime.of(dpDepartureDate.getValue(), java.time.LocalTime.parse(tfDepartureHour.getText()));
@@ -239,11 +234,11 @@ public class FXMLFlightFormController implements Initializable {
                     isValid = false;
                 }
             } catch (DateTimeParseException e) {
-                // This catch block can be empty as isValidTimeFormat already checks format
+                // Ya manejado por las validaciones de formato de hora
             }
         }
 
-        // Validate that pilots and assistants lists are not empty
+        // Validate that at least one pilot and one assistant are selected
         if (selectedPilots.isEmpty()) {
             DialogUtil.showWarningAlert("Pilotos Requeridos", "Debe añadir al menos un piloto al vuelo.");
             isValid = false;
@@ -263,7 +258,7 @@ public class FXMLFlightFormController implements Initializable {
             DialogUtil.showErrorAlert("Error", "No se pudieron cargar las aerolíneas.");
         }
     }
-
+    
     private void configureComboBoxes() {
         cbAirline.setConverter(new StringConverter<Airline>() {
             @Override public String toString(Airline airline) { return airline == null ? "" : airline.getName(); }
@@ -274,33 +269,33 @@ public class FXMLFlightFormController implements Initializable {
             @Override public String toString(Airplane airplane) { return airplane == null ? "" : airplane.getModel() + " (" + airplane.getRegistration() + ")"; }
             @Override public Airplane fromString(String string) { return null; }
         });
-
+        
         cbAirplane.setDisable(true);
     }
+    
+private void applyFormatters() {
+    tfTicketCost.setTextFormatter(new TextFormatter<>(c -> 
+        c.getControlNewText().matches("\\d*\\.?\\d*") ? c : null));
 
-    private void applyFormatters() {
-        tfTicketCost.setTextFormatter(new TextFormatter<>(c ->
-            c.getControlNewText().matches("\\d*\\.?\\d*") ? c : null));
+    tfGate.setTextFormatter(new TextFormatter<>(c -> 
+        c.getControlNewText().matches("[a-zA-Z0-9\\- ]*") ? c : null));
 
-        tfGate.setTextFormatter(new TextFormatter<>(c ->
-            c.getControlNewText().matches("[a-zA-Z0-9\\- ]*") ? c : null));
+    TextFormatter<String> timeFormatter1 = new TextFormatter<>(c -> 
+        c.getControlNewText().matches("[0-9:]*") ? c : null);
+    tfDepartureHour.setTextFormatter(timeFormatter1);
 
-        TextFormatter<String> timeFormatter1 = new TextFormatter<>(c ->
-            c.getControlNewText().matches("[0-9:]*") ? c : null);
-        tfDepartureHour.setTextFormatter(timeFormatter1);
-
-        TextFormatter<String> timeFormatter2 = new TextFormatter<>(c ->
-            c.getControlNewText().matches("[0-9:]*") ? c : null);
-        tfArrivalHour.setTextFormatter(timeFormatter2);
-    }
+    TextFormatter<String> timeFormatter2 = new TextFormatter<>(c -> 
+        c.getControlNewText().matches("[0-9:]*") ? c : null);
+    tfArrivalHour.setTextFormatter(timeFormatter2);
+}
     private boolean isValidTimeFormat(String time) {
         return time.matches("^([01]?[0-9]|2[0-3]):[0-5][0-9]$");
     }
-
+    
     private double calculateTravelTime(LocalDateTime start, LocalDateTime end) {
         return Duration.between(start, end).toMinutes() / 60.0;
     }
-
+    
     private void clearErrors() {
         lbOriginCityError.setText("");
         lbDestinationCityError.setText("");
@@ -313,11 +308,11 @@ public class FXMLFlightFormController implements Initializable {
         lbAirlineError.setText("");
         lbAirplaneError.setText("");
     }
-
+    
     @FXML private void btnCancel(ActionEvent event) { closeWindow(); }
     private void closeWindow() { ((Stage) lbTitle.getScene().getWindow()).close(); }
 
-
+    
     @FXML
     private void btnAddPilots(ActionEvent event) {
         openCrewManagementWindow("view/FXMLAddPilot.fxml", "Gestionar Pilotos");
@@ -325,9 +320,10 @@ public class FXMLFlightFormController implements Initializable {
 
     @FXML
     private void btnAddAssistants(ActionEvent event) {
-        openCrewManagementWindow("view/FXMLAddAsisstant.fxml", "Gestionar Asistentes");
+        // Correct path to FXMLAddAssistant.fxml
+        openCrewManagementWindow("view/FXMLAddAssistant.fxml", "Gestionar Asistentes");
     }
-
+    
     private void openCrewManagementWindow(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(JavaFXAppAerolinea.class.getResource(fxmlPath));
@@ -338,24 +334,26 @@ public class FXMLFlightFormController implements Initializable {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
 
+            Airline selectedAirline = cbAirline.getValue();
+            
+            // Logic to pass data to and retrieve data from the new window
             if ("view/FXMLAddPilot.fxml".equals(fxmlPath)) {
                 FXMLAddPilotController controller = loader.getController();
-                // Pasar una copia de la lista actual para evitar la modificación directa antes de la confirmación
-                controller.initData(new ArrayList<>(this.selectedPilots));
+                controller.initData(this.selectedPilots, selectedAirline); // Pass currently selected pilots
                 stage.showAndWait();
-                // Después de que la ventana modal se cierra, verifica si se confirmaron los cambios y actualiza la lista
-                if (controller.areChangesConfirmed()) {
-                    this.selectedPilots = controller.getSelectedPilotsList();
-                }
-            } else if ("view/FXMLAddAsisstant.fxml".equals(fxmlPath)) {
+                this.selectedPilots = controller.getFinalSelectedPilots(); // Retrieve final selected pilots
+            } else if ("view/FXMLAddAssistant.fxml".equals(fxmlPath)) { // Corregido aquí también
                 FXMLAddAssistantController controller = loader.getController();
-                // Pasar una copia de la lista actual para evitar la modificación directa antes de la confirmación
-                controller.initData(new ArrayList<>(this.selectedAssistants));
+                controller.initData(this.selectedAssistants, selectedAirline);// Pass currently selected assistants
                 stage.showAndWait();
-                // Después de que la ventana modal se cierra, verifica si se confirmaron los cambios y actualiza la lista
-                if (controller.areChangesConfirmed()) {
-                    this.selectedAssistants = controller.getSelectedAssistantsList();
+
+                // Obtener los asistentes seleccionados solo si se confirmaron
+                if (controller.isAssistantsConfirmed()) {
+                    this.selectedAssistants = controller.getSelectedAssistants();
                 }
+                // Si no se confirmaron, selectedAssistants mantiene su valor anterior
+            } else {
+                stage.showAndWait();
             }
 
         } catch (IOException e) {

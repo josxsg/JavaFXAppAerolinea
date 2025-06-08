@@ -191,6 +191,8 @@ public class FXMLFlightController implements Initializable {
             Parent root = loader.load();
 
             FXMLFlightFormController controller = loader.getController();
+            
+            controller.initData(flight); // Assuming FXMLFlightFormController has an initData method
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
