@@ -172,7 +172,4 @@ public class FXMLFlightDetailsController implements Initializable {
         stage.close();
     }
 
-    @FXML
-    private void btnExport(ActionEvent event) {
-    }
 }

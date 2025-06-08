@@ -124,7 +124,6 @@
             
             <HBox alignment="CENTER_RIGHT" spacing="10.0">
                <children>
-                  <Button onAction="#btnExport" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;" text="Exportar" />
                   <Button onAction="#btnClose" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;" text="Cerrar" />
                </children>
             </HBox>
