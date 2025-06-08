@@ -113,29 +113,52 @@ public class FXMLLoginController implements Initializable {
     }
     
     private void goToMainScreen(String fxmlPath, String windowTitle, Employee employee) {
-        try {
-            Stage primaryStage = (Stage) tfUser.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(JavaFXAppAerolinea.class.getResource(fxmlPath));
-            Parent root = loader.load();
-            loadEmployeeInWindow(employee, loader);
-            
-            Scene primaryScene = new Scene(root);
-            primaryStage.setScene(primaryScene);
-            primaryStage.setTitle(windowTitle);
-            primaryStage.show();
-        } catch (IOException ex) {
-            showErrorAlert("Error", "No se pudo abrir la ventana principal: " + ex.getMessage());
+    try {
+        System.out.println("Intentando cargar: " + fxmlPath);
+        Stage primaryStage = (Stage) tfUser.getScene().getWindow();
+        
+        // Verificar que la ruta del FXML sea accesible
+        URL fxmlUrl = JavaFXAppAerolinea.class.getResource(fxmlPath);
+        if (fxmlUrl == null) {
+            throw new IOException("No se pudo encontrar el archivo FXML en la ruta: " + fxmlPath);
         }
+        System.out.println("URL del FXML: " + fxmlUrl);
+        
+        FXMLLoader loader = new FXMLLoader(fxmlUrl);
+        Parent root = loader.load();
+        
+        // Verificar que el controlador se haya cargado correctamente
+        Object controller = loader.getController();
+        System.out.println("Controlador cargado: " + (controller != null ? controller.getClass().getName() : "null"));
+        
+        loadEmployeeInWindow(employee, loader);
+        
+        Scene primaryScene = new Scene(root);
+        primaryStage.setScene(primaryScene);
+        primaryStage.setTitle(windowTitle);
+        primaryStage.show();
+    } catch (IOException ex) {
+        ex.printStackTrace();
+        showErrorAlert("Error", "No se pudo abrir la ventana principal: " + ex.getMessage());
+    } catch (Exception e) {
+        e.printStackTrace();
+        showErrorAlert("Error inesperado", "Error al cargar la ventana: " + e.getMessage());
     }
+}
     
-    private void loadEmployeeInWindow (Employee employee, FXMLLoader loader) {
+    private void loadEmployeeInWindow(Employee employee, FXMLLoader loader) {
+    try {
         if (employee instanceof Administrative) {
             FXMLPrincipalAdminController controller = loader.getController();
             controller.initInformation((Administrative) employee);
         } else if (employee instanceof Pilot) {
-            //TODO
+            // No hacemos nada, el controlador ya carga la información desde SessionManager
         } else if (employee instanceof Assistant) {
-            //TODO
-        } 
+            // No hacemos nada, el controlador ya carga la información desde SessionManager
+        }
+    } catch (Exception e) {
+        showErrorAlert("Error", "Error al inicializar la ventana: " + e.getMessage());
+        e.printStackTrace();
     }
+}
 }

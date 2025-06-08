@@ -161,7 +161,7 @@ public class FXMLCustomersController implements Initializable {
                 
                 DialogUtil.showInfoAlert("Exportación exitosa", 
                         "Los datos se han exportado correctamente a " + filePath);
-            } catch (Exception e) {
+            } catch (IOException e) {
                 DialogUtil.showErrorAlert("Error al exportar", 
                         "No se pudieron exportar los datos: " + e.getMessage());
             }

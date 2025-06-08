@@ -1,5 +1,3 @@
-// File: JavaFXAppAerolinea/src/javafxappaerolinea/controller/FXMLPilotUpcomingFlightsController.java
-
 package javafxappaerolinea.controller;
 
 import java.io.File;
@@ -32,7 +30,7 @@ import javafxappaerolinea.model.dao.FlightDAO;
 import javafxappaerolinea.model.pojo.Assistant;
 import javafxappaerolinea.model.pojo.Flight;
 import javafxappaerolinea.model.pojo.Pilot;
-import javafxappaerolinea.service.SessionManager; // Keep this import if SessionManager is used elsewhere in the controller
+import javafxappaerolinea.service.SessionManager; 
 import javafxappaerolinea.utility.ExportUtil;
 
 public class FXMLPilotUpcomingFlightsController implements Initializable {
@@ -74,19 +72,30 @@ public class FXMLPilotUpcomingFlightsController implements Initializable {
     private TextField tfFilterDestination;
 
     private ObservableList<Flight> upcomingFlights;
-    private Pilot currentPilot; // Renamed from loggedPilot to reflect it's the pilot whose flights are being viewed
+    private Pilot currentPilot; 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTableColumns();
-        // loadUpcomingFlights(); // Removed this call from initialize, it will be called by initData
+        javafx.application.Platform.runLater(() -> {
+            if (currentPilot == null) {
+                Object user = SessionManager.getInstance().getCurrentUser();
+                if (user instanceof Pilot) {
+                    currentPilot = (Pilot) user;
+                }
+            }
+            
+            if (currentPilot != null) {
+                loadUpcomingFlights();
+            } else {
+                showAlert("Error", "No se pudo obtener el piloto actual.", Alert.AlertType.ERROR);
+            }
+        });
     }
-
-    // New method to receive the pilot whose flights should be displayed
+    
     public void initData(Pilot pilot) {
         this.currentPilot = pilot;
-        loadUpcomingFlights(); // Now call loadUpcomingFlights after the pilot is set
     }
 
     private void configureTableColumns() {
@@ -98,16 +107,14 @@ public class FXMLPilotUpcomingFlightsController implements Initializable {
         tcArrivalDate.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
         tcArrivalHour.setCellValueFactory(new PropertyValueFactory<>("arrivalHour"));
         tcGate.setCellValueFactory(new PropertyValueFactory<>("gate"));
-
-        // Configuración para mostrar el modelo del avión
+        
         tcAirplane.setCellValueFactory(cellData -> {
             if (cellData.getValue().getAirplane() != null) {
                 return new SimpleStringProperty(cellData.getValue().getAirplane().getModel());
             }
             return new SimpleStringProperty("");
         });
-
-        // Configuración para mostrar el nombre de la aerolínea
+        
         tcAirline.setCellValueFactory(cellData -> {
             if (cellData.getValue().getAirline() != null) {
                 return new SimpleStringProperty(cellData.getValue().getAirline().getName());
@@ -115,7 +122,6 @@ public class FXMLPilotUpcomingFlightsController implements Initializable {
             return new SimpleStringProperty("");
         });
 
-        // Formato para las fechas
         tcDepartureDate.setCellFactory(column -> {
             return new TableCell<Flight, Date>() {
                 @Override
@@ -147,32 +153,25 @@ public class FXMLPilotUpcomingFlightsController implements Initializable {
 
     private void loadUpcomingFlights() {
         try {
-            // Ensure currentPilot is not null before proceeding
             if (currentPilot != null) { 
-                // Obtener todos los vuelos
                 FlightDAO flightDAO = new FlightDAO();
                 List<Flight> allFlights = flightDAO.findAll();
-
-                // Filter flights where the current pilot is assigned and date is in the future
+                
                 Date today = new Date();
                 List<Flight> futureFlights = allFlights.stream()
                     .filter(flight -> flight.getPilots().stream()
-                        .anyMatch(pilot -> pilot.getId().equals(currentPilot.getId()))) // Use currentPilot's ID
+                        .anyMatch(pilot -> pilot.getId().equals(currentPilot.getId()))) 
                     .filter(flight -> flight.getDepartureDate().after(today))
                     .collect(Collectors.toList());
 
                 upcomingFlights = FXCollections.observableArrayList(futureFlights);
                 tvUpcomingFlights.setItems(upcomingFlights);
             } else {
-                // Handle case where currentPilot is null, e.g., show an alert
                 showAlert("Error de Datos", "No se proporcionó información del piloto para cargar los vuelos.", Alert.AlertType.ERROR);
             }
         } catch (IOException ex) {
             showAlert("Error", "Error al cargar los datos: " + ex.getMessage(), Alert.AlertType.ERROR);
-        } catch (Exception ex) { // Catch any other unexpected exceptions
-            showAlert("Error", "No se pudieron cargar los vuelos programados: " + ex.getMessage(), Alert.AlertType.ERROR);
-            ex.printStackTrace(); // Print stack trace for debugging unexpected exceptions
-        }
+        } 
     }
 
     @FXML
@@ -210,7 +209,7 @@ public class FXMLPilotUpcomingFlightsController implements Initializable {
                 stage.setTitle("Detalles del Vuelo");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 showAlert("Error", "No se pudo abrir la ventana de detalles: " + ex.getMessage(), Alert.AlertType.ERROR);
             }
         } else {
@@ -221,34 +220,29 @@ public class FXMLPilotUpcomingFlightsController implements Initializable {
     @FXML
     private void btnExport(ActionEvent event) {
         try {
-            // Obtener los vuelos filtrados para exportar
             List<Flight> flightsToExport = tvUpcomingFlights.getItems();
 
             if (flightsToExport.isEmpty()) {
                 showAlert("Sin datos", "No hay vuelos para exportar.", Alert.AlertType.WARNING);
                 return;
             }
-
-            // Configurar el diálogo de guardar archivo
+            
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Archivo");
-
-            // Configurar los filtros de extensión
+            
             FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
             FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
             FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
             FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
 
             fileChooser.getExtensionFilters().addAll(csvFilter, xlsxFilter, pdfFilter, jsonFilter);
-
-            // Mostrar el diálogo de guardar
+            
             File file = fileChooser.showSaveDialog(tvUpcomingFlights.getScene().getWindow());
 
             if (file != null) {
                 String filePath = file.getAbsolutePath();
                 String extension = getFileExtension(file.getName()).toLowerCase();
-
-                // Determinar el tipo de usuario para personalizar el título
+                
                 String userType = "";
                 Object currentUser = SessionManager.getInstance().getCurrentUser();
                 if (currentUser instanceof Pilot) {
@@ -256,21 +250,18 @@ public class FXMLPilotUpcomingFlightsController implements Initializable {
                 } else if (currentUser instanceof Assistant) {
                     userType = "Asistente";
                 }
-
-                // Determinar si son vuelos próximos o pasados para el título
+                
                 String flightType = "";
                 if (this.getClass().getSimpleName().contains("Upcoming")) {
                     flightType = "Próximos";
                 } else if (this.getClass().getSimpleName().contains("Past")) {
                     flightType = "Pasados";
                 }
-
-                // Crear título para el documento
+                
                 String title = "Vuelos " + flightType + " - " + userType;
-                // Crear nombre para la hoja de Excel
+               
                 String sheetName = "Vuelos" + flightType;
-
-                // Exportar según el formato seleccionado
+                
                 switch (extension) {
                     case "csv":
                         ExportUtil.exportToCSV(flightsToExport, filePath);
@@ -292,20 +283,13 @@ public class FXMLPilotUpcomingFlightsController implements Initializable {
             }
         } catch (IOException ex) {
             showAlert("Error", "Error al exportar los datos: " + ex.getMessage(), Alert.AlertType.ERROR);
-        } catch (Exception ex) {
-            showAlert("Error", "Error inesperado: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
-
-    /**
-     * Obtiene la extensión de un archivo a partir de su nombre
-     * @param fileName Nombre del archivo
-     * @return Extensión del archivo
-     */
+    
     private String getFileExtension(String fileName) {
         int lastIndexOf = fileName.lastIndexOf(".");
         if (lastIndexOf == -1) {
-            return ""; // No hay extensión
+            return ""; 
         }
         return fileName.substring(lastIndexOf + 1);
     }

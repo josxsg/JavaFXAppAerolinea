@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,7 +21,6 @@ import javafxappaerolinea.model.pojo.Assistant;
 import javafxappaerolinea.model.pojo.Employee;
 import javafxappaerolinea.model.pojo.Pilot;
 import javafxappaerolinea.service.SessionManager;
-
 
 public class FXMLAirlineInfoController implements Initializable {
 
@@ -63,15 +63,12 @@ public class FXMLAirlineInfoController implements Initializable {
     private Airline airline;
     private ObservableList<Airplane> airplanes;
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTableColumns();
         loadAirlineInfo();
     }
-
+    
     private void configureTableColumns() {
         tcRegistration.setCellValueFactory(new PropertyValueFactory<>("registration"));
         tcModel.setCellValueFactory(new PropertyValueFactory<>("model"));
@@ -79,8 +76,36 @@ public class FXMLAirlineInfoController implements Initializable {
         tcAge.setCellValueFactory(new PropertyValueFactory<>("age"));
         tcWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
         tcStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        
+        tcWeight.setCellFactory(column -> {
+            return new TableCell<Airplane, Double>() {
+                @Override
+                protected void updateItem(Double weight, boolean empty) {
+                    super.updateItem(weight, empty);
+                    if (weight == null || empty) {
+                        setText(null);
+                    } else {
+                        setText(String.format("%.1f", weight));
+                    }
+                }
+            };
+        });
+        
+        tcStatus.setCellFactory(column -> {
+            return new TableCell<Airplane, Boolean>() {
+                @Override
+                protected void updateItem(Boolean status, boolean empty) {
+                    super.updateItem(status, empty);
+                    if (status == null || empty) {
+                        setText(null);
+                    } else {
+                        setText(status ? "Activo" : "Inactivo");
+                    }
+                }
+            };
+        });
     }
-
+    
     private void loadAirlineInfo() {
         try {
             Employee currentEmployee = SessionManager.getInstance().getCurrentUser();
@@ -92,8 +117,8 @@ public class FXMLAirlineInfoController implements Initializable {
                     airline = ((Assistant) currentEmployee).getAirline();
                 } else {
                     showAlert("Información no disponible", 
-                             "Este tipo de empleado no tiene una aerolínea asociada directamente.", 
-                             Alert.AlertType.INFORMATION);
+                            "Este tipo de empleado no tiene una aerolínea asociada directamente.", 
+                            Alert.AlertType.INFORMATION);
                     return;
                 }
                 
@@ -107,18 +132,17 @@ public class FXMLAirlineInfoController implements Initializable {
                     loadAirplanes();
                 } else {
                     showAlert("Información no disponible", 
-                             "No se encontró información de la aerolínea asociada.", 
-                             Alert.AlertType.INFORMATION);
+                            "No se encontró información de la aerolínea asociada.", 
+                            Alert.AlertType.INFORMATION);
                 }
             }
         } catch (Exception ex) {
             showAlert("Error", 
-                     "No se pudo cargar la información de la aerolínea: " + ex.getMessage(), 
-                     Alert.AlertType.ERROR);
+                    "No se pudo cargar la información de la aerolínea: " + ex.getMessage(), 
+                    Alert.AlertType.ERROR);
         }
     }
     
-   
     private void loadAirplanes() {
         try {
             AirplaneDAO airplaneDAO = new AirplaneDAO();
@@ -130,17 +154,16 @@ public class FXMLAirlineInfoController implements Initializable {
             } else {
                 tvAirplanes.setItems(FXCollections.observableArrayList());
                 showAlert("Información", 
-                         "No hay aviones registrados para esta aerolínea.", 
-                         Alert.AlertType.INFORMATION);
+                        "No hay aviones registrados para esta aerolínea.", 
+                        Alert.AlertType.INFORMATION);
             }
         } catch (IOException ex) {
             showAlert("Error", 
-                     "Error al cargar los aviones: " + ex.getMessage(), 
-                     Alert.AlertType.ERROR);
+                    "Error al cargar los aviones: " + ex.getMessage(), 
+                    Alert.AlertType.ERROR);
         }
     }
     
- 
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

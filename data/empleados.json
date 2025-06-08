@@ -154,6 +154,70 @@
     "type": "Assistant"
   },
   {
+    "yearsExperience": 8,
+    "email": "pedrotobi@gmail.com",
+    "flightHours": 850.0,
+    "licenseType": "Comercial",
+    "airline": {
+      "identificationNumber": 1,
+      "address": "3 de mayo",
+      "name": "AeroMexico",
+      "contactPerson": "Miguel",
+      "phoneNumber": "123"
+    },
+    "id": "PIL-39359",
+    "name": "Pedro Tovar",
+    "address": "Xico, Veracruz",
+    "birthDate": "1995-06-09",
+    "gender": "Masculino",
+    "salary": 30000.0,
+    "username": "predroT",
+    "password": "$2a$10$DdCXb/4Mc8.mgzkKOc4GnOgd0rR3M/NMVjd7hhIheb4jrHAzLYhSm",
+    "type": "Pilot"
+  },
+  {
+    "email": "sarag@gmail.com",
+    "assistanceHours": 570,
+    "numberOfLanguages": 2,
+    "airline": {
+      "identificationNumber": 2,
+      "address": "mahuixtlan",
+      "name": "Viva Aerobus",
+      "contactPerson": "Puch",
+      "phoneNumber": "1234556"
+    },
+    "id": "AST-27058",
+    "name": "Sara Brown",
+    "address": "Seattle, USA",
+    "birthDate": "2000-06-23",
+    "gender": "Femenino",
+    "salary": 15000.0,
+    "username": "sarab",
+    "password": "$2a$10$XQIirr6r6N2n/lF4TjEGE.uAg396jsHCW6XbJQlcDrxfg7uAHPkUa",
+    "type": "Assistant"
+  },
+  {
+    "email": "rosa.lu@gmail.com",
+    "assistanceHours": 100,
+    "numberOfLanguages": 3,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "3 de mayo",
+      "name": "AeroMexico",
+      "contactPerson": "Miguel",
+      "phoneNumber": "123"
+    },
+    "id": "AST-49556",
+    "name": "Rosa Lucia Gomez",
+    "address": "Tampico, Mex",
+    "birthDate": "1993-06-11",
+    "gender": "Femenino",
+    "salary": 17000.0,
+    "username": "rosaLu",
+    "password": "$2a$10$sENsN2buDPsK86FvN3tEjudhfgLlp3vZRiToeokOcrZfRfUnTfLdy",
+    "type": "Assistant"
+  },
+  {
     "department": "Finance",
     "workHours": 9,
     "id": "ADM002",
@@ -165,26 +229,5 @@
     "username": "newadmin",
     "password": "newpass",
     "type": "Administrative"
-  },
-  {
-    "yearsExperience": 5,
-    "email": "dup@test.com",
-    "flightHours": 500.0,
-    "licenseType": "Private",
-    "airline": {
-      "identificationNumber": 100,
-      "address": "Test Address",
-      "name": "Test Airline",
-      "contactPerson": "Test Contact",
-      "phoneNumber": "555-1234"
-    },
-    "id": "PIL001",
-    "name": "Duplicated Pilot",
-    "address": "Addr Dup",
-    "birthDate": "2025-06-08",
-    "gender": "M",
-    "salary": 80000.0,
-    "username": "anotheruser",
-    "password": "passdup"
   }
 ]

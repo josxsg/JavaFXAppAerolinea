@@ -1,4 +1,4 @@
-[
+  [
   {
     "id": "V1-X-V-8458",
     "destinationCity": "v",
@@ -302,6 +302,678 @@
         "salary": 2000.0,
         "username": "pepe",
         "password": "$2a$10$N3wwek2Wd9vDyaK0RBmh0.63e1i84K147e2qp8rvuKSO6anvOoU72",
+        "type": "Assistant"
+      },
+      {
+        "email": "puch@gmail.com",
+        "assistanceHours": 40,
+        "numberOfLanguages": 6,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-52560",
+        "name": "puch",
+        "address": "zamora",
+        "birthDate": "2004-06-11",
+        "gender": "Masculino",
+        "salary": 300.0,
+        "username": "puch",
+        "password": "$2a$10$qz/.BAKh21ZnGe8m5.2UGOIk7lPKmGRq2SEbfI7ytCM77irF52QZe",
+        "type": "Assistant"
+      }
+    ],
+    "tickets": [],
+    "airline": {
+      "identificationNumber": 1,
+      "address": "3 de mayo",
+      "name": "AeroMexico",
+      "contactPerson": "Miguel",
+      "phoneNumber": "123"
+    }
+  },
+  {
+    "id": "V1-XAL-CAD-8794",
+    "destinationCity": "Cadereita",
+    "originCity": "Xalapa",
+    "ticketCost": 1000.0,
+    "arrivalDate": "2025-06-08",
+    "departureDate": "2025-06-08",
+    "arrivalHour": 12,
+    "departureHour": "08:00",
+    "passengerCount": 0,
+    "gate": "2",
+    "travelTime": 4.0,
+    "airplane": {
+      "capacity": 200,
+      "age": 23,
+      "status": true,
+      "registration": "XX-FF",
+      "model": "Voin",
+      "weight": 2000.0,
+      "airline": {
+        "identificationNumber": 1,
+        "address": "3 de mayo",
+        "name": "AeroMexico",
+        "contactPerson": "Miguel",
+        "phoneNumber": "123"
+      }
+    },
+    "pilots": [
+      {
+        "yearsExperience": 8,
+        "email": "pedrotobi@gmail.com",
+        "flightHours": 850.0,
+        "licenseType": "Comercial",
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "PIL-39359",
+        "name": "Pedro Tovar",
+        "address": "Xico, Veracruz",
+        "birthDate": "1995-06-09",
+        "gender": "Masculino",
+        "salary": 30000.0,
+        "username": "predroT",
+        "password": "$2a$10$DdCXb/4Mc8.mgzkKOc4GnOgd0rR3M/NMVjd7hhIheb4jrHAzLYhSm",
+        "type": "Pilot"
+      },
+      {
+        "yearsExperience": 22,
+        "email": "miguel@gmail.com",
+        "flightHours": 300.0,
+        "licenseType": "comercial",
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "PIL-55170",
+        "name": "Miguel angel mendez ronzon",
+        "address": "3 de mayo",
+        "birthDate": "1999-06-18",
+        "gender": "Masculino",
+        "salary": 10000.0,
+        "username": "miguel",
+        "password": "$2a$10$K3Qb4ZC3giciYEZjOG5CtOImoAdSr0CwTM4AYw28UEbzncaraYo3u",
+        "type": "Pilot"
+      }
+    ],
+    "assistants": [
+      {
+        "email": "kjksbsajv@gmail.com",
+        "assistanceHours": 78,
+        "numberOfLanguages": 4,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "asdas",
+          "name": "Migiel",
+          "contactPerson": "yo",
+          "phoneNumber": "123"
+        },
+        "id": "AST-59668",
+        "name": "Juan",
+        "address": "juan",
+        "birthDate": "2001-06-10",
+        "gender": "Femenino",
+        "salary": 45454.0,
+        "username": "juanahaQ",
+        "password": "$2a$10$g5SqpH0pTgiBbrAoDau.4ujSNtKmhiACRjGtJQqcyjCL94XfltZK2",
+        "type": "Assistant"
+      },
+      {
+        "email": "pepe@gmail.com",
+        "assistanceHours": 12,
+        "numberOfLanguages": 4,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-89192",
+        "name": "pepito",
+        "address": "san cristobal",
+        "birthDate": "2001-06-13",
+        "gender": "Masculino",
+        "salary": 2000.0,
+        "username": "pepe",
+        "password": "$2a$10$N3wwek2Wd9vDyaK0RBmh0.63e1i84K147e2qp8rvuKSO6anvOoU72",
+        "type": "Assistant"
+      },
+      {
+        "email": "juan@gmail.com",
+        "assistanceHours": 15,
+        "numberOfLanguages": 2,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-73709",
+        "name": "juan",
+        "address": "coatepec",
+        "birthDate": "2000-06-02",
+        "gender": "Masculino",
+        "salary": 200.0,
+        "username": "juan",
+        "password": "$2a$10$fLnexypVmuMRMb2dRcG6uurhRjK58nuMCBfsKOX3z5wyrqgqJ28IC",
+        "type": "Assistant"
+      },
+      {
+        "email": "puch@gmail.com",
+        "assistanceHours": 40,
+        "numberOfLanguages": 6,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-52560",
+        "name": "puch",
+        "address": "zamora",
+        "birthDate": "2004-06-11",
+        "gender": "Masculino",
+        "salary": 300.0,
+        "username": "puch",
+        "password": "$2a$10$qz/.BAKh21ZnGe8m5.2UGOIk7lPKmGRq2SEbfI7ytCM77irF52QZe",
+        "type": "Assistant"
+      }
+    ],
+    "tickets": [],
+    "airline": {
+      "identificationNumber": 1,
+      "address": "3 de mayo",
+      "name": "AeroMexico",
+      "contactPerson": "Miguel",
+      "phoneNumber": "123"
+    }
+  },
+  {
+    "id": "V1-BOC-CAN-3084",
+    "destinationCity": "Cancun",
+    "originCity": "Boca del Rio",
+    "ticketCost": 1500.0,
+    "arrivalDate": "2025-06-07",
+    "departureDate": "2025-06-07",
+    "arrivalHour": 20,
+    "departureHour": "16:00",
+    "passengerCount": 0,
+    "gate": "4",
+    "travelTime": 4.0,
+    "airplane": {
+      "capacity": 200,
+      "age": 23,
+      "status": true,
+      "registration": "XX-FF",
+      "model": "Voin",
+      "weight": 2000.0,
+      "airline": {
+        "identificationNumber": 1,
+        "address": "3 de mayo",
+        "name": "AeroMexico",
+        "contactPerson": "Miguel",
+        "phoneNumber": "123"
+      }
+    },
+    "pilots": [
+      {
+        "yearsExperience": 8,
+        "email": "pedrotobi@gmail.com",
+        "flightHours": 850.0,
+        "licenseType": "Comercial",
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "PIL-39359",
+        "name": "Pedro Tovar",
+        "address": "Xico, Veracruz",
+        "birthDate": "1995-06-09",
+        "gender": "Masculino",
+        "salary": 30000.0,
+        "username": "predroT",
+        "password": "$2a$10$DdCXb/4Mc8.mgzkKOc4GnOgd0rR3M/NMVjd7hhIheb4jrHAzLYhSm",
+        "type": "Pilot"
+      },
+      {
+        "yearsExperience": 22,
+        "email": "miguel@gmail.com",
+        "flightHours": 300.0,
+        "licenseType": "comercial",
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "PIL-55170",
+        "name": "Miguel angel mendez ronzon",
+        "address": "3 de mayo",
+        "birthDate": "1999-06-18",
+        "gender": "Masculino",
+        "salary": 10000.0,
+        "username": "miguel",
+        "password": "$2a$10$K3Qb4ZC3giciYEZjOG5CtOImoAdSr0CwTM4AYw28UEbzncaraYo3u",
+        "type": "Pilot"
+      }
+    ],
+    "assistants": [
+      {
+        "email": "kjksbsajv@gmail.com",
+        "assistanceHours": 78,
+        "numberOfLanguages": 4,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "asdas",
+          "name": "Migiel",
+          "contactPerson": "yo",
+          "phoneNumber": "123"
+        },
+        "id": "AST-59668",
+        "name": "Juan",
+        "address": "juan",
+        "birthDate": "2001-06-10",
+        "gender": "Femenino",
+        "salary": 45454.0,
+        "username": "juanahaQ",
+        "password": "$2a$10$g5SqpH0pTgiBbrAoDau.4ujSNtKmhiACRjGtJQqcyjCL94XfltZK2",
+        "type": "Assistant"
+      },
+      {
+        "email": "pepe@gmail.com",
+        "assistanceHours": 12,
+        "numberOfLanguages": 4,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-89192",
+        "name": "pepito",
+        "address": "san cristobal",
+        "birthDate": "2001-06-13",
+        "gender": "Masculino",
+        "salary": 2000.0,
+        "username": "pepe",
+        "password": "$2a$10$N3wwek2Wd9vDyaK0RBmh0.63e1i84K147e2qp8rvuKSO6anvOoU72",
+        "type": "Assistant"
+      },
+      {
+        "email": "juan@gmail.com",
+        "assistanceHours": 15,
+        "numberOfLanguages": 2,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-73709",
+        "name": "juan",
+        "address": "coatepec",
+        "birthDate": "2000-06-02",
+        "gender": "Masculino",
+        "salary": 200.0,
+        "username": "juan",
+        "password": "$2a$10$fLnexypVmuMRMb2dRcG6uurhRjK58nuMCBfsKOX3z5wyrqgqJ28IC",
+        "type": "Assistant"
+      },
+      {
+        "email": "puch@gmail.com",
+        "assistanceHours": 40,
+        "numberOfLanguages": 6,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-52560",
+        "name": "puch",
+        "address": "zamora",
+        "birthDate": "2004-06-11",
+        "gender": "Masculino",
+        "salary": 300.0,
+        "username": "puch",
+        "password": "$2a$10$qz/.BAKh21ZnGe8m5.2UGOIk7lPKmGRq2SEbfI7ytCM77irF52QZe",
+        "type": "Assistant"
+      }
+    ],
+    "tickets": [],
+    "airline": {
+      "identificationNumber": 1,
+      "address": "3 de mayo",
+      "name": "AeroMexico",
+      "contactPerson": "Miguel",
+      "phoneNumber": "123"
+    }
+  },
+  {
+    "id": "V1-CIU-NAY-9346",
+    "destinationCity": "Nayarit",
+    "originCity": "Ciudad del carmen",
+    "ticketCost": 2000.0,
+    "arrivalDate": "2025-06-10",
+    "departureDate": "2025-06-10",
+    "arrivalHour": 15,
+    "departureHour": "09:10",
+    "passengerCount": 0,
+    "gate": "1",
+    "travelTime": 5.833333333333333,
+    "airplane": {
+      "capacity": 200,
+      "age": 23,
+      "status": true,
+      "registration": "XX-FF",
+      "model": "Voin",
+      "weight": 2000.0,
+      "airline": {
+        "identificationNumber": 1,
+        "address": "3 de mayo",
+        "name": "AeroMexico",
+        "contactPerson": "Miguel",
+        "phoneNumber": "123"
+      }
+    },
+    "pilots": [
+      {
+        "yearsExperience": 22,
+        "email": "miguel@gmail.com",
+        "flightHours": 300.0,
+        "licenseType": "comercial",
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "PIL-55170",
+        "name": "Miguel angel mendez ronzon",
+        "address": "3 de mayo",
+        "birthDate": "1999-06-18",
+        "gender": "Masculino",
+        "salary": 10000.0,
+        "username": "miguel",
+        "password": "$2a$10$K3Qb4ZC3giciYEZjOG5CtOImoAdSr0CwTM4AYw28UEbzncaraYo3u",
+        "type": "Pilot"
+      },
+      {
+        "yearsExperience": 8,
+        "email": "pedrotobi@gmail.com",
+        "flightHours": 850.0,
+        "licenseType": "Comercial",
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "PIL-39359",
+        "name": "Pedro Tovar",
+        "address": "Xico, Veracruz",
+        "birthDate": "1995-06-09",
+        "gender": "Masculino",
+        "salary": 30000.0,
+        "username": "predroT",
+        "password": "$2a$10$DdCXb/4Mc8.mgzkKOc4GnOgd0rR3M/NMVjd7hhIheb4jrHAzLYhSm",
+        "type": "Pilot"
+      }
+    ],
+    "assistants": [
+      {
+        "email": "kjksbsajv@gmail.com",
+        "assistanceHours": 78,
+        "numberOfLanguages": 4,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "asdas",
+          "name": "Migiel",
+          "contactPerson": "yo",
+          "phoneNumber": "123"
+        },
+        "id": "AST-59668",
+        "name": "Juan",
+        "address": "juan",
+        "birthDate": "2001-06-10",
+        "gender": "Femenino",
+        "salary": 45454.0,
+        "username": "juanahaQ",
+        "password": "$2a$10$g5SqpH0pTgiBbrAoDau.4ujSNtKmhiACRjGtJQqcyjCL94XfltZK2",
+        "type": "Assistant"
+      },
+      {
+        "email": "pepe@gmail.com",
+        "assistanceHours": 12,
+        "numberOfLanguages": 4,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-89192",
+        "name": "pepito",
+        "address": "san cristobal",
+        "birthDate": "2001-06-13",
+        "gender": "Masculino",
+        "salary": 2000.0,
+        "username": "pepe",
+        "password": "$2a$10$N3wwek2Wd9vDyaK0RBmh0.63e1i84K147e2qp8rvuKSO6anvOoU72",
+        "type": "Assistant"
+      },
+      {
+        "email": "juan@gmail.com",
+        "assistanceHours": 15,
+        "numberOfLanguages": 2,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-73709",
+        "name": "juan",
+        "address": "coatepec",
+        "birthDate": "2000-06-02",
+        "gender": "Masculino",
+        "salary": 200.0,
+        "username": "juan",
+        "password": "$2a$10$fLnexypVmuMRMb2dRcG6uurhRjK58nuMCBfsKOX3z5wyrqgqJ28IC",
+        "type": "Assistant"
+      },
+      {
+        "email": "puch@gmail.com",
+        "assistanceHours": 40,
+        "numberOfLanguages": 6,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-52560",
+        "name": "puch",
+        "address": "zamora",
+        "birthDate": "2004-06-11",
+        "gender": "Masculino",
+        "salary": 300.0,
+        "username": "puch",
+        "password": "$2a$10$qz/.BAKh21ZnGe8m5.2UGOIk7lPKmGRq2SEbfI7ytCM77irF52QZe",
+        "type": "Assistant"
+      }
+    ],
+    "tickets": [],
+    "airline": {
+      "identificationNumber": 1,
+      "address": "3 de mayo",
+      "name": "AeroMexico",
+      "contactPerson": "Miguel",
+      "phoneNumber": "123"
+    }
+  },
+  {
+    "id": "V1-TIJ-LOS-2153",
+    "destinationCity": "Los Angeles, USA",
+    "originCity": "Tijuana, Baja California",
+    "ticketCost": 5000.0,
+    "arrivalDate": "2025-06-15",
+    "departureDate": "2025-06-15",
+    "arrivalHour": 22,
+    "departureHour": "14:00",
+    "passengerCount": 0,
+    "gate": "3",
+    "travelTime": 8.333333333333334,
+    "airplane": {
+      "capacity": 200,
+      "age": 23,
+      "status": true,
+      "registration": "XX-FF",
+      "model": "Voin",
+      "weight": 2000.0,
+      "airline": {
+        "identificationNumber": 1,
+        "address": "3 de mayo",
+        "name": "AeroMexico",
+        "contactPerson": "Miguel",
+        "phoneNumber": "123"
+      }
+    },
+    "pilots": [
+      {
+        "yearsExperience": 8,
+        "email": "pedrotobi@gmail.com",
+        "flightHours": 850.0,
+        "licenseType": "Comercial",
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "PIL-39359",
+        "name": "Pedro Tovar",
+        "address": "Xico, Veracruz",
+        "birthDate": "1995-06-09",
+        "gender": "Masculino",
+        "salary": 30000.0,
+        "username": "predroT",
+        "password": "$2a$10$DdCXb/4Mc8.mgzkKOc4GnOgd0rR3M/NMVjd7hhIheb4jrHAzLYhSm",
+        "type": "Pilot"
+      },
+      {
+        "yearsExperience": 22,
+        "email": "miguel@gmail.com",
+        "flightHours": 300.0,
+        "licenseType": "comercial",
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "PIL-55170",
+        "name": "Miguel angel mendez ronzon",
+        "address": "3 de mayo",
+        "birthDate": "1999-06-18",
+        "gender": "Masculino",
+        "salary": 10000.0,
+        "username": "miguel",
+        "password": "$2a$10$K3Qb4ZC3giciYEZjOG5CtOImoAdSr0CwTM4AYw28UEbzncaraYo3u",
+        "type": "Pilot"
+      }
+    ],
+    "assistants": [
+      {
+        "email": "rosa.lu@gmail.com",
+        "assistanceHours": 100,
+        "numberOfLanguages": 3,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-49556",
+        "name": "Rosa Lucia Gomez",
+        "address": "Tampico, Mex",
+        "birthDate": "1993-06-11",
+        "gender": "Femenino",
+        "salary": 17000.0,
+        "username": "rosaLu",
+        "password": "$2a$10$sENsN2buDPsK86FvN3tEjudhfgLlp3vZRiToeokOcrZfRfUnTfLdy",
+        "type": "Assistant"
+      },
+      {
+        "email": "juan@gmail.com",
+        "assistanceHours": 15,
+        "numberOfLanguages": 2,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "3 de mayo",
+          "name": "AeroMexico",
+          "contactPerson": "Miguel",
+          "phoneNumber": "123"
+        },
+        "id": "AST-73709",
+        "name": "juan",
+        "address": "coatepec",
+        "birthDate": "2000-06-02",
+        "gender": "Masculino",
+        "salary": 200.0,
+        "username": "juan",
+        "password": "$2a$10$fLnexypVmuMRMb2dRcG6uurhRjK58nuMCBfsKOX3z5wyrqgqJ28IC",
+        "type": "Assistant"
+      },
+      {
+        "email": "kjksbsajv@gmail.com",
+        "assistanceHours": 78,
+        "numberOfLanguages": 4,
+        "airline": {
+          "identificationNumber": 1,
+          "address": "asdas",
+          "name": "Migiel",
+          "contactPerson": "yo",
+          "phoneNumber": "123"
+        },
+        "id": "AST-59668",
+        "name": "Juan",
+        "address": "juan",
+        "birthDate": "2001-06-10",
+        "gender": "Femenino",
+        "salary": 45454.0,
+        "username": "juanahaQ",
+        "password": "$2a$10$g5SqpH0pTgiBbrAoDau.4ujSNtKmhiACRjGtJQqcyjCL94XfltZK2",
         "type": "Assistant"
       },
       {
