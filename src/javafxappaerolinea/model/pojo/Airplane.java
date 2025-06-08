@@ -88,4 +88,11 @@ public class Airplane {
     public void setAirline(Airline airline) {
         this.airline = airline;
     }
+
+    @Override
+    public String toString() {
+        return registration + "-" + model;
+    }
+    
+    
 }
