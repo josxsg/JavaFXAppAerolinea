@@ -1,43 +1,51 @@
 [
   {
+    "department": "Recursos Humanos",
+    "workHours": 8,
     "id": "ADM-94100",
-    "name": "angel",
-    "address": "jsj",
+    "name": "Angel Jonathan Puch Hernández",
+    "address": "Avenida Xalapa",
     "birthDate": "2005-06-05",
     "gender": "Masculino",
-    "salary": 8502.0,
+    "salary": 12500.0,
     "username": "AngelPH",
     "password": "$2a$10$S3ZhpFPBCngoVb9q2xTtberq4ttTerFu77IPH5.bZptUOZd2QkLN.",
     "type": "Administrative"
   },
   {
-    "department": "j",
-    "workHours": 5,
-    "id": "ADM-47320",
-    "name": "ej",
-    "address": "j",
-    "birthDate": "1996-06-15",
-    "gender": "Femenino",
-    "salary": 8578.0,
-    "username": "jsjssjsjsjsA",
-    "password": "$2a$10$kJnH.cU8zbui3w1IFW819uzIM10uUUTOR0tgr3YrOYqVH/ernXR7.",
+    "department": "nose",
+    "workHours": 8,
+    "id": "ADM-74489",
+    "name": "Jose Luis Silva Gómez",
+    "address": "Avenida Xalapa",
+    "birthDate": "2005-06-04",
+    "gender": "Masculino",
+    "salary": 8000.0,
+    "username": "JoseGrillo",
+    "password": "$2a$10$c0SHowlVxUuzDWuqMe8TPeKMQhnJDQ40tkLwM3UZ6PYibEf.1HyJa",
     "type": "Administrative"
   },
-
   {
-  "id": "PIL-12034",
-  "name": "Carlos Méndez",
-  "address": "Av. del Aire 456",
-  "birthDate": "1983-09-22",
-  "gender": "Masculino",
-  "salary": 15200.0,
-  "username": "cmendez",
-  "password": "$2a$10$XkLx0vG7jhAqsFev8J9EguYH9FplZsYgMeGUP2VIfdf6iU3kdjzZK",  
-  "yearsExperience": 12,
-  "email": "carlos.mendez@example.com",
-  "flightHours": 5400,
-  "licenseType": "Comercial",
-  "type": "Pilot"
-}
-
+    "yearsExperience": 45,
+    "email": "pedrin@gmail.com",
+    "flightHours": 785.0,
+    "licenseType": "normal",
+    "airline": {
+      "identificationNumber": 1,
+      "address": "asdas",
+      "name": "Migiel",
+      "contactPerson": "yo",
+      "phoneNumber": "123",
+      "airplanes": []
+    },
+    "id": "PIL-87711",
+    "name": "Pedro",
+    "address": "pedrin",
+    "birthDate": "2001-06-16",
+    "gender": "Masculino",
+    "salary": 4585.0,
+    "username": "pedriniBo",
+    "password": "$2a$10$DlWJRyjGrRPPl8clgPZIgO6HddYnJoAew3CVfuVnkKXBi2LAjWxFu",
+    "type": "Pilot"
+  }
 ]
