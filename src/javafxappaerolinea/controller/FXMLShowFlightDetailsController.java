@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.net.URL;
@@ -19,11 +15,6 @@ import javafxappaerolinea.model.pojo.Pilot;
 import javafxappaerolinea.model.pojo.Assistant;
 import javafxappaerolinea.model.pojo.Flight;
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
 public class FXMLShowFlightDetailsController implements Initializable {
 
     @FXML

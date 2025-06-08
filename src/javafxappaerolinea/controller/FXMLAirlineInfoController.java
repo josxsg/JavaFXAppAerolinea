@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -29,46 +25,46 @@ public class FXMLAirlineInfoController implements Initializable {
 
     @FXML
     private Label lbIdentificationNumber;
-    
+
     @FXML
     private Label lbName;
-    
+
     @FXML
     private Label lbAddress;
-    
+
     @FXML
     private Label lbContactPerson;
-    
+
     @FXML
     private Label lbPhoneNumber;
-    
+
     @FXML
     private TableView<Airplane> tvAirplanes;
-    
+
     @FXML
     private TableColumn<Airplane, Integer> tcAirplaneId;
-    
+
     @FXML
     private TableColumn<Airplane, String> tcModel;
-    
+
     @FXML
     private TableColumn<Airplane, Integer> tcCapacity;
-    
+
     @FXML
     private TableColumn<Airplane, String> tcManufacturer;
-    
+
     @FXML
     private TableColumn<Airplane, Integer> tcYearOfManufacture;
-    
+
     private Airline airline;
     private ObservableList<Airplane> airplanes;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTableColumns();
         loadAirlineInfo();
     }
-    
+
     private void configureTableColumns() {
         // Asegúrate de que los nombres de las propiedades coincidan con tu clase Airplane
         tcAirplaneId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -77,65 +73,65 @@ public class FXMLAirlineInfoController implements Initializable {
         tcManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
         tcYearOfManufacture.setCellValueFactory(new PropertyValueFactory<>("yearOfManufacture"));
     }
-    
+
     private void loadAirlineInfo() {
         try {
             Employee currentEmployee = SessionManager.getInstance().getCurrentUser();
-            
+
             if (currentEmployee != null) {
                 if (currentEmployee instanceof Pilot) {
                     airline = ((Pilot) currentEmployee).getAirline();
                 } else if (currentEmployee instanceof Assistant) {
                     airline = ((Assistant) currentEmployee).getAirline();
                 } else {
-                    showAlert("Información no disponible", 
-                        "Este tipo de empleado no tiene una aerolínea asociada directamente.", 
-                        Alert.AlertType.INFORMATION);
+                    showAlert("Información no disponible",
+                            "Este tipo de empleado no tiene una aerolínea asociada directamente.",
+                            Alert.AlertType.INFORMATION);
                     return;
                 }
-                
+
                 if (airline != null) {
                     lbIdentificationNumber.setText(String.valueOf(airline.getIdentificationNumber()));
                     lbName.setText(airline.getName());
                     lbAddress.setText(airline.getAddress());
                     lbContactPerson.setText(airline.getContactPerson());
                     lbPhoneNumber.setText(airline.getPhoneNumber());
-                    
+
                     loadAirplanes();
                 } else {
-                    showAlert("Información no disponible", 
-                        "No se encontró información de la aerolínea asociada.", 
-                        Alert.AlertType.INFORMATION);
+                    showAlert("Información no disponible",
+                            "No se encontró información de la aerolínea asociada.",
+                            Alert.AlertType.INFORMATION);
                 }
             }
         } catch (Exception ex) {
-            showAlert("Error", 
-                "No se pudo cargar la información de la aerolínea: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
+            showAlert("Error",
+                    "No se pudo cargar la información de la aerolínea: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
         }
     }
-    
+
     private void loadAirplanes() {
         try {
             AirplaneDAO airplaneDAO = new AirplaneDAO();
             List<Airplane> airplaneList = airplaneDAO.findByAirline(airline.getIdentificationNumber());
-            
+
             if (airplaneList != null && !airplaneList.isEmpty()) {
                 airplanes = FXCollections.observableArrayList(airplaneList);
                 tvAirplanes.setItems(airplanes);
             } else {
                 tvAirplanes.setItems(FXCollections.observableArrayList());
-                showAlert("Información", 
-                    "No hay aviones registrados para esta aerolínea.", 
-                    Alert.AlertType.INFORMATION);
+                showAlert("Información",
+                        "No hay aviones registrados para esta aerolínea.",
+                        Alert.AlertType.INFORMATION);
             }
         } catch (IOException ex) {
-            showAlert("Error", 
-                "Error al cargar los aviones: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
+            showAlert("Error",
+                    "Error al cargar los aviones: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
         }
     }
-    
+
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

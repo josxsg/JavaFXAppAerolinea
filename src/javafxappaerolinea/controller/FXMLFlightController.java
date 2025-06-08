@@ -20,20 +20,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.FileChooser; // Importar FileChooser
-import java.io.File; // Importar File
+import javafx.stage.FileChooser; 
+import java.io.File; 
 import javafxappaerolinea.JavaFXAppAerolinea;
 import javafxappaerolinea.exception.ResourceNotFoundException;
 import javafxappaerolinea.model.dao.FlightDAO;
 import javafxappaerolinea.model.pojo.Flight;
 import javafxappaerolinea.utility.DialogUtil;
-import javafxappaerolinea.utility.ExportUtil; // Importar ExportUtil
+import javafxappaerolinea.utility.ExportUtil; 
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
+
 public class FXMLFlightController implements Initializable {
 
     @FXML
@@ -80,10 +76,8 @@ public class FXMLFlightController implements Initializable {
     }
 
     private void configureTable() {
-        // Formateador de fecha para las columnas
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        // Configuración de las columnas de la tabla
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcOriginCity.setCellValueFactory(new PropertyValueFactory<>("originCity"));
         tcDestinationCity.setCellValueFactory(new PropertyValueFactory<>("destinationCity"));
@@ -185,7 +179,6 @@ public class FXMLFlightController implements Initializable {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Exportar Vuelos");
 
-            // Configurar los filtros de extensión
             FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
             FileChooser.ExtensionFilter xlsFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
             FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
@@ -220,7 +213,6 @@ public class FXMLFlightController implements Initializable {
                         ExportUtil.exportToJSON(flightsToExport, filePath);
                         break;
                     default:
-                        // Si no tiene extensión o no es reconocida, usar XLSX por defecto
                         if (!filePath.endsWith(".xlsx")) {
                             filePath += ".xlsx";
                         }
@@ -264,7 +256,7 @@ public class FXMLFlightController implements Initializable {
 
             FXMLFlightFormController controller = loader.getController();
             
-            controller.initData(flight); // Assuming FXMLFlightFormController has an initData method
+            controller.initData(flight); 
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -288,10 +280,10 @@ public class FXMLFlightController implements Initializable {
             controller.initData(flight);
 
             Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL); // Makes the details window block interaction with parent
+            stage.initModality(Modality.APPLICATION_MODAL); 
             stage.setTitle("Detalles del Vuelo");
             stage.setScene(new Scene(root));
-            stage.showAndWait(); // showAndWait makes sure this window closes before interacting with parent again
+            stage.showAndWait(); 
 
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", "Error al abrir la vista de detalles del vuelo: " + e.getMessage());
@@ -299,12 +291,7 @@ public class FXMLFlightController implements Initializable {
         }
     }
 
-    /**
-     * Obtiene la extensión de un archivo a partir de su nombre.
-     * Este método se utiliza para determinar el tipo de exportación.
-     * @param fileName Nombre del archivo.
-     * @return Extensión del archivo (ej. "xlsx", "csv", "pdf"), o cadena vacía si no tiene extensión.
-     */
+   
     private String getFileExtension(String fileName) {
         int lastDotIndex = fileName.lastIndexOf(".");
         if (lastDotIndex > 0) {

@@ -27,11 +27,7 @@ import javafxappaerolinea.observable.Notification;
 import javafxappaerolinea.utility.DialogUtil;
 import javafxappaerolinea.utility.ExportUtil;
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
+
 public class FXMLAssistantController implements Initializable, Notification {
 
     @FXML
@@ -117,7 +113,6 @@ public class FXMLAssistantController implements Initializable, Notification {
     @FXML
     private void btnExport(ActionEvent event) {
         try {
-            // Obtener los asistentes para exportar
             List<Assistant> assistantsToExport = tvAssistants.getItems();
 
             if (assistantsToExport.isEmpty()) {
@@ -128,11 +123,9 @@ public class FXMLAssistantController implements Initializable, Notification {
                 return;
             }
 
-            // Configurar el diálogo de guardar archivo
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Archivo");
 
-            // Configurar los filtros de extensión (solo CSV, Excel y PDF)
             FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
             FileChooser.ExtensionFilter xlsFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
             FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
@@ -140,21 +133,16 @@ public class FXMLAssistantController implements Initializable, Notification {
 
             fileChooser.getExtensionFilters().addAll(csvFilter, xlsFilter, xlsxFilter, pdfFilter);
 
-            // Mostrar el diálogo de guardar
             File file = fileChooser.showSaveDialog(tvAssistants.getScene().getWindow());
 
             if (file != null) {
                 String filePath = file.getAbsolutePath();
                 String extension = getFileExtension(file.getName()).toLowerCase();
 
-                // Crear título para el documento
                 String title = "Asistentes de Vuelo - Aerolínea";
-                // Crear nombre para la hoja de Excel
                 String sheetName = "Asistentes";
 
-                // Crear una lista con los nombres de las columnas en el orden deseado
                 List<String> columnOrder = new ArrayList<>();
-                // Primero los campos de Employee
                 columnOrder.add("id");
                 columnOrder.add("name");
                 columnOrder.add("address");
@@ -162,12 +150,10 @@ public class FXMLAssistantController implements Initializable, Notification {
                 columnOrder.add("gender");
                 columnOrder.add("salary");
                 columnOrder.add("username");
-                // Luego los campos específicos de Assistant
                 columnOrder.add("email");
                 columnOrder.add("assistanceHours");
                 columnOrder.add("numberOfLanguages");
 
-                // Exportar según el formato seleccionado
                 switch (extension) {
                     case "csv":
                         ExportUtil.exportToCSV(assistantsToExport, filePath, columnOrder);
@@ -216,7 +202,7 @@ public class FXMLAssistantController implements Initializable, Notification {
                 Parent root = loader.load();
                 
                 FXMLAssistantUpcomingFlightsController controller = loader.getController();
-                controller.initData(selectedAssistant); // Pass the selected assistant
+                controller.initData(selectedAssistant); 
 
                 Stage stage = new Stage();
                 stage.setTitle("Vuelos Próximos del Asistente: " + selectedAssistant.getName());
@@ -302,7 +288,7 @@ public class FXMLAssistantController implements Initializable, Notification {
     private String getFileExtension(String fileName) {
         int lastIndexOf = fileName.lastIndexOf(".");
         if (lastIndexOf == -1) {
-            return ""; // No hay extensión
+            return ""; 
         }
         return fileName.substring(lastIndexOf + 1);
     }

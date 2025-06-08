@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package javafxappaerolinea.controller;
 
 import java.io.IOException;
@@ -31,11 +27,7 @@ import javafx.stage.FileChooser;
 import java.util.List;
 import javafxappaerolinea.utility.ExportUtil;
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
+
 public class FXMLAdministrativeController implements Initializable, Notification {
 
     @FXML
@@ -119,7 +111,6 @@ public class FXMLAdministrativeController implements Initializable, Notification
     @FXML
     private void btnExport(ActionEvent event) {
         try {
-            // Obtener los administrativos para exportar
             List<Administrative> administrativesToExport = tvAdministratives.getItems();
 
             if (administrativesToExport.isEmpty()) {
@@ -130,11 +121,9 @@ public class FXMLAdministrativeController implements Initializable, Notification
                 return;
             }
 
-            // Configurar el diálogo de guardar archivo
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Archivo");
 
-            // Configurar los filtros de extensión (solo CSV, Excel y PDF)
             FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
             FileChooser.ExtensionFilter xlsFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
             FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
@@ -142,21 +131,16 @@ public class FXMLAdministrativeController implements Initializable, Notification
 
             fileChooser.getExtensionFilters().addAll(csvFilter, xlsFilter, xlsxFilter, pdfFilter);
 
-            // Mostrar el diálogo de guardar
             File file = fileChooser.showSaveDialog(tvAdministratives.getScene().getWindow());
 
             if (file != null) {
                 String filePath = file.getAbsolutePath();
                 String extension = getFileExtension(file.getName()).toLowerCase();
 
-                // Crear título para el documento
                 String title = "Administrativos - Aerolínea";
-                // Crear nombre para la hoja de Excel
                 String sheetName = "Administrativos";
 
-                // Crear una lista con los nombres de las columnas en el orden deseado
                 List<String> columnOrder = new ArrayList<>();
-                // Primero los campos de Employee
                 columnOrder.add("id");
                 columnOrder.add("name");
                 columnOrder.add("address");
@@ -164,11 +148,9 @@ public class FXMLAdministrativeController implements Initializable, Notification
                 columnOrder.add("gender");
                 columnOrder.add("salary");
                 columnOrder.add("username");
-                // Luego los campos específicos de Administrative
                 columnOrder.add("department");
                 columnOrder.add("workHours");
 
-                // Exportar según el formato seleccionado
                 switch (extension) {
                     case "csv":
                         ExportUtil.exportToCSV(administrativesToExport, filePath, columnOrder);
@@ -277,7 +259,7 @@ public class FXMLAdministrativeController implements Initializable, Notification
     private String getFileExtension(String fileName) {
         int lastIndexOf = fileName.lastIndexOf(".");
         if (lastIndexOf == -1) {
-            return ""; // No hay extensión
+            return ""; 
         }
         return fileName.substring(lastIndexOf + 1);
     }

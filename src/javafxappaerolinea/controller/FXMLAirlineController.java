@@ -17,22 +17,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.FileChooser; // Importar FileChooser
-import java.io.File; // Importar File
+import javafx.stage.FileChooser; 
+import java.io.File; 
 import javafxappaerolinea.JavaFXAppAerolinea;
 import javafxappaerolinea.model.dao.AirlineDAO;
 import javafxappaerolinea.model.pojo.Airline;
 import javafxappaerolinea.utility.DialogUtil;
-import javafxappaerolinea.utility.ExportUtil; // Importar ExportUtil
+import javafxappaerolinea.utility.ExportUtil; 
 
-// Importa el controlador de la ventana que quieres abrir
 import javafxappaerolinea.controller.FXMLShowAirplanesController;
 
-/**
- * FXML Controller class
- *
- * @author migue
- */
+
 public class FXMLAirlineController implements Initializable {
 
     @FXML
@@ -120,7 +115,6 @@ public class FXMLAirlineController implements Initializable {
     @FXML
     private void btnExport(ActionEvent event) {
         try {
-            // Obtener los datos de las aerolíneas para exportar
             List<Airline> airlinesToExport = tvAirlines.getItems();
 
             if (airlinesToExport.isEmpty()) {
@@ -131,11 +125,9 @@ public class FXMLAirlineController implements Initializable {
                 return;
             }
 
-            // Configurar el diálogo de guardar archivo
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Archivo");
 
-            // Configurar los filtros de extensión
             FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
             FileChooser.ExtensionFilter xlsFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
             FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
@@ -144,37 +136,32 @@ public class FXMLAirlineController implements Initializable {
 
             fileChooser.getExtensionFilters().addAll(csvFilter, xlsFilter, xlsxFilter, pdfFilter, jsonFilter);
 
-            // Mostrar el diálogo de guardar
             File file = fileChooser.showSaveDialog(tvAirlines.getScene().getWindow());
 
             if (file != null) {
                 String filePath = file.getAbsolutePath();
                 String extension = getFileExtension(file.getName()).toLowerCase();
 
-                // Crear título para el documento
                 String title = "Reporte de Aerolíneas";
-                // Crear nombre para la hoja de Excel
                 String sheetName = "Aerolineas";
 
-                // Exportar según el formato seleccionado
                 switch (extension) {
                     case "csv":
-                        ExportUtil.exportToCSV(airlinesToExport, filePath); // No columnOrder param in ExportUtil
+                        ExportUtil.exportToCSV(airlinesToExport, filePath); 
                         break;
                     case "xls":
-                        ExportUtil.exportToXLS(airlinesToExport, filePath, sheetName); // No columnOrder param in ExportUtil
+                        ExportUtil.exportToXLS(airlinesToExport, filePath, sheetName); 
                         break;
                     case "xlsx":
-                        ExportUtil.exportToXLSX(airlinesToExport, filePath, sheetName); // No columnOrder param in ExportUtil
+                        ExportUtil.exportToXLSX(airlinesToExport, filePath, sheetName); 
                         break;
                     case "pdf":
-                        ExportUtil.exportToPDF(airlinesToExport, filePath, title); // No columnOrder param in ExportUtil
+                        ExportUtil.exportToPDF(airlinesToExport, filePath, title); 
                         break;
-                    case "json": // Added JSON case
+                    case "json": 
                         ExportUtil.exportToJSON(airlinesToExport, filePath);
                         break;
                     default:
-                        // Si no tiene extensión o no es reconocida, usar XLSX por defecto
                         if (!filePath.endsWith(".xlsx")) {
                             filePath += ".xlsx";
                         }
@@ -192,12 +179,12 @@ public class FXMLAirlineController implements Initializable {
                 "Error",
                 "Error al exportar los datos: " + ex.getMessage()
             );
-        } catch (Exception ex) { // Catch any other unexpected exceptions
+        } catch (Exception ex) { 
             DialogUtil.showErrorAlert(
                 "Error",
                 "Error inesperado al exportar: " + ex.getMessage()
             );
-            ex.printStackTrace(); // Print stack trace for debugging
+            ex.printStackTrace(); 
         }
     }
 
@@ -214,7 +201,7 @@ public class FXMLAirlineController implements Initializable {
             Parent root = loader.load();
 
             FXMLShowAirplanesController controller = loader.getController();
-            controller.initData(selectedAirline); // Pasa la aerolínea seleccionada al otro controlador
+            controller.initData(selectedAirline); 
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -240,7 +227,7 @@ public class FXMLAirlineController implements Initializable {
             Parent root = loader.load();
 
             FXMLShowFlightsController controller = loader.getController();
-            controller.initData(selectedAirline); // Pass the selected airline to the flights controller
+            controller.initData(selectedAirline); 
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -267,7 +254,7 @@ public class FXMLAirlineController implements Initializable {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            loadTableData(); // Refresh table after form is closed
+            loadTableData(); 
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", "Error al abrir el formulario de aerolínea: " + e.getMessage());
         }

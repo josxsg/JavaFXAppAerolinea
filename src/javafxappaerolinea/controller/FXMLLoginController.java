@@ -23,11 +23,7 @@ import javafxappaerolinea.service.AuthenticationService;
 import javafxappaerolinea.service.SessionManager;
 import static javafxappaerolinea.utility.DialogUtil.showErrorAlert;
 
-/**
- * FXML Controller class
- *
- * @author Dell
- */
+
 public class FXMLLoginController implements Initializable {
 
     @FXML

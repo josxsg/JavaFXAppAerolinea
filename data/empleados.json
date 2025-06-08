@@ -195,5 +195,26 @@
     "username": "sarab",
     "password": "$2a$10$XQIirr6r6N2n/lF4TjEGE.uAg396jsHCW6XbJQlcDrxfg7uAHPkUa",
     "type": "Assistant"
+  },
+  {
+    "email": "rosa.lu@gmail.com",
+    "assistanceHours": 100,
+    "numberOfLanguages": 3,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "3 de mayo",
+      "name": "AeroMexico",
+      "contactPerson": "Miguel",
+      "phoneNumber": "123"
+    },
+    "id": "AST-49556",
+    "name": "Rosa Lucia Gomez",
+    "address": "Tampico, Mex",
+    "birthDate": "1993-06-11",
+    "gender": "Femenino",
+    "salary": 17000.0,
+    "username": "rosaLu",
+    "password": "$2a$10$sENsN2buDPsK86FvN3tEjudhfgLlp3vZRiToeokOcrZfRfUnTfLdy",
+    "type": "Assistant"
   }
 ]
