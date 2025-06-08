@@ -1,7 +1,9 @@
 package javafxappaerolinea.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -15,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxappaerolinea.exception.ResourceNotFoundException;
@@ -22,6 +25,7 @@ import javafxappaerolinea.model.dao.EmployeeDAO;
 import javafxappaerolinea.model.pojo.Assistant;
 import javafxappaerolinea.observable.Notification;
 import javafxappaerolinea.utility.DialogUtil;
+import javafxappaerolinea.utility.ExportUtil;
 
 /**
  * FXML Controller class
@@ -112,7 +116,95 @@ public class FXMLAssistantController implements Initializable, Notification {
 
     @FXML
     private void btnExport(ActionEvent event) {
-        // TODO: Implement export functionality for assistants table
+        try {
+            // Obtener los asistentes para exportar
+            List<Assistant> assistantsToExport = tvAssistants.getItems();
+
+            if (assistantsToExport.isEmpty()) {
+                DialogUtil.showWarningAlert(
+                    "Sin datos", 
+                    "No hay asistentes de vuelo para exportar."
+                );
+                return;
+            }
+
+            // Configurar el diálogo de guardar archivo
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Guardar Archivo");
+
+            // Configurar los filtros de extensión (solo CSV, Excel y PDF)
+            FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv");
+            FileChooser.ExtensionFilter xlsFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
+            FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
+            FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
+
+            fileChooser.getExtensionFilters().addAll(csvFilter, xlsFilter, xlsxFilter, pdfFilter);
+
+            // Mostrar el diálogo de guardar
+            File file = fileChooser.showSaveDialog(tvAssistants.getScene().getWindow());
+
+            if (file != null) {
+                String filePath = file.getAbsolutePath();
+                String extension = getFileExtension(file.getName()).toLowerCase();
+
+                // Crear título para el documento
+                String title = "Asistentes de Vuelo - Aerolínea";
+                // Crear nombre para la hoja de Excel
+                String sheetName = "Asistentes";
+
+                // Crear una lista con los nombres de las columnas en el orden deseado
+                List<String> columnOrder = new ArrayList<>();
+                // Primero los campos de Employee
+                columnOrder.add("id");
+                columnOrder.add("name");
+                columnOrder.add("address");
+                columnOrder.add("birthDate");
+                columnOrder.add("gender");
+                columnOrder.add("salary");
+                columnOrder.add("username");
+                // Luego los campos específicos de Assistant
+                columnOrder.add("email");
+                columnOrder.add("assistanceHours");
+                columnOrder.add("numberOfLanguages");
+
+                // Exportar según el formato seleccionado
+                switch (extension) {
+                    case "csv":
+                        ExportUtil.exportToCSV(assistantsToExport, filePath, columnOrder);
+                        break;
+                    case "xls":
+                        ExportUtil.exportToXLS(assistantsToExport, filePath, sheetName, columnOrder);
+                        break;
+                    case "xlsx":
+                        ExportUtil.exportToXLSX(assistantsToExport, filePath, sheetName, columnOrder);
+                        break;
+                    case "pdf":
+                        ExportUtil.exportToPDF(assistantsToExport, filePath, title, columnOrder);
+                        break;
+                    default:
+                        DialogUtil.showErrorAlert(
+                            "Formato no soportado", 
+                            "El formato de archivo seleccionado no es soportado."
+                        );
+                        return;
+                }
+
+                DialogUtil.showInfoAlert(
+                    "Exportación Exitosa", 
+                    "Los datos se han exportado correctamente a: " + file.getName()
+                );
+            }
+        } catch (IOException ex) {
+            DialogUtil.showErrorAlert(
+                "Error", 
+                "Error al exportar los datos: " + ex.getMessage()
+            );
+        } catch (Exception ex) {
+            DialogUtil.showErrorAlert(
+                "Error", 
+                "Error inesperado: " + ex.getMessage()
+            );
+        }
     }
 
     @FXML
@@ -205,6 +297,14 @@ public class FXMLAssistantController implements Initializable, Notification {
         }
         
         return selectedAssistant;
+    }
+    
+    private String getFileExtension(String fileName) {
+        int lastIndexOf = fileName.lastIndexOf(".");
+        if (lastIndexOf == -1) {
+            return ""; // No hay extensión
+        }
+        return fileName.substring(lastIndexOf + 1);
     }
     
 }
