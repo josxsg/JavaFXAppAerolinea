@@ -301,4 +301,9 @@ public class FXMLPilotUpcomingFlightsController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    @FXML
+    private void btnClose(ActionEvent event) {
+        ((Stage)tfFilterDestination.getScene().getWindow()).close();
+    }
 }
