@@ -328,7 +328,6 @@ public class FXMLFlightFormController implements Initializable {
             c.getControlNewText().matches("[0-9:]*") ? c : null);
         tfArrivalHour.setTextFormatter(timeFormatter2);
         
-        // Formatter para el campo de número de pasajeros (solo números)
         tfPassengerCount.setTextFormatter(new TextFormatter<>(c -> 
             c.getControlNewText().matches("\\d*") ? c : null));
     }
