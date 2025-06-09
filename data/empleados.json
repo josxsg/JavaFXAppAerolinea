@@ -11,5 +11,146 @@
     "username": "AngelPH",
     "password": "$2a$10$S3ZhpFPBCngoVb9q2xTtberq4ttTerFu77IPH5.bZptUOZd2QkLN.",
     "type": "Administrative"
+  },
+  {
+    "department": "Administración",
+    "workHours": 8,
+    "id": "ADM-96107",
+    "name": "Rodrigo",
+    "address": "Xalapa",
+    "birthDate": "2003-07-18",
+    "gender": "Otro",
+    "salary": 100.0,
+    "username": "rodrigo",
+    "password": "$2a$10$5p0BG3LCGbUcZMHk8xz3r.TSkP6fRrqQMv9SrJXWSyd9zXCQv962C",
+    "type": "Administrative"
+  },
+  {
+    "yearsExperience": 12,
+    "email": "luis.ramirez@skynova.com",
+    "flightHours": 8500.0,
+    "licenseType": "ATPL",
+    "airline": {
+      "identificationNumber": 1,
+      "address": "Dirección: Av. Reforma 1234, Col. Juárez, CDMX, México",
+      "name": "SkyNova Airlines",
+      "contactPerson": "Laura Martínez",
+      "phoneNumber": "55 1234 5678"
+    },
+    "id": "PIL-60381",
+    "name": "Luis Fernando Ramírez",
+    "address": "Av. Insurgentes 123, CDMX, México",
+    "birthDate": "1985-04-12",
+    "gender": "Masculino",
+    "salary": 85000.0,
+    "username": "lframirez",
+    "password": "$2a$10$0yXHCAl2fCXMsCDvT8eMPOxYomFJhhcwrjik7u8b57w1BMwf/70Uu",
+    "type": "Pilot"
+  },
+  {
+    "yearsExperience": 9,
+    "email": "mariana.torres@skynova.com",
+    "flightHours": 6200.0,
+    "licenseType": "CPL",
+    "airline": {
+      "identificationNumber": 1,
+      "address": "Dirección: Av. Reforma 1234, Col. Juárez, CDMX, México",
+      "name": "SkyNova Airlines",
+      "contactPerson": "Laura Martínez",
+      "phoneNumber": "55 1234 5678"
+    },
+    "id": "PIL-78847",
+    "name": "Mariana Torres García",
+    "address": "Calle Londres 456, CDMX, México",
+    "birthDate": "1990-10-28",
+    "gender": "Femenino",
+    "salary": 82000.0,
+    "username": "mtorresg",
+    "password": "$2a$10$sdMfgHsW9g1umJwgZYiRlOB1.A0ZaLWfw8xR2Lr4tlfuaHb3GESIa",
+    "type": "Pilot"
+  },
+  {
+    "email": "ana.lopez@skynova.com",
+    "assistanceHours": 100,
+    "numberOfLanguages": 3,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "Dirección: Av. Reforma 1234, Col. Juárez, CDMX, México",
+      "name": "SkyNova Airlines",
+      "contactPerson": "Laura Martínez",
+      "phoneNumber": "55 1234 5678"
+    },
+    "id": "AST-62756",
+    "name": "Ana Sofía López",
+    "address": "Av. Universidad 123, CDMX, México",
+    "birthDate": "1993-04-14",
+    "gender": "Femenino",
+    "salary": 28000.0,
+    "username": "aslopez",
+    "password": "$2a$10$c6qu0qxF/WhaW6X6Rc42J.ON1ikseutG8GVHKHshvYNzdcNi6//dm",
+    "type": "Assistant"
+  },
+  {
+    "email": "carlos.mendez@skynova.com",
+    "assistanceHours": 780,
+    "numberOfLanguages": 2,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "Dirección: Av. Reforma 1234, Col. Juárez, CDMX, México",
+      "name": "SkyNova Airlines",
+      "contactPerson": "Laura Martínez",
+      "phoneNumber": "55 1234 5678"
+    },
+    "id": "AST-94149",
+    "name": "Carlos Méndez",
+    "address": "Calle Tlalpan 456, CDMX, México",
+    "birthDate": "1989-09-22",
+    "gender": "Masculino",
+    "salary": 27500.0,
+    "username": "cmendez",
+    "password": "$2a$10$aEXBMNSVCGEGIFu79V1W0Ojou/ZyCet2gJbzBsNf3AVNFPvEzfnUa",
+    "type": "Assistant"
+  },
+  {
+    "email": "fernanda.ruiz@skynova.com",
+    "assistanceHours": 470,
+    "numberOfLanguages": 4,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "Dirección: Av. Reforma 1234, Col. Juárez, CDMX, México",
+      "name": "SkyNova Airlines",
+      "contactPerson": "Laura Martínez",
+      "phoneNumber": "55 1234 5678"
+    },
+    "id": "AST-47685",
+    "name": "Fernanda Ruiz",
+    "address": "Av. Coyoacán 789, CDMX, México",
+    "birthDate": "1992-05-16",
+    "gender": "Femenino",
+    "salary": 29300.0,
+    "username": "fruiz",
+    "password": "$2a$10$SYJxQ7I.b5BeM5TzUrqMBu6i.svJo4AhFSb7gVpcInPIqrNv3W.xW",
+    "type": "Assistant"
+  },
+  {
+    "email": "diego.hernandez@skynova.com",
+    "assistanceHours": 870,
+    "numberOfLanguages": 2,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "Dirección: Av. Reforma 1234, Col. Juárez, CDMX, México",
+      "name": "SkyNova Airlines",
+      "contactPerson": "Laura Martínez",
+      "phoneNumber": "55 1234 5678"
+    },
+    "id": "AST-15677",
+    "name": "Diego Hernández",
+    "address": "Calle Hamburgo 321, CDMX, México",
+    "birthDate": "1990-06-21",
+    "gender": "Masculino",
+    "salary": 28500.0,
+    "username": "dhernandez",
+    "password": "$2a$10$uU7/77euuPDnXxCodQXXXO6yAi31x7DUC2t6GrCP1Tg9LYsSuiTJS",
+    "type": "Assistant"
   }
 ]

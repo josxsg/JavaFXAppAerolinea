@@ -1,0 +1,37 @@
+[
+  {
+    "identificationNumber": 1,
+    "address": "Dirección: Av. Reforma 1234, Col. Juárez, CDMX, México",
+    "name": "SkyNova Airlines",
+    "contactPerson": "Laura Martínez",
+    "phoneNumber": "55 1234 5678"
+  },
+  {
+    "identificationNumber": 2,
+    "address": "Calle Gran Vía 45, 28013 Madrid, España",
+    "name": "AeroLuxe",
+    "contactPerson": "Javier Torres",
+    "phoneNumber": "91 234 5678"
+  },
+  {
+    "identificationNumber": 3,
+    "address": "Av. Apoquindo 3000, Las Condes, Santiago, Chile",
+    "name": "PacificWings",
+    "contactPerson": "Camila Rojas",
+    "phoneNumber": "2 2345 6789"
+  },
+  {
+    "identificationNumber": 4,
+    "address": "200 Biscayne Blvd, Miami, FL 33132, USA",
+    "name": "BlueHorizon Air",
+    "contactPerson": "Michael Johnson",
+    "phoneNumber": "305 555 1234"
+  },
+  {
+    "identificationNumber": 5,
+    "address": "Av. Javier Prado Este 456, San Isidro, Lima, Perú",
+    "name": "AeroAndes",
+    "contactPerson": "Diego Fernández",
+    "phoneNumber": "1 234 5678"
+  }
+]

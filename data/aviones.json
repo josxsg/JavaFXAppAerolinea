@@ -1,0 +1,92 @@
+[
+  {
+    "capacity": 180,
+    "age": 1,
+    "status": true,
+    "registration": "XA-SNV1",
+    "model": "Airbus A320neo",
+    "weight": 78000.0,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "Dirección: Av. Reforma 1234, Col. Juárez, CDMX, México",
+      "name": "SkyNova Airlines",
+      "contactPerson": "Laura Martínez",
+      "phoneNumber": "55 1234 5678"
+    }
+  },
+  {
+    "capacity": 100,
+    "age": 2,
+    "status": true,
+    "registration": "XA-SNV2",
+    "model": "Embraer E190",
+    "weight": 47000.0,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "Dirección: Av. Reforma 1234, Col. Juárez, CDMX, México",
+      "name": "SkyNova Airlines",
+      "contactPerson": "Laura Martínez",
+      "phoneNumber": "55 1234 5678"
+    }
+  },
+  {
+    "capacity": 160,
+    "age": 10,
+    "status": false,
+    "registration": "XA-SNV3",
+    "model": "Boeing 737-800",
+    "weight": 79000.0,
+    "airline": {
+      "identificationNumber": 1,
+      "address": "Dirección: Av. Reforma 1234, Col. Juárez, CDMX, México",
+      "name": "SkyNova Airlines",
+      "contactPerson": "Laura Martínez",
+      "phoneNumber": "55 1234 5678"
+    }
+  },
+  {
+    "capacity": 290,
+    "age": 1,
+    "status": true,
+    "registration": "EC-ALX1",
+    "model": "Boeing 787-9",
+    "weight": 126000.0,
+    "airline": {
+      "identificationNumber": 2,
+      "address": "Calle Gran Vía 45, 28013 Madrid, España",
+      "name": "AeroLuxe",
+      "contactPerson": "Javier Torres",
+      "phoneNumber": "91 234 5678"
+    }
+  },
+  {
+    "capacity": 325,
+    "age": 2,
+    "status": true,
+    "registration": "EC-ALX2",
+    "model": "Airbus A350-900",
+    "weight": 125000.0,
+    "airline": {
+      "identificationNumber": 2,
+      "address": "Calle Gran Vía 45, 28013 Madrid, España",
+      "name": "AeroLuxe",
+      "contactPerson": "Javier Torres",
+      "phoneNumber": "91 234 5678"
+    }
+  },
+  {
+    "capacity": 220,
+    "age": 3,
+    "status": false,
+    "registration": "EC-ALX3",
+    "model": "Airbus A321neo",
+    "weight": 89000.0,
+    "airline": {
+      "identificationNumber": 2,
+      "address": "Calle Gran Vía 45, 28013 Madrid, España",
+      "name": "AeroLuxe",
+      "contactPerson": "Javier Torres",
+      "phoneNumber": "91 234 5678"
+    }
+  }
+]
