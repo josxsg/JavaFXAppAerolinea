@@ -259,12 +259,12 @@ public class FXMLFlightFormController implements Initializable {
             }
         }
 
-        if (selectedPilots.isEmpty()) {
-            DialogUtil.showWarningAlert("Pilotos Requeridos", "Debe añadir al menos un piloto al vuelo.");
+        if (selectedPilots.size() != 2) {
+            DialogUtil.showWarningAlert("Pilotos Requeridos", "Debe añadir exactamente 2 pilotos al vuelo. Actualmente tiene: " + selectedPilots.size());
             isValid = false;
         }
-        if (selectedAssistants.isEmpty()) {
-            DialogUtil.showWarningAlert("Asistentes Requeridos", "Debe añadir al menos un asistente al vuelo.");
+        if (selectedAssistants.size() != 4) {
+            DialogUtil.showWarningAlert("Asistentes Requeridos", "Debe añadir exactamente 4 asistentes al vuelo. Actualmente tiene: " + selectedAssistants.size());
             isValid = false;
         }
 

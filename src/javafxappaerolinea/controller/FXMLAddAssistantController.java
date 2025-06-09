@@ -130,7 +130,7 @@ public class FXMLAddAssistantController implements Initializable {
             if (selectedAirline != null) {
                 allAssistants = allAssistants.stream()
                     .filter(assistant -> assistant.getAirline() != null && 
-                            assistant.getAirline().getIdentificationNumber() == selectedAirline.getIdentificationNumber())
+                        assistant.getAirline().getIdentificationNumber() == selectedAirline.getIdentificationNumber())
                     .collect(Collectors.toList());
             }
 
@@ -150,11 +150,11 @@ public class FXMLAddAssistantController implements Initializable {
                 addedAssistantsData.add(selectedAssistant);
             } else {
                 DialogUtil.showWarningAlert("Límite de Asistentes", 
-                    "Un vuelo solo puede tener un máximo de 4 asistentes."); 
+                    "Ya se han agregado los 4 asistentes requeridos.");
             }
         } else {
             DialogUtil.showWarningAlert("Sin selección", 
-                "Por favor, selecciona un asistente de la tabla de asistentes disponibles."); 
+                "Por favor, selecciona un asistente de la tabla de asistentes disponibles.");
         }
     }
 
@@ -166,28 +166,22 @@ public class FXMLAddAssistantController implements Initializable {
             availableAssistantsData.add(selectedAssistant);
         } else {
             DialogUtil.showWarningAlert("Sin selección", 
-                "Por favor, selecciona un asistente de la tabla de asistentes añadidos."); 
+                "Por favor, selecciona un asistente de la tabla de asistentes añadidos.");
         }
     }
 
     @FXML
     private void btnSaveChanges(ActionEvent event) {
-        if (addedAssistantsData.isEmpty()) {
+        if (addedAssistantsData.size() != 4) {
             DialogUtil.showWarningAlert("Asistentes Requeridos", 
-                "Debe añadir al menos un asistente al vuelo."); 
-            return;
-        }
-        
-        if (addedAssistantsData.size() > 4) {
-            DialogUtil.showWarningAlert("Límite de Asistentes", 
-                "Un vuelo solo puede tener un máximo de 4 asistentes."); 
+                "Debe seleccionar exactamente 4 asistentes para el vuelo. Actualmente tiene: " + addedAssistantsData.size());
             return;
         }
 
         assistantsConfirmed = true;
         
         DialogUtil.showInfoAlert("Cambios guardados", 
-            "Los asistentes seleccionados han sido registrados."); 
+            "Los 4 asistentes requeridos han sido registrados correctamente.");
         closeWindow();
     }
 

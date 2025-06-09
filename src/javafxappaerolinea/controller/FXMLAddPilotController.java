@@ -124,7 +124,7 @@ public class FXMLAddPilotController implements Initializable {
             if (selectedAirline != null) {
                 allPilots = allPilots.stream()
                     .filter(pilot -> pilot.getAirline() != null && 
-                            pilot.getAirline().getIdentificationNumber() == selectedAirline.getIdentificationNumber())
+                        pilot.getAirline().getIdentificationNumber() == selectedAirline.getIdentificationNumber())
                     .collect(Collectors.toList());
             }
 
@@ -142,10 +142,10 @@ public class FXMLAddPilotController implements Initializable {
                 availablePilotsData.remove(selectedPilot);
                 addedPilotsData.add(selectedPilot);
             } else {
-                DialogUtil.showWarningAlert("Límite de Pilotos", "Un vuelo solo puede tener un máximo de 2 pilotos."); //
+                DialogUtil.showWarningAlert("Límite de Pilotos", "Ya se han agregado los 2 pilotos requeridos.");
             }
         } else {
-            DialogUtil.showWarningAlert("Sin selección", "Por favor, selecciona un piloto de la tabla de pilotos disponibles."); //
+            DialogUtil.showWarningAlert("Sin selección", "Por favor, selecciona un piloto de la tabla de pilotos disponibles.");
         }
     }
 
@@ -156,25 +156,22 @@ public class FXMLAddPilotController implements Initializable {
             addedPilotsData.remove(selectedPilot);
             availablePilotsData.add(selectedPilot);
         } else {
-            DialogUtil.showWarningAlert("Sin selección", "Por favor, selecciona un piloto de la tabla de pilotos añadidos."); //
+            DialogUtil.showWarningAlert("Sin selección", "Por favor, selecciona un piloto de la tabla de pilotos añadidos.");
         }
     }
 
     @FXML
     private void btnSaveChanges(ActionEvent event) {
-        if (addedPilotsData.isEmpty()) {
-            DialogUtil.showWarningAlert("Pilotos Requeridos", "Debe añadir al menos un piloto al vuelo."); //
+        if (addedPilotsData.size() != 2) {
+            DialogUtil.showWarningAlert("Pilotos Requeridos", 
+                "Debe seleccionar exactamente 2 pilotos para el vuelo. Actualmente tiene: " + addedPilotsData.size());
             return;
-        }
-        if (addedPilotsData.size() > 2) {
-             DialogUtil.showWarningAlert("Límite de Pilotos", "Un vuelo solo puede tener un máximo de 2 pilotos. Por favor, remueve pilotos de la lista de añadidos."); //
-             return;
         }
 
         finalSelectedPilots.clear();
         finalSelectedPilots.addAll(addedPilotsData);
         
-        DialogUtil.showInfoAlert("Cambios guardados", "Los pilotos seleccionados han sido registrados."); //
+        DialogUtil.showInfoAlert("Cambios guardados", "Los 2 pilotos requeridos han sido registrados correctamente.");
         closeWindow();
     }
 
