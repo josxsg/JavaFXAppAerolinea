@@ -89,14 +89,12 @@ public class FXMLTicketsController implements Initializable {
         configureTableColumns();
         loadFlights();
         
-        // Configurar listener para la selección de vuelo
         tableFlights.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             btnViewSoldTickets.setDisable(newSelection == null);
         });
     }
     
     private void configureTableColumns() {
-        // Configurar columnas básicas
         columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnOriginCity.setCellValueFactory(new PropertyValueFactory<>("originCity"));
         columnDestinationCity.setCellValueFactory(new PropertyValueFactory<>("destinationCity"));
@@ -109,7 +107,6 @@ public class FXMLTicketsController implements Initializable {
         columnPassengerCount.setCellValueFactory(new PropertyValueFactory<>("passengerCount"));
         columnTravelTime.setCellValueFactory(new PropertyValueFactory<>("travelTime"));
         
-        // Configurar columna de aerolínea con manejo de null
         columnAirline.setCellValueFactory(cellData -> {
             Flight flight = cellData.getValue();
             if (flight != null && flight.getAirline() != null) {
@@ -119,7 +116,6 @@ public class FXMLTicketsController implements Initializable {
             }
         });
         
-        // Formatear columna de precio
         columnTicketCost.setCellFactory(column -> new javafx.scene.control.TableCell<Flight, Double>() {
             @Override
             protected void updateItem(Double item, boolean empty) {
@@ -132,7 +128,6 @@ public class FXMLTicketsController implements Initializable {
             }
         });
         
-        // Formatear columna de tiempo de viaje
         columnTravelTime.setCellFactory(column -> new javafx.scene.control.TableCell<Flight, Double>() {
             @Override
             protected void updateItem(Double item, boolean empty) {
@@ -206,9 +201,8 @@ public class FXMLTicketsController implements Initializable {
             return;
         }
         
-        // Verificar si hay asientos disponibles según el número de pasajeros
         int maxPassengers = selectedFlight.getPassengerCount();
-        int capacity = selectedFlight.getCapacity(); // Capacidad del avión
+        int capacity = selectedFlight.getCapacity(); 
         
         if (maxPassengers >= capacity) {
             DialogUtil.showWarningAlert("Vuelo lleno", 
@@ -225,8 +219,6 @@ public class FXMLTicketsController implements Initializable {
             controller.setTicketsController(this);
             
             Scene scene = new Scene(root);
-            // Comentar esta línea si no existe el archivo CSS
-            // scene.getStylesheets().add(getClass().getResource("/javafxappaerolinea/styles/style.css").toExternalForm());
             
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -236,7 +228,6 @@ public class FXMLTicketsController implements Initializable {
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", 
                 "No se pudo abrir la ventana para comprar boleto: " + e.getMessage());
-            e.printStackTrace();
         }
     }
     
@@ -266,7 +257,6 @@ public class FXMLTicketsController implements Initializable {
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", 
                 "No se pudo abrir la ventana de boletos vendidos: " + e.getMessage());
-            e.printStackTrace();
         }
     }
     
@@ -281,7 +271,6 @@ public class FXMLTicketsController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Exportar Vuelos");
         
-        // Configurar filtros para diferentes formatos
         FileChooser.ExtensionFilter xlsxFilter = 
             new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
         FileChooser.ExtensionFilter xlsFilter = 
@@ -329,7 +318,7 @@ public class FXMLTicketsController implements Initializable {
                 
                 DialogUtil.showInfoAlert("Exportación exitosa", 
                     "Los datos se han exportado correctamente a " + filePath);
-            } catch (Exception e) {
+            } catch (IOException e) {
                 DialogUtil.showErrorAlert("Error al exportar", 
                     "No se pudieron exportar los datos: " + e.getMessage());
             }
