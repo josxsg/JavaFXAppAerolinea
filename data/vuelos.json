@@ -1,0 +1,107 @@
+[
+  {
+    "id": "V2-CIU-CAN-6346",
+    "destinationCity": "Cancún",
+    "originCity": "Ciudad de México",
+    "ticketCost": 3850.0,
+    "arrivalDate": "2025-06-15",
+    "departureDate": "2025-06-15",
+    "arrivalHour": 11,
+    "departureHour": "08:45",
+    "passengerCount": 186,
+    "gate": "B24",
+    "travelTime": 2.5833333333333335,
+    "airplane": {
+      "capacity": 290,
+      "age": 1,
+      "status": true,
+      "registration": "EC-ALX1",
+      "model": "Boeing 787-9",
+      "weight": 126000.0,
+      "airline": {
+        "identificationNumber": 2,
+        "address": "Calle Gran Vía 45, 28013 Madrid, España",
+        "name": "AeroLuxe",
+        "contactPerson": "Javier Torres",
+        "phoneNumber": "91 234 5678"
+      }
+    },
+    "pilots": [
+      {
+        "yearsExperience": 11,
+        "email": "sergio.martin@aeroluxe.com",
+        "flightHours": 8100.0,
+        "licenseType": "ATPL",
+        "airline": {
+          "identificationNumber": 2,
+          "address": "Calle Gran Vía 45, 28013 Madrid, España",
+          "name": "AeroLuxe",
+          "contactPerson": "Javier Torres",
+          "phoneNumber": "91 234 5678"
+        },
+        "id": "PIL-91193",
+        "name": "Sergio Martín Ruiz",
+        "address": "Calle Serrano 50, Madrid, España",
+        "birthDate": "1987-09-06",
+        "gender": "Masculino",
+        "salary": 5400.0,
+        "username": "smartinr",
+        "password": "$2a$10$ub5J1..eS6PEYVvSOTqx7u0AzIqFPpgOtTxX4f1ZWj.VDTTRNu5de",
+        "type": "Pilot"
+      },
+      {
+        "yearsExperience": 15,
+        "email": "javier.perez@aeroluxe.com",
+        "flightHours": 10200.0,
+        "licenseType": "ATPL",
+        "airline": {
+          "identificationNumber": 2,
+          "address": "Calle Gran Vía 45, 28013 Madrid, España",
+          "name": "AeroLuxe",
+          "contactPerson": "Javier Torres",
+          "phoneNumber": "91 234 5678"
+        },
+        "id": "PIL-63700",
+        "name": "Javier Alonso Pérez",
+        "address": "Calle Alcalá 100, Madrid, España",
+        "birthDate": "1982-11-20",
+        "gender": "Masculino",
+        "salary": 5500.0,
+        "username": "japerez",
+        "password": "$2a$10$YajhNUaW57Q0OzBLXNbd6e.Gxn2SrmQFUZhMTGOdFvyEdVgsxQB/6",
+        "type": "Pilot"
+      }
+    ],
+    "assistants": [
+      {
+        "email": "pablo.garcia@aeroluxe.com",
+        "assistanceHours": 380,
+        "numberOfLanguages": 3,
+        "airline": {
+          "identificationNumber": 2,
+          "address": "Calle Gran Vía 45, 28013 Madrid, España",
+          "name": "AeroLuxe",
+          "contactPerson": "Javier Torres",
+          "phoneNumber": "91 234 5678"
+        },
+        "id": "AST-85314",
+        "name": "Pablo García",
+        "address": "Calle Mayor 12, Madrid, España",
+        "birthDate": "1991-06-01",
+        "gender": "Masculino",
+        "salary": 1800.0,
+        "username": "pgarcia",
+        "password": "$2a$10$VGnv62BSYuXJc1DPZAkIAOE/WornjjD8XZPLH/xWwVK21sPt1OIgW",
+        "type": "Assistant"
+      }
+    ],
+    "tickets": [],
+    "airline": {
+      "identificationNumber": 2,
+      "address": "Calle Gran Vía 45, 28013 Madrid, España",
+      "name": "AeroLuxe",
+      "contactPerson": "Javier Torres",
+      "phoneNumber": "91 234 5678"
+    }
+  }
+]
