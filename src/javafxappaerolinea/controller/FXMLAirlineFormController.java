@@ -37,9 +37,6 @@ public class FXMLAirlineFormController implements Initializable {
     private Airline airline;
     private boolean isEditMode;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         airlineDAO = new AirlineDAO();

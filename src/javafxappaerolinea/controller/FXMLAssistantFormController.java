@@ -80,9 +80,7 @@ public class FXMLAssistantFormController implements Initializable {
     private boolean isEditing;
     private Assistant assistantToEdit;
     private Notification observer;
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cbGender.setItems(FXCollections.observableArrayList(Arrays.asList("Masculino", "Femenino", "Otro")));

@@ -52,9 +52,7 @@ public class FXMLAdministrativeController implements Initializable, Notification
     private TableColumn tcUsername;
 
     private ObservableList<Administrative> administratives;
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTable();

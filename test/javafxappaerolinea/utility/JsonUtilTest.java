@@ -109,7 +109,7 @@ public class JsonUtilTest {
         List<Airline> loadedList = jsonUtil.loadAll();
         assertNotNull(loadedList);
         assertEquals(1, loadedList.size());
-        assertEquals("Airline A", loadedList.get(0).getName()); // Asegurarse de que no cambió
+        assertEquals("Airline A", loadedList.get(0).getName()); 
     }
 
     @Test
@@ -137,7 +137,7 @@ public class JsonUtilTest {
 
         List<Airline> loadedList = jsonUtil.loadAll();
         assertNotNull(loadedList);
-        assertEquals(1, loadedList.size()); // Asegurarse de que no cambió
+        assertEquals(1, loadedList.size()); 
         assertEquals("Airline A", loadedList.get(0).getName());
     }
 

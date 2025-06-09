@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.pojo;
 
 import java.time.LocalDate;
@@ -9,10 +5,6 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
-/**
- *
- * @author Dell
- */
 public class Employee {
     private String id;
     private String name;
@@ -23,7 +15,7 @@ public class Employee {
     private String username;
     private String password;
     private String type;
-    // Constructor
+    
     public Employee() {
     }
     
@@ -39,14 +31,12 @@ public class Employee {
         this.password = password;
     }
     
-    // Getters and Setters
-    
-       public int getAge() {
+    public int getAge() {
         if (this.birthDate == null) {
-            return 0; // Return 0 or handle as an error if birthDate is null
+            return 0; 
         }
         LocalDate dob = this.birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate now = LocalDate.now(ZoneId.of("America/Mexico_City")); // Use current time in Mexico
+        LocalDate now = LocalDate.now(ZoneId.of("America/Mexico_City")); 
         return Period.between(dob, now).getYears();
     }
     

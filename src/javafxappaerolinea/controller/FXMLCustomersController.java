@@ -50,9 +50,6 @@ public class FXMLCustomersController implements Initializable {
     private ObservableList<Customer> customers;
     private CustomerDAO customerDAO;
 
-    /**
-     * Inicializa el controlador
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         customerDAO = new CustomerDAO();

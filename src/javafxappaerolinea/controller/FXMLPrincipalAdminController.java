@@ -27,13 +27,9 @@ public class FXMLPrincipalAdminController implements Initializable {
     @FXML
     private Label lbWindowName;
     
-
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
     public void initInformation (Administrative administrative) {

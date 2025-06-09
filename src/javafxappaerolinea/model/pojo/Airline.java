@@ -1,16 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.pojo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- *
- * @author Dell
- */
 public class Airline {
     private int identificationNumber;
     private String address;
@@ -18,8 +7,6 @@ public class Airline {
     private String contactPerson;
     private String phoneNumber;
     
-    // Constructor
-
     public Airline() {
     }
     
@@ -33,7 +20,6 @@ public class Airline {
         this.phoneNumber = phoneNumber;
     }
     
-    // Getters and Setters
     public int getIdentificationNumber() {
         return identificationNumber;
     }

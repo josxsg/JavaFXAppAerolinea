@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.pojo;
 
-/**
- *
- * @author Dell
- */
 public class Airplane {
     private int capacity;
     private int age;
@@ -17,7 +9,6 @@ public class Airplane {
     private double weight;
     private Airline airline;
     
-    // Constructor
     public Airplane() {
     }
     
@@ -32,7 +23,6 @@ public class Airplane {
         this.airline = airline;
     }
     
-    // Getters and Setters
     public int getCapacity() {
         return capacity;
     }

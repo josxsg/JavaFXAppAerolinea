@@ -3,13 +3,11 @@ package javafxappaerolinea.model.dao;
 import javafxappaerolinea.exception.DuplicateResourceException;
 import javafxappaerolinea.exception.ResourceNotFoundException;
 import javafxappaerolinea.model.pojo.Customer;
-import javafxappaerolinea.utility.JsonUtil; // Necesario para la inicialización directa del archivo de prueba
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.junit.After;
@@ -53,7 +51,6 @@ public class CustomerDAOTest {
 
     @After
     public void tearDown() {
-        // Nada específico que limpiar aquí, @Before ya se encarga de re-crear el archivo.
     }
 
     @Test

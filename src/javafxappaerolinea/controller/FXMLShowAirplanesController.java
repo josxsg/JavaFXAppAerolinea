@@ -64,7 +64,7 @@ public class FXMLShowAirplanesController implements Initializable {
             
             List<Airplane> filteredAirplanes = allAirplanes.stream()
                 .filter(plane -> plane.getAirline() != null &&
-                                 plane.getAirline().getIdentificationNumber() == selectedAirline.getIdentificationNumber()) // LÍNEA CORREGIDA
+                                 plane.getAirline().getIdentificationNumber() == selectedAirline.getIdentificationNumber())
                 .collect(Collectors.toList());
             
             airplanes.setAll(filteredAirplanes);
@@ -161,13 +161,7 @@ public class FXMLShowAirplanesController implements Initializable {
                 "Error",
                 "Error al exportar los datos: " + ex.getMessage()
             );
-        } catch (Exception ex) {
-            DialogUtil.showErrorAlert(
-                "Error",
-                "Error inesperado al exportar: " + ex.getMessage()
-            );
-            ex.printStackTrace();
-        }
+        } 
     }
 
     @FXML

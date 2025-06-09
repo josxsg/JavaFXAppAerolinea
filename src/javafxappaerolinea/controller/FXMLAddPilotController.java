@@ -34,7 +34,7 @@ public class FXMLAddPilotController implements Initializable {
     @FXML
     private TableColumn<Pilot, String> tcAvailableExperience;
     @FXML
-    private TableColumn<Pilot, String> tcAvailableFlightTypes; // Se mapeará a licenseType en Pilot
+    private TableColumn<Pilot, String> tcAvailableFlightTypes; 
 
     @FXML
     private TableView<Pilot> tvAddedPilots;
@@ -57,9 +57,6 @@ public class FXMLAddPilotController implements Initializable {
     private List<Pilot> finalSelectedPilots;
     private Airline selectedAirline;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         employeeDAO = new EmployeeDAO();

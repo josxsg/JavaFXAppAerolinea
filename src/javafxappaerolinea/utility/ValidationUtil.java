@@ -2,7 +2,6 @@ package javafxappaerolinea.utility;
 
 import java.time.LocalDate;
 import javafxappaerolinea.exception.ValidationException;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 public class ValidationUtil {

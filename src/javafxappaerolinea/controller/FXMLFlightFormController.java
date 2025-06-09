@@ -153,7 +153,6 @@ public class FXMLFlightFormController implements Initializable {
         flight.setAirline(cbAirline.getValue());
         flight.setAirplane(cbAirplane.getValue());
         
-        // Establecer el número de pasajeros
         if (!tfPassengerCount.getText().trim().isEmpty()) {
             flight.setPassengerCount(Integer.parseInt(tfPassengerCount.getText().trim()));
         }
@@ -256,7 +255,7 @@ public class FXMLFlightFormController implements Initializable {
                     isValid = false;
                 }
             } catch (DateTimeParseException e) {
-                // Error ya manejado en validaciones anteriores
+                lbArrivalDateError.setText("Error al establecer la fecha.");
             }
         }
 
@@ -295,11 +294,9 @@ public class FXMLFlightFormController implements Initializable {
         
         cbAirplane.setDisable(true);
         
-        // Actualizar el campo de pasajeros cuando se selecciona un avión
         cbAirplane.setOnAction(event -> {
             Airplane selectedAirplane = cbAirplane.getValue();
             if (selectedAirplane != null) {
-                // Si ya hay un valor en el campo de pasajeros, verificar si excede la capacidad
                 if (!tfPassengerCount.getText().trim().isEmpty()) {
                     try {
                         int passengerCount = Integer.parseInt(tfPassengerCount.getText().trim());
@@ -309,7 +306,7 @@ public class FXMLFlightFormController implements Initializable {
                             lbPassengerCountError.setText("");
                         }
                     } catch (NumberFormatException e) {
-                        // Se manejará en la validación completa
+                        lbPassengerCountError.setText("");
                     }
                 }
             }

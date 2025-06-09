@@ -2,15 +2,10 @@ package javafxappaerolinea.model.pojo;
 
 import java.util.Date;
 
-/**
- *
- * @author Dell
- */
 public class Administrative extends Employee {
     private String department;
     private int workHours;
     
-    // Constructor
     public Administrative() {
         super();
         setType("Administrative");
@@ -25,7 +20,6 @@ public class Administrative extends Employee {
         setType("Administrative");
     }
     
-    // Getters and Setters
     public String getDepartment() {
         return department;
     }

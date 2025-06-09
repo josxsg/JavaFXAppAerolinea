@@ -85,7 +85,6 @@ public class FXMLSoldTicketsController implements Initializable {
         columnSeatNumber.setCellValueFactory(new PropertyValueFactory<>("seatNumber"));
         columnPurchaseDate.setCellValueFactory(new PropertyValueFactory<>("purchaseDate"));
         
-        // Configurar columnas de cliente con manejo de null
         columnCustomerName.setCellValueFactory(cellData -> {
             Ticket ticket = cellData.getValue();
             if (ticket != null && ticket.getCustomer() != null) {
@@ -103,8 +102,7 @@ public class FXMLSoldTicketsController implements Initializable {
                 return new SimpleStringProperty("");
             }
         });
-          
-        // Formatear columna de fecha
+        
         columnPurchaseDate.setCellFactory(column -> new javafx.scene.control.TableCell<Ticket, Date>() {
             private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             
@@ -144,7 +142,6 @@ public class FXMLSoldTicketsController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Exportar Boletos");
         
-        // Configurar filtros para diferentes formatos
         FileChooser.ExtensionFilter pdfFilter = 
             new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
         FileChooser.ExtensionFilter xlsxFilter = 
@@ -179,7 +176,7 @@ public class FXMLSoldTicketsController implements Initializable {
                 
                 DialogUtil.showInfoAlert("Exportación exitosa", 
                     "Los boletos se han exportado correctamente a " + filePath);
-            } catch (Exception e) {
+            } catch (IOException e) {
                 DialogUtil.showErrorAlert("Error al exportar", 
                     "No se pudieron exportar los boletos: " + e.getMessage());
             }

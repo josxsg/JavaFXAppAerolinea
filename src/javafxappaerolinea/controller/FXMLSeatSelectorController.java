@@ -49,7 +49,6 @@ public class FXMLSeatSelectorController implements Initializable {
         btnConfirm.setOnAction(this::handleConfirm);
         btnCancel.setOnAction(this::handleCancel);
         
-        // Deshabilitar botón confirmar hasta que se seleccione un asiento
         btnConfirm.setDisable(true);
     }
     
@@ -76,17 +75,13 @@ public class FXMLSeatSelectorController implements Initializable {
         availableSeatsCount = 0;
         
         try {
-            // Obtener boletos vendidos para este vuelo
             List<Ticket> soldTickets = ticketDAO.findByFlight(flight.getId());
             
-            // Usar el número de pasajeros en lugar de la capacidad del avión
             int capacity = (flight.getPassengerCount() > 0) ?
                     flight.getPassengerCount() : DEFAULT_CAPACITY;
             
-            // Determinar configuración del avión según capacidad
             SeatConfiguration config = getSeatConfiguration(capacity);
             
-            // Agregar etiquetas de columnas
             for (int col = 0; col < config.columns.length; col++) {
                 if (!config.columns[col].isEmpty()) {
                     Label colLabel = new Label(config.columns[col]);
@@ -97,10 +92,8 @@ public class FXMLSeatSelectorController implements Initializable {
                 }
             }
             
-            // Crear asientos
             int seatCount = 0;
             for (int row = 1; row <= config.rows && seatCount < capacity; row++) {
-                // Etiqueta de fila
                 Label rowLabel = new Label(String.valueOf(row));
                 rowLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
                 rowLabel.setAlignment(Pos.CENTER);
@@ -109,7 +102,6 @@ public class FXMLSeatSelectorController implements Initializable {
                 
                 for (int col = 0; col < config.columns.length && seatCount < capacity; col++) {
                     if (config.columns[col].isEmpty()) {
-                        // Espacio para el pasillo
                         Label aisle = new Label("");
                         aisle.setPrefWidth(30);
                         seatsGrid.add(aisle, col, row);
@@ -139,33 +131,27 @@ public class FXMLSeatSelectorController implements Initializable {
     }
     
     private SeatConfiguration getSeatConfiguration(int capacity) {
-        // Configuraciones predefinidas según capacidad
         if (capacity <= 20) {
-            // Avión pequeño: 2-2 configuración
             return new SeatConfiguration(
                 new String[]{"A", "B", "", "C", "D"},
                 (int) Math.ceil(capacity / 4.0)
             );
         } else if (capacity <= 50) {
-            // Avión mediano: 3-3 configuración
             return new SeatConfiguration(
                 new String[]{"A", "B", "C", "", "D", "E", "F"},
                 (int) Math.ceil(capacity / 6.0)
             );
         } else if (capacity <= 100) {
-            // Avión grande: 3-3 configuración con más filas
             return new SeatConfiguration(
                 new String[]{"A", "B", "C", "", "D", "E", "F"},
                 (int) Math.ceil(capacity / 6.0)
             );
         } else if (capacity <= 200) {
-            // Avión muy grande: 3-4-3 configuración
             return new SeatConfiguration(
                 new String[]{"A", "B", "C", "", "D", "E", "F", "G", "", "H", "J", "K"},
                 (int) Math.ceil(capacity / 10.0)
             );
         } else {
-            // Avión jumbo: 3-4-3 configuración
             return new SeatConfiguration(
                 new String[]{"A", "B", "C", "", "D", "E", "F", "G", "", "H", "J", "K"},
                 (int) Math.ceil(capacity / 10.0)
@@ -204,7 +190,6 @@ public class FXMLSeatSelectorController implements Initializable {
     
     private void handleConfirm(ActionEvent event) {
         if (selectedSeat != null) {
-            // Cerrar ventana y devolver el asiento seleccionado
             Stage stage = (Stage) btnConfirm.getScene().getWindow();
             stage.setUserData(selectedSeat);
             stage.close();
@@ -220,7 +205,6 @@ public class FXMLSeatSelectorController implements Initializable {
         return selectedSeat;
     }
     
-    // Clase interna para configuración de asientos
     private static class SeatConfiguration {
         String[] columns;
         int rows;

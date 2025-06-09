@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.pojo;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author Dell
- */
 public class Customer {
     private String email;
     private Date birthDate;
@@ -19,7 +11,6 @@ public class Customer {
     private String name;
     private List<Ticket> tickets;
     
-    // Constructor
     public Customer() {
         this.tickets = new ArrayList<>();
     }
@@ -32,7 +23,6 @@ public class Customer {
         this.tickets = new ArrayList<>();
     }
     
-    // Getters and Setters
     public String getEmail() {
         return email;
     }

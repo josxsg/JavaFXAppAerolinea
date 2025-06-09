@@ -64,8 +64,7 @@ public class FXMLAddAssistantController implements Initializable {
 
     public void initData(List<Assistant> currentFlightAssistants, Airline airline) {
         this.selectedAirline = airline;
-
-        // Recargar asistentes filtrados por aerolínea
+        
         if (airline != null) {
             loadAvailableAssistants();
         }
@@ -128,7 +127,6 @@ public class FXMLAddAssistantController implements Initializable {
         try {
             List<Assistant> allAssistants = employeeDAO.findAllAssistants();
 
-            // Filtrar por aerolínea si está seleccionada
             if (selectedAirline != null) {
                 allAssistants = allAssistants.stream()
                     .filter(assistant -> assistant.getAirline() != null && 

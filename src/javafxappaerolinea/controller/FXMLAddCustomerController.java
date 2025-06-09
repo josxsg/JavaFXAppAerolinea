@@ -37,14 +37,10 @@ public class FXMLAddCustomerController implements Initializable {
     
     private FXMLCustomersController customersController;
     private CustomerDAO customerDAO;
-
-    /**
-     * Inicializa el controlador
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         customerDAO = new CustomerDAO();
-        // Establecer fecha por defecto (hoy)
         dpBirthDate.setValue(LocalDate.now());
     }    
 
@@ -86,7 +82,6 @@ public class FXMLAddCustomerController implements Initializable {
             }
         }
     }
-
     
     @FXML
     private void handleCancel(ActionEvent event) {

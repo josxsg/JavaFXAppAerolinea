@@ -3,7 +3,7 @@ package javafxappaerolinea.model.pojo;
 public class Seat {
     private String seatNumber;
     private boolean isOccupied;
-    private String seatClass; // ECONOMY, BUSINESS, FIRST
+    private String seatClass; 
     private int row;
     private String column;
     
@@ -12,14 +12,12 @@ public class Seat {
         this.isOccupied = isOccupied;
         this.seatClass = seatClass;
         
-        // Extraer fila y columna del número de asiento (ej: "12A")
         if (seatNumber != null && seatNumber.length() >= 2) {
             this.row = Integer.parseInt(seatNumber.substring(0, seatNumber.length() - 1));
             this.column = seatNumber.substring(seatNumber.length() - 1);
         }
     }
     
-    // Getters y Setters
     public String getSeatNumber() {
         return seatNumber;
     }

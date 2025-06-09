@@ -1,4 +1,3 @@
-
 package javafxappaerolinea.service;
 
 import java.io.IOException;
@@ -44,7 +43,7 @@ public class AuthenticationService {
         employee.setPassword(PasswordUtil.hashPassword(newPassword));
         try {
             employeeDAO.update(employee);
-        } catch (Exception e) {
+        } catch (IOException | ResourceNotFoundException e) {
             throw new AuthenticationException("Error al cambiar contraseña: " + e.getMessage());
         }
     }

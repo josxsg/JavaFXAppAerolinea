@@ -1,20 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.service;
 
 import javafxappaerolinea.model.pojo.Employee;
-/**
- *
- * @author Dell
- */
+
 public class SessionManager {
     private static SessionManager instance;
     private Employee currentUser;
     
     private SessionManager() {
-        // Private constructor for singleton
     }
     
     public static SessionManager getInstance() {

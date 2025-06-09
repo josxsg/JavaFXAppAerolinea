@@ -1,7 +1,6 @@
 package javafxappaerolinea.utility;
 
 import java.time.LocalDate;
-import javafxappaerolinea.exception.ValidationException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

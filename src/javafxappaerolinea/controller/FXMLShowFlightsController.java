@@ -200,7 +200,6 @@ public class FXMLShowFlightsController implements Initializable {
             stage.showAndWait();
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", "Error al abrir la vista de detalles del vuelo: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -271,13 +270,7 @@ public class FXMLShowFlightsController implements Initializable {
                 "Error",
                 "Error al exportar los datos: " + ex.getMessage()
             );
-        } catch (Exception ex) {
-            DialogUtil.showErrorAlert(
-                "Error",
-                "Error inesperado al exportar: " + ex.getMessage()
-            );
-            ex.printStackTrace();
-        }
+        } 
     }
     
     private void showAlert(String title, String message, Alert.AlertType type) {

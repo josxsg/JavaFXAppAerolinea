@@ -46,9 +46,6 @@ public class FXMLAirlineController implements Initializable {
     private AirlineDAO airlineDAO;
     private ObservableList<Airline> airlines;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         airlineDAO = new AirlineDAO();
@@ -105,7 +102,7 @@ public class FXMLAirlineController implements Initializable {
             try {
                 airlineDAO.delete(selectedAirline.getIdentificationNumber());
                 DialogUtil.showInfoAlert("Éxito", "Aerolínea eliminada exitosamente.");
-                loadTableData(); // Refresh the table
+                loadTableData(); 
             } catch (IOException | javafxappaerolinea.exception.ResourceNotFoundException e) {
                 DialogUtil.showErrorAlert("Error", "Error al eliminar la aerolínea: " + e.getMessage());
             }
@@ -132,7 +129,7 @@ public class FXMLAirlineController implements Initializable {
             FileChooser.ExtensionFilter xlsFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
             FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx");
             FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
-            FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json"); // Added JSON filter
+            FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json"); 
 
             fileChooser.getExtensionFilters().addAll(csvFilter, xlsFilter, xlsxFilter, pdfFilter, jsonFilter);
 

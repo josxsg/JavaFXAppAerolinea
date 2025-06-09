@@ -90,9 +90,6 @@ public class FXMLFlightDetailsController implements Initializable {
     private Flight flight;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         pilotsObservableList = FXCollections.observableArrayList();

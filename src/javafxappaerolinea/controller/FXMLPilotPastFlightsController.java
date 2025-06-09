@@ -165,9 +165,7 @@ public class FXMLPilotPastFlightsController implements Initializable {
             }
         } catch (IOException ex) {
             showAlert("Error", "Error al cargar los datos: " + ex.getMessage(), Alert.AlertType.ERROR);
-        } catch (Exception ex) {
-            showAlert("Error", "No se pudieron cargar los vuelos realizados: " + ex.getMessage(), Alert.AlertType.ERROR);
-        }
+        } 
     }
     
     @FXML
@@ -231,7 +229,7 @@ public class FXMLPilotPastFlightsController implements Initializable {
                 stage.setTitle("Detalles del Vuelo");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 showAlert("Error", "No se pudo abrir la ventana de detalles: " + ex.getMessage(), Alert.AlertType.ERROR);
             }
         } else {
@@ -242,7 +240,6 @@ public class FXMLPilotPastFlightsController implements Initializable {
     @FXML
     private void btnExport(ActionEvent event) {
         try {
-            // Obtener los vuelos filtrados para exportar
             List<Flight> flightsToExport = tvPastFlights.getItems();
         
             if (flightsToExport.isEmpty()) {

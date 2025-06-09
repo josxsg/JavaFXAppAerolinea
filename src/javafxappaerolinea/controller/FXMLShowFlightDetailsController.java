@@ -44,9 +44,6 @@ public class FXMLShowFlightDetailsController implements Initializable {
     private ObservableList<Pilot> pilotsObservableList;
     private ObservableList<Assistant> assistantsObservableList;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         pilotsObservableList = FXCollections.observableArrayList();

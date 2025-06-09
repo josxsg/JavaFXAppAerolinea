@@ -57,9 +57,6 @@ public class FXMLPilotController implements Initializable, Notification {
     private TableColumn tcEmail;
     private ObservableList<Pilot> pilots;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTable();
@@ -189,12 +186,7 @@ public class FXMLPilotController implements Initializable, Notification {
                 "Error", 
                 "Error al exportar los datos: " + ex.getMessage()
             );
-        } catch (Exception ex) {
-            DialogUtil.showErrorAlert(
-                "Error", 
-                "Error inesperado: " + ex.getMessage()
-            );
-        }
+        } 
     }
 
 @FXML

@@ -1,17 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.pojo;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-/**
- *
- * @author Dell
- */
 public class Pilot extends Employee {
     private int yearsExperience;
     private String email;
@@ -19,7 +9,6 @@ public class Pilot extends Employee {
     private String licenseType;
     private Airline airline;
     
-    // Constructor
     public Pilot() {
         super();
     }
@@ -35,7 +24,6 @@ public class Pilot extends Employee {
         this.airline = airline;
     }
     
-    // Getters and Setters
     public int getYearsExperience() {
         return yearsExperience;
     }

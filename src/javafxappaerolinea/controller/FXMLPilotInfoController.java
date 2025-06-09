@@ -65,8 +65,10 @@ public class FXMLPilotInfoController implements Initializable {
                 lbFlightHours.setText(String.format("%.2f", loggedPilot.getFlightHours()));
                 lbLicenseType.setText(loggedPilot.getLicenseType());
             }
-        } catch (Exception ex) {
-            showAlert("Error", "No se pudo cargar la información del piloto: " + ex.getMessage(), Alert.AlertType.ERROR);
+        } catch (NullPointerException | ClassCastException | IllegalArgumentException ex) {
+            showAlert("Error", 
+                    "No se pudo cargar la información del asistente: " + ex.getMessage(), 
+                    Alert.AlertType.ERROR);
         }
     }
     

@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -47,7 +49,7 @@ public class EmployeeDAO {
 
         File file = new File(FILE_PATH);
         if (!file.exists() || file.length() == 0) {
-            return employees; // Retorna lista vacía si no hay archivo.
+            return employees; 
         }
 
         try (Reader reader = new FileReader(FILE_PATH)) {
@@ -79,9 +81,10 @@ public class EmployeeDAO {
                     employees.add(employee);
                 }
             }
-        } catch (Exception e) {
-            throw new IOException("Error al cargar y procesar el JSON de empleados: " + e.getMessage(), e);
+        } catch (JsonIOException | JsonSyntaxException | IllegalStateException e) {
+            throw new IOException("Error al procesar el archivo JSON de empleados: " + e.getMessage(), e);
         }
+
 
         return employees;
     }
@@ -181,8 +184,8 @@ public class EmployeeDAO {
 
         try (Writer writer = new FileWriter(FILE_PATH)) {
             gson.toJson(employees, writer);
-        } catch (Exception e) {
-            throw new IOException("Error al guardar datos en JSON: " + e.getMessage(), e);
+        } catch (JsonIOException e) {
+            throw new IOException("Error al serializar los datos a JSON: " + e.getMessage(), e);
         }
     }
 }

@@ -85,9 +85,6 @@ public class FXMLPilotFormController implements Initializable {
     private Pilot pilotToEdit;
     private Notification observer;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cbGender.setItems(FXCollections.observableArrayList(Arrays.asList("Masculino", "Femenino", "Otro")));
@@ -138,7 +135,6 @@ public class FXMLPilotFormController implements Initializable {
             tfFlightHours.setText(String.valueOf(pilotToEdit.getFlightHours()));
             tfLicenseType.setText(pilotToEdit.getLicenseType());
             
-            // Convertir Date a LocalDate para el DatePicker
             Date birthDate = pilotToEdit.getBirthDate();
             if (birthDate != null) {
                 LocalDate localDate = birthDate.toInstant()
@@ -345,12 +341,7 @@ public class FXMLPilotFormController implements Initializable {
                 "Error", 
                 "Error al guardar los datos: " + e.getMessage()
             );
-        } catch (Exception e) {
-            DialogUtil.showErrorAlert(
-                "Error", 
-                "Ocurrió un error inesperado: " + e.getMessage()
-            );
-        }
+        } 
     }
     private void closeWindow() {
         ((Stage) tfName.getScene().getWindow()).close();

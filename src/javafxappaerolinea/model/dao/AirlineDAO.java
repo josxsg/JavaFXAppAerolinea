@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.dao;
 
 import javafxappaerolinea.exception.DuplicateResourceException;
@@ -11,10 +7,6 @@ import javafxappaerolinea.utility.JsonUtil;
 import java.io.IOException;
 import java.util.List;
 
-/**
- *
- * @author Dell
- */
 public class AirlineDAO {
     private final JsonUtil<Airline> persistence;
     private static final String FILE_PATH = "data/aerolineas.json";

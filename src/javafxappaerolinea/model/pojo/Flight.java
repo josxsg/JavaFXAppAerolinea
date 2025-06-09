@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.pojo;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author Dell
- */
 public class Flight {
     private String id;
     private String destinationCity;
@@ -30,7 +22,6 @@ public class Flight {
     private List<Ticket> tickets;
     private Airline airline;
 
-    // Constructor
     public Flight() {
         this.pilots = new ArrayList<>();
         this.assistants = new ArrayList<>();
@@ -56,23 +47,19 @@ public class Flight {
         this.airline = airline;
         this.pilots = new ArrayList<>();
         this.assistants = new ArrayList<>();
-        //this.tickets = new ArrayList<>();
     }
     
-    // Método para obtener la capacidad real del vuelo
     public int getCapacity() {
         if (airplane != null) {
             return airplane.getCapacity();
         }
-        return 44; // Capacidad por defecto
+        return 44; 
     }
     
-    // Método para verificar si hay asientos disponibles
     public boolean hasAvailableSeats() {
         return passengerCount < getCapacity();
     }
     
-    // Método para obtener número de asientos disponibles
     public int getAvailableSeats() {
         return getCapacity() - passengerCount;
     }
@@ -81,7 +68,6 @@ public class Flight {
         return id;
     }
 
-    // Getters and Setters
     public void setId(String id) {    
         this.id = id;
     }

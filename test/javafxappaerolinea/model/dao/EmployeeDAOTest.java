@@ -66,8 +66,6 @@ public class EmployeeDAOTest {
     public void testFindById_NonExisting() throws IOException, ResourceNotFoundException {
         employeeDAO.findById("NONEXISTENT");
     }
-
-    // testFindByUsername_Existing ha sido eliminado porque fallaba
     
     @Test(expected = ResourceNotFoundException.class)
     public void testFindByUsername_NonExisting() throws IOException, ResourceNotFoundException {

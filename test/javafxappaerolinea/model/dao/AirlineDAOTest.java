@@ -3,13 +3,10 @@ package javafxappaerolinea.model.dao;
 import javafxappaerolinea.exception.DuplicateResourceException;
 import javafxappaerolinea.exception.ResourceNotFoundException;
 import javafxappaerolinea.model.pojo.Airline;
-import javafxappaerolinea.utility.JsonUtil;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -117,7 +114,7 @@ public class AirlineDAOTest {
 
     @Test
     public void testDelete_ExistingAirline() throws IOException, ResourceNotFoundException {
-        int idToDelete = 2; // VivaAerobus
+        int idToDelete = 2; 
 
         airlineDAO.delete(idToDelete);
 

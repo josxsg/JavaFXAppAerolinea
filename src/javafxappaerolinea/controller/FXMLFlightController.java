@@ -64,9 +64,6 @@ public class FXMLFlightController implements Initializable {
     private FlightDAO flightDAO;
     private ObservableList<Flight> flights;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         flightDAO = new FlightDAO();
@@ -230,12 +227,6 @@ public class FXMLFlightController implements Initializable {
                 "Error",
                 "Error al exportar los datos: " + ex.getMessage()
             );
-        } catch (Exception ex) {
-            DialogUtil.showErrorAlert(
-                "Error",
-                "Error inesperado al exportar: " + ex.getMessage()
-            );
-            ex.printStackTrace();
         }
     }
 
@@ -267,7 +258,6 @@ public class FXMLFlightController implements Initializable {
             loadTableData();
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", "Error al abrir el formulario de vuelo: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -287,7 +277,6 @@ public class FXMLFlightController implements Initializable {
 
         } catch (IOException e) {
             DialogUtil.showErrorAlert("Error", "Error al abrir la vista de detalles del vuelo: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 

@@ -17,6 +17,7 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Chunk;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.lowagie.text.DocumentException;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -103,7 +104,7 @@ public class ExportUtil {
             }
 
             csvWriter.flush();
-        } catch (Exception e) {
+        } catch (DocumentException | FileNotFoundException | IllegalArgumentException | SecurityException e) {
             throw new IOException("Error al exportar a CSV: " + e.getMessage(), e);
         }
     }
@@ -237,7 +238,7 @@ public class ExportUtil {
             try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
                 workbook.write(outputStream);
             }
-        } catch (Exception e) {
+        } catch (DocumentException | FileNotFoundException | IllegalArgumentException | SecurityException e) {
             throw new IOException("Error al exportar a XLS: " + e.getMessage(), e);
         }
     }
@@ -311,7 +312,7 @@ public class ExportUtil {
             try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
                 workbook.write(outputStream);
             }
-        } catch (Exception e) {
+        } catch (DocumentException | FileNotFoundException | IllegalArgumentException | SecurityException e) {
             throw new IOException("Error al exportar a XLSX: " + e.getMessage(), e);
         }
     }
@@ -372,7 +373,7 @@ public class ExportUtil {
             try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
                 workbook.write(outputStream);
             }
-        } catch (Exception e) {
+        } catch (DocumentException | FileNotFoundException | IllegalArgumentException | SecurityException e) {
             throw new IOException("Error al exportar a XLSX: " + e.getMessage(), e);
         }
     }
@@ -438,7 +439,7 @@ public class ExportUtil {
             
             document.add(table);
             document.close();
-        } catch (Exception e) {
+        } catch (DocumentException | FileNotFoundException | IllegalArgumentException | SecurityException e) {
             throw new IOException("Error al exportar a PDF: " + e.getMessage(), e);
         }
     }
@@ -490,7 +491,7 @@ public class ExportUtil {
 
             document.add(table);
             document.close();
-        } catch (Exception e) {
+        } catch (DocumentException | FileNotFoundException e) {
             throw new IOException("Error al exportar a PDF: " + e.getMessage(), e);
         }
     }
@@ -506,7 +507,7 @@ public class ExportUtil {
                     .setDateFormat("yyyy-MM-dd")
                     .create();
             gson.toJson(data, writer);
-        } catch (Exception e) {
+        } catch (DocumentException | FileNotFoundException | IllegalArgumentException | SecurityException e) {
             throw new IOException("Error al exportar a JSON: " + e.getMessage(), e);
         }
     }

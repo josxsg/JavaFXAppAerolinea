@@ -4,15 +4,13 @@ import javafxappaerolinea.exception.DuplicateResourceException;
 import javafxappaerolinea.exception.ResourceNotFoundException;
 import javafxappaerolinea.model.pojo.Airline;
 import javafxappaerolinea.model.pojo.Airplane;
-import javafxappaerolinea.utility.JsonUtil; // Necesario para la inicialización directa del archivo de prueba
+import javafxappaerolinea.utility.JsonUtil; 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -42,7 +40,6 @@ public class AirplaneDAOTest {
 
     @Before
     public void setUp() throws IOException {
-        // Limpiar y preparar el archivo de prueba antes de cada test
         Files.deleteIfExists(Paths.get(TEST_FILE_PATH));
         try (FileWriter writer = new FileWriter(TEST_FILE_PATH)) {
             writer.write(
@@ -83,7 +80,7 @@ public class AirplaneDAOTest {
 
     @Test
     public void testFindByAirline_Existing() throws IOException {
-        int airlineId = AERO_MEXICO.getIdentificationNumber(); // ID 1
+        int airlineId = AERO_MEXICO.getIdentificationNumber(); 
         List<Airplane> result = airplaneDAO.findByAirline(airlineId);
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -103,14 +100,14 @@ public class AirplaneDAOTest {
     @Test
     public void testFindByAirline_NoAirlineAssigned() throws IOException {
         Airplane noAirlinePlane = new Airplane(100, 1, true, "ZZ-XYZ", "NoAirlineModel", 1000.0, null);
-        List<Airplane> currentAirplanes = airplaneDAO.findAll(); // Cargar estado actual
+        List<Airplane> currentAirplanes = airplaneDAO.findAll(); 
         currentAirplanes.add(noAirlinePlane); 
         new JsonUtil<>(TEST_FILE_PATH, Airplane.class).saveAll(currentAirplanes); 
 
         List<Airplane> result = airplaneDAO.findByAirline(AERO_MEXICO.getIdentificationNumber());
         assertNotNull(result);
         assertEquals(2, result.size()); 
-        assertTrue(result.stream().noneMatch(a -> a.getRegistration().equals("ZZ-XYZ"))); // Asegurarse de que el nuevo no está
+        assertTrue(result.stream().noneMatch(a -> a.getRegistration().equals("ZZ-XYZ"))); 
     }
 
 

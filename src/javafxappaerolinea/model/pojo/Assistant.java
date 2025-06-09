@@ -1,24 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxappaerolinea.model.pojo;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-/**
- *
- * @author Dell
- */
 public class Assistant extends Employee {
     private String email;
     private int assistanceHours;
     private int numberOfLanguages;
     private Airline airline;
     
-    // Constructor
     public Assistant() {
         super();
     }
@@ -33,7 +22,6 @@ public class Assistant extends Employee {
         this.airline = airline;
     }
     
-    // Getters and Setters
     public String getEmail() {
         return email;
     }

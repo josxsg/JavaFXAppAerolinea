@@ -80,7 +80,6 @@ public class ExportUtilTest {
 
     @After
     public void tearDown() throws IOException {
-        // Nada que limpiar aquí, @AfterClass ya maneja la limpieza del directorio
     }
 
     @Test
