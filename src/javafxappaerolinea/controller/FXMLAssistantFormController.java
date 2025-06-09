@@ -80,6 +80,8 @@ public class FXMLAssistantFormController implements Initializable {
     private boolean isEditing;
     private Assistant assistantToEdit;
     private Notification observer;
+    @FXML
+    private Label lbtitle;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -94,6 +96,7 @@ public class FXMLAssistantFormController implements Initializable {
         
         if (isEditing && assistantToEdit != null) {
             loadAssistantData();
+            lbtitle.setText("Actualizar Asistente de Vuelo");
         }
     }
 
@@ -206,7 +209,7 @@ public class FXMLAssistantFormController implements Initializable {
             lbErrorSalary.setText("");
         }
         
-        String assistanceHoursError = ValidationUtil.validateRangeUI(tfAssistanceHours.getText(), 0, 1000);
+        String assistanceHoursError = ValidationUtil.validatePositiveUI(tfAssistanceHours.getText());
         if (assistanceHoursError != null) {
             lbErrorAssistanceHours.setText(assistanceHoursError);
             isValid = false;

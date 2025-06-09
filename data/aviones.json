@@ -88,5 +88,140 @@
       "contactPerson": "Javier Torres",
       "phoneNumber": "91 234 5678"
     }
+  },
+  {
+    "capacity": 132,
+    "age": 0,
+    "status": true,
+    "registration": "CC-PWC1",
+    "model": "Embraer E195-E2",
+    "weight": 61500.0,
+    "airline": {
+      "identificationNumber": 3,
+      "address": "Av. Apoquindo 3000, Las Condes, Santiago, Chile",
+      "name": "PacificWings",
+      "contactPerson": "Camila Rojas",
+      "phoneNumber": "2 2345 6789"
+    }
+  },
+  {
+    "capacity": 153,
+    "age": 1,
+    "status": true,
+    "registration": "CC-PWC2",
+    "model": "Boeing 737 MAX 7",
+    "weight": 80000.0,
+    "airline": {
+      "identificationNumber": 3,
+      "address": "Av. Apoquindo 3000, Las Condes, Santiago, Chile",
+      "name": "PacificWings",
+      "contactPerson": "Camila Rojas",
+      "phoneNumber": "2 2345 6789"
+    }
+  },
+  {
+    "capacity": 145,
+    "age": 2,
+    "status": false,
+    "registration": "CC-PWC3",
+    "model": "Airbus A220-300",
+    "weight": 6700.0,
+    "airline": {
+      "identificationNumber": 3,
+      "address": "Av. Apoquindo 3000, Las Condes, Santiago, Chile",
+      "name": "PacificWings",
+      "contactPerson": "Camila Rojas",
+      "phoneNumber": "2 2345 6789"
+    }
+  },
+  {
+    "capacity": 174,
+    "age": 1,
+    "status": true,
+    "registration": "N-BHA1",
+    "model": "Boeing 737 MAX 8",
+    "weight": 82000.0,
+    "airline": {
+      "identificationNumber": 4,
+      "address": "200 Biscayne Blvd, Miami, FL 33132, USA",
+      "name": "BlueHorizon Air",
+      "contactPerson": "Michael Johnson",
+      "phoneNumber": "305 555 1234"
+    }
+  },
+  {
+    "capacity": 180,
+    "age": 2,
+    "status": true,
+    "registration": "N-BHA2",
+    "model": "Airbus A320neo",
+    "weight": 78000.0,
+    "airline": {
+      "identificationNumber": 4,
+      "address": "200 Biscayne Blvd, Miami, FL 33132, USA",
+      "name": "BlueHorizon Air",
+      "contactPerson": "Michael Johnson",
+      "phoneNumber": "305 555 1234"
+    }
+  },
+  {
+    "capacity": 200,
+    "age": 4,
+    "status": false,
+    "registration": "N-BHA3",
+    "model": "Boeing 757-200",
+    "weight": 100000.0,
+    "airline": {
+      "identificationNumber": 4,
+      "address": "200 Biscayne Blvd, Miami, FL 33132, USA",
+      "name": "BlueHorizon Air",
+      "contactPerson": "Michael Johnson",
+      "phoneNumber": "305 555 1234"
+    }
+  },
+  {
+    "capacity": 220,
+    "age": 0,
+    "status": true,
+    "registration": "OB-AND1",
+    "model": "Airbus A321XLR",
+    "weight": 97000.0,
+    "airline": {
+      "identificationNumber": 5,
+      "address": "Av. Javier Prado Este 456, San Isidro, Lima, Perú",
+      "name": "AeroAndes",
+      "contactPerson": "Diego Fernández",
+      "phoneNumber": "1 234 5678"
+    }
+  },
+  {
+    "capacity": 178,
+    "age": 0,
+    "status": true,
+    "registration": "OB-AND2",
+    "model": "Boeing 737-900ER",
+    "weight": 85000.0,
+    "airline": {
+      "identificationNumber": 5,
+      "address": "Av. Javier Prado Este 456, San Isidro, Lima, Perú",
+      "name": "AeroAndes",
+      "contactPerson": "Diego Fernández",
+      "phoneNumber": "1 234 5678"
+    }
+  },
+  {
+    "capacity": 100,
+    "age": 3,
+    "status": false,
+    "registration": "OB-AND3",
+    "model": "Embraer E190",
+    "weight": 47000.0,
+    "airline": {
+      "identificationNumber": 5,
+      "address": "Av. Javier Prado Este 456, San Isidro, Lima, Perú",
+      "name": "AeroAndes",
+      "contactPerson": "Diego Fernández",
+      "phoneNumber": "1 234 5678"
+    }
   }
 ]

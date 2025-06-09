@@ -84,6 +84,8 @@ public class FXMLPilotFormController implements Initializable {
     private boolean isEditing;
     private Pilot pilotToEdit;
     private Notification observer;
+    @FXML
+    private Label lbTitle;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -98,6 +100,7 @@ public class FXMLPilotFormController implements Initializable {
         
         if (isEditing && pilotToEdit != null) {
             loadPilotData();
+            lbTitle.setText("Actualizar Piloto");
         }
     }
     

@@ -72,6 +72,8 @@ public class FXMLAdminFormController implements Initializable {
     private boolean isEditing;
     private Administrative adminToEdit;
     private Notification observer;
+    @FXML
+    private Label lbTitulo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -85,6 +87,7 @@ public class FXMLAdminFormController implements Initializable {
         
         if (isEditing && adminToEdit != null) {
             loadAdminData();
+            lbTitulo.setText("Actualizar Administrativo");
         }
     }
 
